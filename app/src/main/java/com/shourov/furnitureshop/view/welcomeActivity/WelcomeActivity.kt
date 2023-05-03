@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view.welcome
+package com.shourov.furnitureshop.view.welcomeActivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
