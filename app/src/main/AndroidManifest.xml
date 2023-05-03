@@ -16,7 +16,7 @@
             android:name=".view.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".view.welcome.WelcomeActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
