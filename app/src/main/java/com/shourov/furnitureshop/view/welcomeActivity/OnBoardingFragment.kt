@@ -12,7 +12,7 @@ import com.shourov.furnitureshop.adapter.OnBoardingViewPagerAdapter
 import com.shourov.furnitureshop.databinding.FragmentOnBoardingBinding
 import com.shourov.furnitureshop.model.OnBoardingData
 import com.shourov.furnitureshop.utils.DemoData
-import com.shourov.furnitureshop.view.MainActivity
+import com.shourov.furnitureshop.view.authActivity.AuthActivity
 
 class OnBoardingFragment : Fragment() {
 
@@ -72,7 +72,7 @@ class OnBoardingFragment : Fragment() {
     }
 
     private fun openNextActivity() {
-        startActivity(Intent(requireActivity(), MainActivity::class.java))
+        startActivity(Intent(requireActivity(), AuthActivity::class.java))
         requireActivity().finish()
         requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
     }
