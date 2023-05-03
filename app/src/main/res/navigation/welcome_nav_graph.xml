@@ -8,5 +8,18 @@
         android:id="@+id/splashFragment"
         android:name="com.shourov.furnitureshop.view.welcome.SplashFragment"
         android:label="Splash"
-        tools:layout="@layout/fragment_splash" />
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.shourov.furnitureshop.view.welcome.OnBoardingFragment"
+        android:label="On Boarding"
+        tools:layout="@layout/fragment_on_boarding" />
 </navigation>
