@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.OnBoardingViewPagerAdapter
 import com.shourov.furnitureshop.databinding.FragmentOnBoardingBinding
 import com.shourov.furnitureshop.model.OnBoardingData
-import com.shourov.furnitureshop.utils.DemoData
+import com.shourov.furnitureshop.repository.OnBoardingRepository
 import com.shourov.furnitureshop.view.authActivity.AuthActivity
+import com.shourov.furnitureshop.view_model.OnBoardingViewModel
 
 class OnBoardingFragment : Fragment() {
 
@@ -21,6 +24,8 @@ class OnBoardingFragment : Fragment() {
     private var onBoardingViewPagerAdapter: OnBoardingViewPagerAdapter? = null
     private var position = 0
 
+    private lateinit var viewModel: OnBoardingViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,7 +33,11 @@ class OnBoardingFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentOnBoardingBinding.inflate(inflater, container, false)
 
-        onBoardingData.addAll(DemoData().onBoardingData())
+        viewModel = ViewModelProvider(this, OnBoardingViewModelFactory(OnBoardingRepository()))[OnBoardingViewModel::class.java]
+
+        viewModel.getOnBoardingData()
+
+        observerList()
 
         onBoardingViewPagerAdapter = OnBoardingViewPagerAdapter(onBoardingData)
         binding.screenPager.adapter = onBoardingViewPagerAdapter
@@ -71,9 +80,25 @@ class OnBoardingFragment : Fragment() {
         return binding.root
     }
 
+    private fun observerList() {
+        viewModel.onBoardingLiveData.observe(viewLifecycleOwner){
+            onBoardingData.clear()
+            onBoardingData.addAll(it)
+            binding.screenPager.adapter?.notifyDataSetChanged()
+        }
+    }
+
+
     private fun openNextActivity() {
         startActivity(Intent(requireActivity(), AuthActivity::class.java))
         requireActivity().finish()
         requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
     }
+}
+
+
+
+
+class OnBoardingViewModelFactory(private val repository: OnBoardingRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = OnBoardingViewModel(repository) as T
 }
