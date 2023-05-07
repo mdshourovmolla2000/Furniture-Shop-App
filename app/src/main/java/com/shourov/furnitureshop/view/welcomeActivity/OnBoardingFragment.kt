@@ -20,7 +20,7 @@ import com.shourov.furnitureshop.view_model.OnBoardingViewModel
 class OnBoardingFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardingBinding
-    private val onBoardingData: MutableList<OnBoardingData> = ArrayList()
+    private val onBoardingData: ArrayList<OnBoardingData> = ArrayList()
     private var onBoardingViewPagerAdapter: OnBoardingViewPagerAdapter? = null
     private var position = 0
 

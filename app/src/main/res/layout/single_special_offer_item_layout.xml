@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_203sdp"
+    android:layout_height="@dimen/_100sdp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_11sdp"
+    app:cardElevation="0dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginEnd="@dimen/_12sdp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/itemImageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_placeholder_square" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:alpha="0.3"/>
+
+        <TextView
+            android:id="@+id/discountTitleTextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_13sdp"
+            android:text="25% Discount"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            android:fontFamily="@font/switzer_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/discountTaglineTextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="For a cozy yellow set!"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/switzer_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/discountTitleTextview"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_2sdp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/actionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_27sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="@dimen/_13sdp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:insetTop="0dp"
+            android:text="Learn More"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/switzer_regular"
+            android:backgroundTint="@color/themeColor"
+            app:cornerRadius="@dimen/_27sdp"
+            android:paddingHorizontal="@dimen/_9sdp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
