@@ -91,8 +91,8 @@ class OnBoardingFragment : Fragment() {
 
     private fun openNextActivity() {
         startActivity(Intent(requireActivity(), AuthActivity::class.java))
-        requireActivity().finish()
         requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
+        requireActivity().finish()
     }
 }
 

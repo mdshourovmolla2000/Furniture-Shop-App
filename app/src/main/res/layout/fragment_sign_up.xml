@@ -1,14 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.authActivity.SignUpFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.authActivity.SignUpFragment"
+    android:padding="@dimen/_18sdp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:fillViewport="true">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/welcomeTitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Create Account"
+                android:textColor="#101817"
+                android:textSize="@dimen/_25sdp"
+                android:fontFamily="@font/switzer_semibold"/>
+
+            <TextView
+                android:id="@+id/welcomeTitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/welcomeTitle1"
+                android:text="Let’s Create Account Together"
+                android:textColor="#828A89"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/switzer_regular"
+                android:layout_marginTop="@dimen/_6sdp"/>
+
+            <TextView
+                android:id="@+id/nameTitleTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/welcomeTitle2"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:text="Full Name"
+                android:textColor="#101817"
+                android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/switzer_medium"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/nameCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/nameTitleTextview"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_9sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/nameEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constrainedWidth="true"
+                        android:hint="Enter Your Name"
+                        android:textSize="@dimen/_11sdp"
+                        android:textColor="#828A89"
+                        android:fontFamily="@font/switzer_regular"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:background="@null"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/emailTitleTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameCardView"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="Email"
+                android:textColor="#101817"
+                android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/switzer_medium"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/emailCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/emailTitleTextview"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_9sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/emailEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constrainedWidth="true"
+                        android:hint="Enter Your Email"
+                        android:textSize="@dimen/_11sdp"
+                        android:textColor="#828A89"
+                        android:fontFamily="@font/switzer_regular"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:background="@null"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/passwordTitleTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailCardView"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="Password"
+                android:textColor="#101817"
+                android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/switzer_medium"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/passwordCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/passwordTitleTextview"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_9sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/passwordEdittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constrainedWidth="true"
+                        android:hint="Enter Your Password"
+                        android:textSize="@dimen/_11sdp"
+                        android:textColor="#828A89"
+                        android:fontFamily="@font/switzer_regular"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:background="@null"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/signUpButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/passwordCardView"
+                android:text="Sign Up"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/switzer_semibold"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                android:backgroundTint="@color/themeColor"
+                app:cornerRadius="@dimen/_11sdp"
+                android:paddingVertical="@dimen/_13sdp"
+                android:layout_marginTop="@dimen/_18sdp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/signUpButton"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:id="@+id/alreadyAccountTextview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/signInTextview"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:text="Already Have An Account?"
+                    android:textColor="#828A89"
+                    android:textSize="@dimen/_11sdp"
+                    android:fontFamily="@font/switzer_regular" />
+
+                <TextView
+                    android:id="@+id/signInTextview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/alreadyAccountTextview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:text="Sign In"
+                    android:textColor="#101817"
+                    android:textSize="@dimen/_11sdp"
+                    android:fontFamily="@font/switzer_regular"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
