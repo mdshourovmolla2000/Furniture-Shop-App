@@ -1,14 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.FavouriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/bottomNavigationMenuLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="@dimen/_43sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:weightSum="4"
+        android:orientation="horizontal"
+        android:background="@color/white">
 
-</FrameLayout>
+        <LinearLayout
+            android:id="@+id/bottomNavigationHomeMenu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="@dimen/_19sdp"
+                android:layout_height="@dimen/_19sdp"
+                android:src="@drawable/bottom_navigation_menu_home_icon"
+                app:tint="#828A89" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textSize="@dimen/_9sdp"
+                android:textColor="#828A89"
+                android:fontFamily="@font/switzer_medium"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomNavigationFavouriteMenu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="@dimen/_19sdp"
+                android:layout_height="@dimen/_19sdp"
+                android:src="@drawable/bottom_navigation_menu_favourite_icon"
+                app:tint="@color/themeColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favourite"
+                android:textSize="@dimen/_9sdp"
+                android:textColor="@color/themeColor"
+                android:fontFamily="@font/switzer_medium"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomNavigationShoppingMenu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="@dimen/_19sdp"
+                android:layout_height="@dimen/_19sdp"
+                android:src="@drawable/bottom_navigation_menu_shopping_icon"
+                app:tint="#828A89" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shopping"
+                android:textSize="@dimen/_9sdp"
+                android:textColor="#828A89"
+                android:fontFamily="@font/switzer_medium"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomNavigationProfileMenu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="@dimen/_19sdp"
+                android:layout_height="@dimen/_19sdp"
+                android:src="@drawable/bottom_navigation_menu_profile_icon"
+                app:tint="#828A89" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="@dimen/_9sdp"
+                android:textColor="#828A89"
+                android:fontFamily="@font/switzer_medium"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
