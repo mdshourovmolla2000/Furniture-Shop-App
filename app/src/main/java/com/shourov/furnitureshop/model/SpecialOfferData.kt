@@ -2,7 +2,7 @@ package com.shourov.furnitureshop.model
 
 import com.shourov.furnitureshop.R
 
-class SpecialOfferData(
+data class SpecialOfferData(
     val discountTitle: String? = "",
     val discountTagline: String? = "",
     val actionText: String? = "",
