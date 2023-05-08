@@ -1,4 +1,4 @@
- package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,19 +9,21 @@ import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.databinding.FragmentFavouriteBinding
 
- class FavouriteFragment : Fragment() {
+class FavouriteFragment : Fragment() {
 
-     private lateinit var binding: FragmentFavouriteBinding
+    private lateinit var binding: FragmentFavouriteBinding
 
-     override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentFavouriteBinding.inflate(inflater, container, false)
 
-         binding.bottomNavigationHomeMenu.setOnClickListener { findNavController().navigate(R.id.action_favouriteFragment_to_homeFragment) }
+        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
-         return binding.root
+        binding.bottomNavigationHomeMenu.setOnClickListener { findNavController().navigate(R.id.action_favouriteFragment_to_homeFragment) }
+
+        return binding.root
     }
 }
