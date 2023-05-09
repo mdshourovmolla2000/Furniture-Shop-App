@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayout
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.OnBoardingViewPagerAdapter
 import com.shourov.furnitureshop.databinding.FragmentOnBoardingBinding
-import com.shourov.furnitureshop.model.OnBoardingData
+import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.repository.OnBoardingRepository
 import com.shourov.furnitureshop.view.authActivity.AuthActivity
 import com.shourov.furnitureshop.view_model.OnBoardingViewModel
@@ -20,7 +20,7 @@ import com.shourov.furnitureshop.view_model.OnBoardingViewModel
 class OnBoardingFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardingBinding
-    private val onBoardingData: ArrayList<OnBoardingData> = ArrayList()
+    private val onBoardingData: ArrayList<OnBoardingModel> = ArrayList()
     private var onBoardingViewPagerAdapter: OnBoardingViewPagerAdapter? = null
     private var position = 0
 

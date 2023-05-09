@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.databinding.SingleSpecialOfferItemLayoutBinding
-import com.shourov.furnitureshop.model.SpecialOfferData
+import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.utils.loadImage
 
-class SpecialOffersListAdapter(private var itemList: ArrayList<SpecialOfferData>):
+class SpecialOffersListAdapter(private var itemList: ArrayList<SpecialOfferModel>):
     RecyclerView.Adapter<SpecialOffersListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -32,7 +32,7 @@ class SpecialOffersListAdapter(private var itemList: ArrayList<SpecialOfferData>
         private val binding = SingleSpecialOfferItemLayoutBinding.bind(itemView)
 
         @SuppressLint("SetTextI18n")
-        fun onBind(currentItem: SpecialOfferData) {
+        fun onBind(currentItem: SpecialOfferModel) {
             binding.itemImageview.loadImage(currentItem.itemImage)
 
             binding.discountTitleTextview.text = currentItem.discountTitle

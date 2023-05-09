@@ -15,7 +15,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
 import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
-import com.shourov.furnitureshop.model.SpecialOfferData
+import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.repository.HomeRepository
 import com.shourov.furnitureshop.view_model.HomeViewModel
 
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
 
-    private val specialOfferItemsList: ArrayList<SpecialOfferData> = ArrayList()
+    private val specialOfferItemsList: ArrayList<SpecialOfferModel> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository()))[HomeViewModel::class.java]
 
-        viewModel.getSpecialOfferLiveData()
+        viewModel.getSpecialOfferData()
 
         observerList()
 

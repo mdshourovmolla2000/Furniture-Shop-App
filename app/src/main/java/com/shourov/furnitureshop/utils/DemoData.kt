@@ -1,24 +1,42 @@
 package com.shourov.furnitureshop.utils
 
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.model.OnBoardingData
-import com.shourov.furnitureshop.model.SpecialOfferData
+import com.shourov.furnitureshop.model.FavouriteModel
+import com.shourov.furnitureshop.model.OnBoardingModel
+import com.shourov.furnitureshop.model.SpecialOfferModel
 
 class DemoData {
 
-    fun onBoardingData(): ArrayList<OnBoardingData> {
-        val itemList: ArrayList<OnBoardingData> = ArrayList()
-        itemList.add(OnBoardingData(R.drawable.onboarding_image_1, "View And Experience Furniture With The Help Of Augmented Reality"))
-        itemList.add(OnBoardingData(R.drawable.onboarding_image_2, "Design Your Space With Augmented Reality By Creating Room"))
-        itemList.add(OnBoardingData(R.drawable.onboarding_image_3, "Explore World Class Top Furnitures As Per Your Requirements & Choice"))
+    fun onBoardingData(): ArrayList<OnBoardingModel> {
+        val itemList: ArrayList<OnBoardingModel> = ArrayList()
+        itemList.add(OnBoardingModel(R.drawable.onboarding_image_1, "View And Experience Furniture With The Help Of Augmented Reality"))
+        itemList.add(OnBoardingModel(R.drawable.onboarding_image_2, "Design Your Space With Augmented Reality By Creating Room"))
+        itemList.add(OnBoardingModel(R.drawable.onboarding_image_3, "Explore World Class Top Furnitures As Per Your Requirements & Choice"))
         return itemList
     }
 
-    fun specialOfferData(): ArrayList<SpecialOfferData> {
-        val itemList: ArrayList<SpecialOfferData> = ArrayList()
-        itemList.add(SpecialOfferData("25% Discount", "For a cozy yellow set!", "Learn More", R.drawable.special_offer_image_1))
-        itemList.add(SpecialOfferData("35% discount", "For a cozy yellow set!", "Shop Now", R.drawable.special_offer_image_2))
-        itemList.add(SpecialOfferData("25% Discount", "For a cozy yellow set!", "Learn More", R.drawable.special_offer_image_1))
+    fun specialOfferData(): ArrayList<SpecialOfferModel> {
+        val itemList: ArrayList<SpecialOfferModel> = ArrayList()
+        itemList.add(SpecialOfferModel("25% Discount", "For a cozy yellow set!", "Learn More", R.drawable.special_offer_image_1))
+        itemList.add(SpecialOfferModel("35% discount", "For a cozy yellow set!", "Shop Now", R.drawable.special_offer_image_2))
+        itemList.add(SpecialOfferModel("25% Discount", "For a cozy yellow set!", "Learn More", R.drawable.special_offer_image_1))
+        return itemList
+    }
+
+    fun favouriteData(): ArrayList<FavouriteModel> {
+        val itemList: ArrayList<FavouriteModel> = ArrayList()
+        itemList.add(FavouriteModel(R.drawable.favourite_item_1, "Rotating Lounge Chair", "$39.00"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.00"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.21"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.68"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_1, "Rotating Lounge Chair", "$39.01"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.02"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.22"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.69"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_1, "Rotating Lounge Chair", "$39.02"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.02"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.23"))
+        itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.67"))
         return itemList
     }
 

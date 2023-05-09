@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.model.OnBoardingData
+import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.utils.loadImage
 
-class OnBoardingViewPagerAdapter(private val onBoardingDataList: List<OnBoardingData>): PagerAdapter() {
+class OnBoardingViewPagerAdapter(private val onBoardingDataList: List<OnBoardingModel>): PagerAdapter() {
     override fun getCount(): Int {
         return onBoardingDataList.size
     }
