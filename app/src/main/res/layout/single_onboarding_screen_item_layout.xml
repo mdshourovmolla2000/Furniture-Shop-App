@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constrainedWidth="true"
         android:text="View And Exprience Furniture With The Help Of Augmented Reality"
-        android:textColor="#101817"
+        android:textColor="@color/blackTextColor"
         android:textSize="@dimen/_18sdp"
         android:fontFamily="@font/switzer_medium"
         android:layout_marginHorizontal="@dimen/_40sdp"

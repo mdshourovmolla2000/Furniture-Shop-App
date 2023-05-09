@@ -72,6 +72,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.bottomNavigationFavouriteMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_favouriteFragment) }
+        binding.bottomNavigationShoppingMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_shoppingFragment) }
 
         return binding.root
     }

@@ -23,7 +23,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="Create Account"
-                android:textColor="#101817"
+                android:textColor="@color/blackTextColor"
                 android:textSize="@dimen/_25sdp"
                 android:fontFamily="@font/switzer_semibold"/>
 
@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toBottomOf="@id/welcomeTitle2"
                 android:layout_marginTop="@dimen/_25sdp"
                 android:text="Full Name"
-                android:textColor="#101817"
+                android:textColor="@color/blackTextColor"
                 android:textSize="@dimen/_11sdp"
                 android:fontFamily="@font/switzer_medium"/>
 
@@ -96,7 +96,7 @@
                 app:layout_constraintTop_toBottomOf="@id/nameCardView"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:text="Email"
-                android:textColor="#101817"
+                android:textColor="@color/blackTextColor"
                 android:textSize="@dimen/_11sdp"
                 android:fontFamily="@font/switzer_medium"/>
 
@@ -145,7 +145,7 @@
                 app:layout_constraintTop_toBottomOf="@id/emailCardView"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:text="Password"
-                android:textColor="#101817"
+                android:textColor="@color/blackTextColor"
                 android:textSize="@dimen/_11sdp"
                 android:fontFamily="@font/switzer_medium"/>
 
@@ -236,7 +236,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:text="Sign In"
-                    android:textColor="#101817"
+                    android:textColor="@color/blackTextColor"
                     android:textSize="@dimen/_11sdp"
                     android:fontFamily="@font/switzer_regular"/>
 
