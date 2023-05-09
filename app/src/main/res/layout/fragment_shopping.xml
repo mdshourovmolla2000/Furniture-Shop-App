@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/topSectionLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomSection"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
         android:layout_margin="@dimen/_6sdp"/>
@@ -96,5 +96,165 @@
         android:layout_margin="@dimen/_10sdp"
         app:layout_constrainedWidth="true"
         android:visibility="gone"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/orderSummaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:background="@drawable/bottom_sheet_rounded_corner"
+            android:padding="@dimen/_18sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Summary"
+                android:textColor="@color/blackTextColor"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/switzer_medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_12sdp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Subtotal"
+                    android:textColor="#828A89"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/switzer_regular"
+                    android:gravity="start"/>
+
+                <TextView
+                    android:id="@+id/subtotalAmountTextview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="$0.0"
+                    android:textColor="#F2A666"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/switzer_medium"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_6sdp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Shipping Cost"
+                    android:textColor="#828A89"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/switzer_regular"
+                    android:gravity="start"/>
+
+                <TextView
+                    android:id="@+id/shippingCostTextview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="$0.0"
+                    android:textColor="#F2A666"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/switzer_medium"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#F0F0F2"
+                android:layout_marginTop="@dimen/_6sdp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="@dimen/_9sdp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total payment"
+                    android:textColor="@color/blackTextColor"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/switzer_semibold"
+                    android:gravity="start"/>
+
+                <TextView
+                    android:id="@+id/totalPaymentAmountTextview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="$0.0"
+                    android:textColor="#F2A666"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/switzer_semibold"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/checkoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetLeft="0dp"
+                android:insetBottom="0dp"
+                android:text="Check Out"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                app:cornerRadius="@dimen/_11sdp"
+                android:backgroundTint="@color/themeColor"
+                android:paddingVertical="@dimen/_12sdp"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetLeft="0dp"
+            android:insetBottom="0dp"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            app:cornerRadius="@dimen/_11sdp"
+            android:backgroundTint="@color/themeColor"
+            android:paddingVertical="@dimen/_12sdp"
+            android:layout_margin="@dimen/_18sdp"
+            android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

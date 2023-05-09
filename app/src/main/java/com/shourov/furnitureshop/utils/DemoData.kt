@@ -3,6 +3,7 @@ package com.shourov.furnitureshop.utils
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.model.FavouriteModel
 import com.shourov.furnitureshop.model.OnBoardingModel
+import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 
 class DemoData {
@@ -37,6 +38,14 @@ class DemoData {
         itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.02"))
         itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.23"))
         itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.67"))
+        return itemList
+    }
+
+    fun shoppingData(): ArrayList<ShoppingModel> {
+        val itemList: ArrayList<ShoppingModel> = ArrayList()
+        itemList.add(ShoppingModel(R.drawable.shopping_item_1,"Minimalist Chair", "Regal Do Lobo", 1.00, 1, false))
+        itemList.add(ShoppingModel(R.drawable.shopping_item_2,"Hallingdal Chair", "Hatil-Loren", 2.00, 1, false))
+        itemList.add(ShoppingModel(R.drawable.shopping_item_3,"Hiro Armchair", "Hatil-Loren", 3.00, 1, false))
         return itemList
     }
 

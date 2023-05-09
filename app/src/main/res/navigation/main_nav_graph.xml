@@ -55,5 +55,13 @@
         android:id="@+id/shoppingFragment"
         android:name="com.shourov.furnitureshop.view.ShoppingFragment"
         android:label="Shopping"
-        tools:layout="@layout/fragment_shopping" />
+        tools:layout="@layout/fragment_shopping" >
+        <action
+            android:id="@+id/action_shoppingFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+    </fragment>
 </navigation>
