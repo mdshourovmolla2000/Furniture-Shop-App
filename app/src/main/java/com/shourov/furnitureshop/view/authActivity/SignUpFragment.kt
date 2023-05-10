@@ -106,12 +106,11 @@ class SignUpFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 if (result > 0) {
                     requireContext().showSuccessToast("Account created successfully")
-                    binding.signUpButton.isClickable = true
                     findNavController().popBackStack()
                 } else {
                     requireContext().showErrorToast("Something wrong")
-                    binding.signUpButton.isClickable = true
                 }
+                binding.signUpButton.isClickable = true
             }
         }
     }

@@ -15,6 +15,6 @@ interface AppDao {
     suspend fun insertUser(user: UserTable?): Long
 
     @Query("SELECT * FROM user_table WHERE LOWER(email) = LOWER(:email) AND password = :password")
-    suspend fun checkIfUserValid(email: String?, password: String?): UserTable
+    suspend fun checkIfUserIsValid(email: String?, password: String?): UserTable?
 
 }

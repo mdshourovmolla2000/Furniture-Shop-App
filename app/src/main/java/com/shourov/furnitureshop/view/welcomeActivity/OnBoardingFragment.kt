@@ -14,6 +14,7 @@ import com.shourov.furnitureshop.adapter.OnBoardingViewPagerAdapter
 import com.shourov.furnitureshop.databinding.FragmentOnBoardingBinding
 import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.repository.OnBoardingRepository
+import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.view.authActivity.AuthActivity
 import com.shourov.furnitureshop.view_model.OnBoardingViewModel
 
@@ -32,6 +33,7 @@ class OnBoardingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentOnBoardingBinding.inflate(inflater, container, false)
+        SharedPref.init(requireContext())
 
         viewModel = ViewModelProvider(this, OnBoardingViewModelFactory(OnBoardingRepository()))[OnBoardingViewModel::class.java]
 
@@ -86,6 +88,7 @@ class OnBoardingFragment : Fragment() {
 
 
     private fun openNextActivity() {
+        SharedPref.write("IS_ONBOARDING_SCREEN_SHOWED", "yes")
         startActivity(Intent(requireActivity(), AuthActivity::class.java))
         requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
         requireActivity().finish()
