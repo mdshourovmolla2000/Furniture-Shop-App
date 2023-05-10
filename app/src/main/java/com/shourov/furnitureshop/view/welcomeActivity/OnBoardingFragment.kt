@@ -54,10 +54,6 @@ class OnBoardingFragment : Fragment() {
                 position++
                 binding.screenPager.currentItem = position
             }
-
-            if (position == onBoardingData.size){
-                openNextActivity()
-            }
         }
 
         binding.tabIndicator.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
