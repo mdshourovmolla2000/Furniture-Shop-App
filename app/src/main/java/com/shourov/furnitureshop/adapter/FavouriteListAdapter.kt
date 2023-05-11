@@ -42,7 +42,6 @@ class FavouriteListAdapter(private var itemList: ArrayList<FavouriteModel>, priv
             binding.favouriteIcon.setOnClickListener { itemClickListener.onFavouriteItemClick(currentItem, "FAVOURITE_ICON") }
 
             itemView.setOnClickListener { itemClickListener.onFavouriteItemClick(currentItem, "MAIN_ITEM") }
-
         }
 
     }

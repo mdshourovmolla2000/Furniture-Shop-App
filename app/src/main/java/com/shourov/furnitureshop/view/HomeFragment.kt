@@ -160,7 +160,6 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                     currentCategory = currentItem
                     viewModel.getPopularProduct(currentCategory)
                 }
-
             }
         }
     }

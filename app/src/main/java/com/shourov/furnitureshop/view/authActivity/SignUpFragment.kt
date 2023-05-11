@@ -44,27 +44,30 @@ class SignUpFragment : Fragment() {
         repository = SignUpRepository(dao)
         viewModel = ViewModelProvider(this, SignUpViewModelFactory(repository))[SignUpViewModel::class.java]
 
-        binding.signUpButton.setOnClickListener { checkUser() }
+        binding.signUpButton.setOnClickListener { checkUser(it) }
 
         binding.signInTextview.setOnClickListener { findNavController().popBackStack() }
 
         return binding.root
     }
 
-    private fun checkUser() {
+    private fun checkUser(view: View) {
         if (binding.nameEdittext.text.toString().trim().isEmpty()) {
             binding.nameEdittext.error = "Enter name"
             binding.nameEdittext.requestFocus()
+            KeyboardManager.showKeyboard(binding.nameEdittext)
             return
         }
         if (binding.emailEdittext.text.toString().trim().isEmpty()) {
             binding.emailEdittext.error = "Enter email"
             binding.emailEdittext.requestFocus()
+            KeyboardManager.showKeyboard(binding.emailEdittext)
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEdittext.text.toString().trim()).matches()) {
             binding.emailEdittext.error = "Enter valid email"
             binding.emailEdittext.requestFocus()
+            KeyboardManager.showKeyboard(binding.emailEdittext)
             return
         }
         lifecycleScope.launch(Dispatchers.IO) {
@@ -74,19 +77,22 @@ class SignUpFragment : Fragment() {
                 if (count > 0) {
                     binding.emailEdittext.error = "email already registered"
                     binding.emailEdittext.requestFocus()
+                    KeyboardManager.showKeyboard(binding.emailEdittext)
                     return@withContext
                 } else {
                     if (binding.passwordEdittext.text.toString().trim().isEmpty()) {
                         binding.passwordEdittext.error = "Enter password"
                         binding.passwordEdittext.requestFocus()
+                        KeyboardManager.showKeyboard(binding.passwordEdittext)
                         return@withContext
                     }
                     if (binding.passwordEdittext.text.toString().trim().length < 6) {
                         binding.passwordEdittext.error = "Must be 6 character"
                         binding.passwordEdittext.requestFocus()
+                        KeyboardManager.showKeyboard(binding.passwordEdittext)
                         return@withContext
                     }
-                    KeyboardManager.hideKeyBoard(requireActivity())
+                    KeyboardManager.hideKeyBoard(requireContext(), view)
                     if (NetworkManager.isInternetAvailable(requireContext())) {
                         binding.signUpButton.isClickable = false
                         insertUser()

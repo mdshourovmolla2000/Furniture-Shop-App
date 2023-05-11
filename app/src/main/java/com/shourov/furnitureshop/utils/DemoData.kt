@@ -9,7 +9,6 @@ import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 
 class DemoData {
-
     fun onBoardingData(): List<OnBoardingModel> {
         val itemList: ArrayList<OnBoardingModel> = ArrayList()
         itemList.add(OnBoardingModel(R.drawable.onboarding_image_1, "View And Experience Furniture With The Help Of Augmented Reality"))

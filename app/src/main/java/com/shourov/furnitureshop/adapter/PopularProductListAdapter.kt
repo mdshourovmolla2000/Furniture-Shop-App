@@ -39,6 +39,5 @@ class PopularProductListAdapter(private val itemList: ArrayList<ProductModel>, p
             binding.itemCompanyNameTextview.text = currentItem.itemCompanyName
             binding.itemPriceTextview.text = "$${currentItem.itemPrice}"
         }
-
     }
 }

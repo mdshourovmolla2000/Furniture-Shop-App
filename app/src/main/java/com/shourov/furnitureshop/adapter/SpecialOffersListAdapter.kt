@@ -40,6 +40,5 @@ class SpecialOffersListAdapter(private var itemList: ArrayList<SpecialOfferModel
             binding.actionButton.text = currentItem.actionText
 
         }
-
     }
 }

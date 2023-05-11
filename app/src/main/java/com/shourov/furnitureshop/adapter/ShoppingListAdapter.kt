@@ -67,9 +67,7 @@ class ShoppingListAdapter(private var itemList: ArrayList<ShoppingModel>, privat
                 }
             }
 
-
             binding.mainCardView.setOnClickListener { itemClickListener.onShoppingItemClick(currentItem, "MAIN_ITEM") }
         }
-
     }
 }

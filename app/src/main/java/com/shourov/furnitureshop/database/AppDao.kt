@@ -8,7 +8,6 @@ import com.shourov.furnitureshop.database.tables.UserTable
 
 @Dao
 interface AppDao {
-
     @Query("SELECT COUNT(*) FROM user_table WHERE LOWER(email) = LOWER(:email)")
     suspend fun checkIfUserExists(email: String?): Int
 

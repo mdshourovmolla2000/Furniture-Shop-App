@@ -64,6 +64,5 @@ class HomeCategoryListAdapter(private val itemList: ArrayList<HomeCategoryModel>
                 }
             }
         }
-
     }
 }

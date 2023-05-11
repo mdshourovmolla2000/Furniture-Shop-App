@@ -19,7 +19,6 @@ class OnBoardingViewPagerAdapter(private val onBoardingDataList: List<OnBoarding
         return view == `object`
     }
 
-
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
     }
