@@ -131,13 +131,11 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
         viewModel.popularProductLiveData.observe(viewLifecycleOwner) {
             popularProductList.clear()
-            if (it.isNullOrEmpty()) {
-                binding.popularItemsRecyclerview.visibility = View.GONE
+            if (it.isEmpty()) {
                 binding.noPopularItemLayout.visibility = View.VISIBLE
             } else {
                 popularProductList.addAll(it)
                 binding.noPopularItemLayout.visibility = View.GONE
-                binding.popularItemsRecyclerview.visibility = View.VISIBLE
             }
 
             binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()

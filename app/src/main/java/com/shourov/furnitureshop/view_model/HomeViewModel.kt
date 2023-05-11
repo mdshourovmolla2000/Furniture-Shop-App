@@ -1,5 +1,6 @@
 package com.shourov.furnitureshop.view_model
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
