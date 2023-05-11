@@ -23,6 +23,13 @@
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
@@ -64,4 +71,9 @@
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
     </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.shourov.furnitureshop.view.CategoryFragment"
+        android:label="Category"
+        tools:layout="@layout/fragment_category" />
 </navigation>

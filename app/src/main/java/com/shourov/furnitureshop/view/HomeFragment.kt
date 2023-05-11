@@ -13,18 +13,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
+import com.shourov.furnitureshop.adapter.HomeCategoryListAdapter
+import com.shourov.furnitureshop.adapter.PopularProductListAdapter
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
 import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
+import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
+import com.shourov.furnitureshop.interfaces.PopularProductItemClickListener
+import com.shourov.furnitureshop.model.HomeCategoryModel
+import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.repository.HomeRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view_model.HomeViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductItemClickListener {
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -32,7 +38,13 @@ class HomeFragment : Fragment() {
     private lateinit var repository: HomeRepository
     private lateinit var viewModel: HomeViewModel
 
-    private val specialOfferItemsList: ArrayList<SpecialOfferModel> = ArrayList()
+    private val specialOfferItemsList = ArrayList<SpecialOfferModel>()
+
+    private val categoryList = ArrayList<HomeCategoryModel>()
+    private var currentCategoryPosition = 0
+    private var currentCategory = "All"
+
+    private val popularProductList = ArrayList<ProductModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,11 +86,21 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this, HomeViewModelFactory(repository))[HomeViewModel::class.java]
 
         viewModel.getSpecialOfferData()
+        viewModel.getCategory()
+        viewModel.getPopularProduct(currentCategory)
 
         observerList()
 
         binding.specialOfferRecyclerview.apply {
             adapter = SpecialOffersListAdapter(specialOfferItemsList)
+        }
+
+        binding.categoryRecyclerview.apply {
+            adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
+        }
+
+        binding.popularItemsRecyclerview.apply {
+            adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
         }
 
         binding.bottomNavigationFavouriteMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_favouriteFragment) }
@@ -88,18 +110,56 @@ class HomeFragment : Fragment() {
     }
 
     private fun observerList() {
-        viewModel.specialOfferLiveData.observe(viewLifecycleOwner) {
-            specialOfferItemsList.clear()
-            specialOfferItemsList.addAll(it)
-            binding.specialOfferRecyclerview.adapter?.notifyDataSetChanged()
-        }
-
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 binding.profilePicImageview.loadImage(it.profile_pic.toUri())
                 binding.userNameTextview.text = it.name
             }
         }
+
+        viewModel.specialOfferLiveData.observe(viewLifecycleOwner) {
+            specialOfferItemsList.clear()
+            specialOfferItemsList.addAll(it)
+            binding.specialOfferRecyclerview.adapter?.notifyDataSetChanged()
+        }
+
+        viewModel.categoryLiveData.observe(viewLifecycleOwner) {
+            categoryList.clear()
+            categoryList.addAll(ArrayList(it))
+            binding.categoryRecyclerview.adapter?.notifyDataSetChanged()
+        }
+
+        viewModel.popularProductLiveData.observe(viewLifecycleOwner) {
+            popularProductList.clear()
+            if (it.isNullOrEmpty()) {
+                binding.popularItemsRecyclerview.visibility = View.GONE
+                binding.noPopularItemLayout.visibility = View.VISIBLE
+            } else {
+                popularProductList.addAll(it)
+                binding.noPopularItemLayout.visibility = View.GONE
+                binding.popularItemsRecyclerview.visibility = View.VISIBLE
+            }
+
+            binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    override fun onCategoryItemClick(currentItem: String, currentItemPosition: Int) {
+        when(currentItem) {
+            "More" -> findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
+            else -> {
+                if (currentCategoryPosition != currentItemPosition) {
+                    currentCategoryPosition = currentItemPosition
+                    currentCategory = currentItem
+                    viewModel.getPopularProduct(currentCategory)
+                }
+
+            }
+        }
+    }
+
+    override fun onProductItemClick(currentItem: ProductModel) {
+
     }
 }
 
