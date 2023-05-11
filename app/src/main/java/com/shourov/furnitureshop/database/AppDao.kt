@@ -1,5 +1,6 @@
 package com.shourov.furnitureshop.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -17,4 +18,6 @@ interface AppDao {
     @Query("SELECT * FROM user_table WHERE LOWER(email) = LOWER(:email) AND password = :password")
     suspend fun checkIfUserIsValid(email: String?, password: String?): UserTable?
 
+    @Query("SELECT * FROM user_table WHERE id = :id")
+    fun getUserInfo(id: Int?): LiveData<UserTable?>
 }

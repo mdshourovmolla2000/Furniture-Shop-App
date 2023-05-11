@@ -7,22 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
+import com.shourov.furnitureshop.database.AppDao
+import com.shourov.furnitureshop.database.AppDatabase
 import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
 import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.repository.HomeRepository
+import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view_model.HomeViewModel
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
+    private lateinit var dao: AppDao
+    private lateinit var repository: HomeRepository
     private lateinit var viewModel: HomeViewModel
 
     private val specialOfferItemsList: ArrayList<SpecialOfferModel> = ArrayList()
@@ -60,8 +67,11 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        SharedPref.init(requireContext())
 
-        viewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository()))[HomeViewModel::class.java]
+        dao = AppDatabase.getDatabase(requireContext()).appDao()
+        repository = HomeRepository(dao)
+        viewModel = ViewModelProvider(this, HomeViewModelFactory(repository))[HomeViewModel::class.java]
 
         viewModel.getSpecialOfferData()
 
@@ -82,6 +92,13 @@ class HomeFragment : Fragment() {
             specialOfferItemsList.clear()
             specialOfferItemsList.addAll(it)
             binding.specialOfferRecyclerview.adapter?.notifyDataSetChanged()
+        }
+
+        viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
+            it?.let {
+                binding.profilePicImageview.loadImage(it.profile_pic.toUri())
+                binding.userNameTextview.text = it.name
+            }
         }
     }
 }
