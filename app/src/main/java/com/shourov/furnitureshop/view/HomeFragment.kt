@@ -106,17 +106,9 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
         observerList()
 
-        binding.specialOfferRecyclerview.apply {
-            adapter = SpecialOffersListAdapter(specialOfferItemsList)
-        }
-
-        binding.categoryRecyclerview.apply {
-            adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
-        }
-
-        binding.popularItemsRecyclerview.apply {
-            adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
-        }
+        binding.specialOfferRecyclerview.adapter = SpecialOffersListAdapter(specialOfferItemsList)
+        binding.categoryRecyclerview.adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
+        binding.popularItemsRecyclerview.adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
 
         binding.bottomNavigationFavouriteMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_favouriteFragment) }
         binding.bottomNavigationShoppingMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_shoppingFragment) }

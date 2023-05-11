@@ -12,13 +12,13 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationMenuLayout"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:paddingVertical="@dimen/_6sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/_18sdp"
-            android:paddingVertical="@dimen/_6sdp">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/topSection"

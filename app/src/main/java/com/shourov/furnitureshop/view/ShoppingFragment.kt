@@ -57,9 +57,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
         observerList()
 
         shoppingListAdapter = ShoppingListAdapter(shoppingItemList, this@ShoppingFragment, selectOptionVisible)
-        binding.shoppingItemRecyclerview.apply {
-            adapter = shoppingListAdapter
-        }
+        binding.shoppingItemRecyclerview.adapter = shoppingListAdapter
 
         if (selectOptionVisible) {
             binding.deleteIcon.visibility = View.GONE

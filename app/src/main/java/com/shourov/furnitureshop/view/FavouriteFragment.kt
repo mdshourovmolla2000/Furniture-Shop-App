@@ -39,9 +39,7 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
 
         observerList()
 
-        binding.favouriteItemRecyclerview.apply {
-            adapter = FavouriteListAdapter(favouriteItemList, this@FavouriteFragment)
-        }
+        binding.favouriteItemRecyclerview.adapter = FavouriteListAdapter(favouriteItemList, this@FavouriteFragment)
 
 
         binding.bottomNavigationHomeMenu.setOnClickListener { findNavController().navigate(R.id.action_favouriteFragment_to_homeFragment) }
