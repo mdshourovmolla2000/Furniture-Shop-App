@@ -45,6 +45,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     private var currentCategory = "All"
 
     private val popularProductList = ArrayList<ProductModel>()
+    private var scrollPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +72,20 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                 alertDialog.show()
             }
         })
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        scrollPosition = binding.mainScrollView.scrollY
+        outState.putInt("SCROLL_POSITION", scrollPosition)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState != null) {
+            scrollPosition = savedInstanceState.getInt("SCROLL_POSITION")
+            binding.mainScrollView.post { binding.mainScrollView.scrollTo(0, scrollPosition) }
+        }
     }
 
     override fun onCreateView(
@@ -132,10 +147,12 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         viewModel.popularProductLiveData.observe(viewLifecycleOwner) {
             popularProductList.clear()
             if (it.isEmpty()) {
+                binding.popularItemsRecyclerview.visibility = View.GONE
                 binding.noPopularItemLayout.visibility = View.VISIBLE
             } else {
                 popularProductList.addAll(it)
                 binding.noPopularItemLayout.visibility = View.GONE
+                binding.popularItemsRecyclerview.visibility = View.VISIBLE
             }
 
             binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()
