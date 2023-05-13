@@ -83,8 +83,11 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (savedInstanceState != null) {
-            scrollPosition = savedInstanceState.getInt("SCROLL_POSITION")
-            binding.mainScrollView.post { binding.mainScrollView.scrollTo(0, scrollPosition) }
+            try {
+                scrollPosition = savedInstanceState.getInt("SCROLL_POSITION")
+                binding.mainScrollView.post { binding.mainScrollView.scrollTo(0, scrollPosition) }
+            } catch (_: Exception) {}
+
         }
     }
 
