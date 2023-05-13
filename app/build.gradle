@@ -66,4 +66,7 @@ dependencies {
 
     //Toasty
     implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    //Image slider
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 }

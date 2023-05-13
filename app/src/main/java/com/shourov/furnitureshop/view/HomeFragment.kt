@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -168,7 +169,10 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     }
 
     override fun onProductItemClick(currentItem: ProductModel) {
-
+        val bundle = bundleOf(
+            "PRODUCT_ID" to currentItem.itemId
+        )
+        findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
     }
 }
 
