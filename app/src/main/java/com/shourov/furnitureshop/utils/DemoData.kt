@@ -36,7 +36,6 @@ class DemoData {
         return itemList
     }
 
-
     fun productData(): List<ProductModel> {
         val itemList: ArrayList<ProductModel> = ArrayList()
         itemList.add(ProductModel("1", R.drawable.product_1_image, "Ox Mathis Chair", "Hans j. wegner", "The Ox Mathis Chair is a high-quality and comfortable chair designed for use in various settings, including offices, conference rooms, and home offices. It is made of durable materials, such as high-quality leather or fabric upholstery, and features a sturdy frame made of metal or wood. The chair is designed to provide excellent support and comfort for extended periods of sitting, with features such as adjustable height, tilt, and lumbar support. The chair's design is sleek and modern, making it a stylish addition to any workspace or home office. Overall, the Ox Mathis Chair is a reliable and comfortable seating option that is perfect for anyone looking for a high-quality chair that can withstand daily use.", "Armchair", 90.99))
@@ -52,7 +51,6 @@ class DemoData {
         itemList.add(ProductModel("5", R.drawable.product_5_image, "HATIL Bed Obsession-151", "Hatil", "A storage bed is a type of bed that is designed to provide additional storage space in the bedroom. It typically features built-in drawers or compartments that are located underneath the mattress, allowing you to store clothing, bedding, or other items out of sight. This type of bed is ideal for smaller bedrooms or for those who need extra storage space but don't want to sacrifice floor space for additional furniture. Storage beds come in a variety of styles and materials, from traditional wooden frames to modern upholstered designs, and can be found in sizes ranging from twin to king. They are a practical and stylish solution for anyone looking to maximize their bedroom storage.", "Bed", 380.00))
         return itemList
     }
-
 
     fun favouriteData(): ArrayList<FavouriteModel> {
         val itemList: ArrayList<FavouriteModel> = ArrayList()
@@ -78,5 +76,4 @@ class DemoData {
         itemList.add(ShoppingModel(R.drawable.shopping_item_3,"Hiro Armchair", "Hatil-Loren", 3.00, 1, false))
         return itemList
     }
-
 }
