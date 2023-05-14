@@ -4,6 +4,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.model.FavouriteModel
 import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.OnBoardingModel
+import com.shourov.furnitureshop.model.ProductImageModel
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
@@ -74,6 +75,31 @@ class DemoData {
         itemList.add(ShoppingModel(R.drawable.shopping_item_1,"Minimalist Chair", "Regal Do Lobo", 1.00, 1, false))
         itemList.add(ShoppingModel(R.drawable.shopping_item_2,"Hallingdal Chair", "Hatil-Loren", 2.00, 1, false))
         itemList.add(ShoppingModel(R.drawable.shopping_item_3,"Hiro Armchair", "Hatil-Loren", 3.00, 1, false))
+        return itemList
+    }
+
+    fun productImageData(): List<ProductImageModel> {
+        val itemList: ArrayList<ProductImageModel> = ArrayList()
+        itemList.add(ProductImageModel("1", R.drawable.product_1_image_1))
+        itemList.add(ProductImageModel("1", R.drawable.product_1_image_2))
+        itemList.add(ProductImageModel("1", R.drawable.product_1_image_3))
+        itemList.add(ProductImageModel("1", R.drawable.product_1_image_4))
+        itemList.add(ProductImageModel("2", R.drawable.product_2_image_1))
+        itemList.add(ProductImageModel("2", R.drawable.product_2_image_2))
+        itemList.add(ProductImageModel("2", R.drawable.product_2_image_3))
+        itemList.add(ProductImageModel("2", R.drawable.product_2_image_4))
+        itemList.add(ProductImageModel("3", R.drawable.product_3_image_1))
+        itemList.add(ProductImageModel("3", R.drawable.product_3_image_2))
+        itemList.add(ProductImageModel("3", R.drawable.product_3_image_3))
+        itemList.add(ProductImageModel("3", R.drawable.product_3_image_4))
+        itemList.add(ProductImageModel("4", R.drawable.product_4_image_1))
+        itemList.add(ProductImageModel("4", R.drawable.product_4_image_2))
+        itemList.add(ProductImageModel("4", R.drawable.product_4_image_3))
+        itemList.add(ProductImageModel("4", R.drawable.product_4_image_4))
+        itemList.add(ProductImageModel("5", R.drawable.product_5_image_1))
+        itemList.add(ProductImageModel("5", R.drawable.product_5_image_2))
+        itemList.add(ProductImageModel("5", R.drawable.product_5_image_3))
+        itemList.add(ProductImageModel("5", R.drawable.product_5_image_4))
         return itemList
     }
 }
