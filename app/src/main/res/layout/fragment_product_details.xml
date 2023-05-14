@@ -40,10 +40,11 @@
                 app:layout_constrainedWidth="true"
                 app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:text="Ox Mathis Furniture Modern Style"
+                android:text="Product Name"
                 android:textColor="@color/blackTextColor"
                 android:textSize="@dimen/_18sdp"
-                android:fontFamily="@font/switzer_medium"/>
+                android:fontFamily="@font/switzer_medium"
+                android:layout_marginTop="@dimen/_18sdp"/>
 
             <TextView
                 android:id="@+id/productPriceTextview"
@@ -52,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/productNameTextview"
                 app:layout_constraintBottom_toBottomOf="@id/productNameTextview"
-                android:text="$90.99"
+                android:text="$0.0"
                 android:textColor="#F2A666"
                 android:textSize="@dimen/_18sdp"
                 android:fontFamily="@font/switzer_medium"/>
@@ -140,7 +141,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/productDescriptionTitleTextview"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="The Swedish Designer Monica Forstar’s Style Is Characterised By her Enternal love For New Materials and Beautiful Pure Shapes."
+                android:text="Description will be here"
                 android:textColor="#828A89"
                 android:textSize="@dimen/_11sdp"
                 android:fontFamily="@font/switzer_regular"

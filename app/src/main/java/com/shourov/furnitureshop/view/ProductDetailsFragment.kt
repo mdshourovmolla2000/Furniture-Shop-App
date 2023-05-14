@@ -1,5 +1,6 @@
 package com.shourov.furnitureshop.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,10 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
 import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
+import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
 import com.shourov.furnitureshop.view_model.ProductDetailsViewModel
+import java.text.DecimalFormat
 
 class ProductDetailsFragment : Fragment() {
 
@@ -26,6 +29,9 @@ class ProductDetailsFragment : Fragment() {
 
     private var productId = "1"
     private var productImageList = ArrayList<SlideModel>()
+
+    private lateinit var currentProduct: ProductModel
+    private var productQuantity = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,18 +49,51 @@ class ProductDetailsFragment : Fragment() {
         viewModel = ViewModelProvider(this, ProductDetailsViewModelFactory(repository))[ProductDetailsViewModel::class.java]
 
         viewModel.getProductImages(productId)
+        viewModel.getProductDetails(productId)
 
         observerList()
+
+        binding.itemQuantityPlusIcon.setOnClickListener {
+            productQuantity++
+            viewModel.getTotalAmount(currentProduct.itemPrice, productQuantity)
+        }
+
+        binding.itemQuantityMinusIcon.setOnClickListener {
+            if (productQuantity > 1) {
+                productQuantity--
+                viewModel.getTotalAmount(currentProduct.itemPrice, productQuantity)
+            }
+        }
 
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observerList() {
         viewModel.productImageLiveData.observe(viewLifecycleOwner) {
             for (item in it) {
                 productImageList.add(SlideModel(item?.productImage))
             }
             binding.productImageSlider.setImageList(productImageList, ScaleTypes.FIT)
+        }
+
+        viewModel.productDetailsLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                currentProduct = it
+                binding.productNameTextview.text = it.itemName
+                binding.productPriceTextview.text = "$${it.itemPrice}"
+                binding.productDescriptionTextview.text = it.itemDescription
+                binding.itemCountTextview.text = productQuantity.toString()
+
+                viewModel.getTotalAmount(it.itemPrice, productQuantity)
+            }
+        }
+
+        viewModel.totalAmountLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.itemCountTextview.text = productQuantity.toString()
+                binding.totalPriceTextview.text = "$${DecimalFormat("#.##").format(it)}"
+            }
         }
     }
 }

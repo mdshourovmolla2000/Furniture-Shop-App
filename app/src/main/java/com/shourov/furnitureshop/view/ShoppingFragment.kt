@@ -14,6 +14,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.ShoppingListAdapter
 import com.shourov.furnitureshop.databinding.FragmentShoppingBinding
 import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
+import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.repository.ShoppingRepository
 import com.shourov.furnitureshop.view_model.ShoppingViewModel
@@ -27,7 +28,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
     private lateinit var shoppingListAdapter: ShoppingListAdapter
     private var subTotalAmount = 0.00
     private val shippingFee = 10.00
-    private var totalPayment = 0.00
+    private var totalPayment = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
