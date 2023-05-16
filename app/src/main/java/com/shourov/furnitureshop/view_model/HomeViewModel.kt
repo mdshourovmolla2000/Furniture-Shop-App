@@ -33,7 +33,7 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
 
     fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int> = repository.checkIfProductIsInFavourite(userId, productId)
 
-    suspend fun insertFavourite(favourite: FavouriteTable?): Long = repository.insertFavourite(favourite)
+    suspend fun insertFavourite(favourite: FavouriteTable?) = repository.insertFavourite(favourite)
 
     suspend fun deleteFavouriteById(userId: Int?, productId: String?) = repository.deleteFavouriteById(userId, productId)
 }

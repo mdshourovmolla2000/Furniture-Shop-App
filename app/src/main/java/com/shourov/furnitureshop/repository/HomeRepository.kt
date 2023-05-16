@@ -26,7 +26,7 @@ class HomeRepository(private val dao: AppDao) {
 
     fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInFavourite(userId, productId)
 
-    suspend fun insertFavourite(favourite: FavouriteTable?): Long = dao.insertFavourite(favourite)
+    suspend fun insertFavourite(favourite: FavouriteTable?) = dao.insertFavourite(favourite)
 
     suspend fun deleteFavouriteById(userId: Int?, productId: String?) = dao.deleteFavouriteById(userId, productId)
 }

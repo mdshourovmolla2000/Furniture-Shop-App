@@ -16,6 +16,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
 import com.shourov.furnitureshop.database.tables.FavouriteTable
+import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
@@ -40,6 +41,7 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var currentProduct: ProductModel
     private var productQuantity = 1
     private var productInFavourite = false
+    private var productInShopping = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,6 +88,18 @@ class ProductDetailsFragment : Fragment() {
             }
         }
 
+        binding.addToCartButton.setOnClickListener{
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.insertShopping(ShoppingTable(0, productId, currentProduct.itemImage, currentProduct.itemName, currentProduct.itemCompanyName, currentProduct.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productQuantity, false))
+            }
+        }
+
+        binding.removeFromShoppingButton.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
+            }
+        }
+
         return binding.root
     }
 
@@ -124,6 +138,17 @@ class ProductDetailsFragment : Fragment() {
                 binding.favouriteIconImageview.loadImage(R.drawable.favourite_icon_fill)
             } else {
                 binding.favouriteIconImageview.loadImage(R.drawable.bottom_navigation_menu_favourite_icon)
+            }
+        }
+
+        viewModel.checkIfProductIsInShopping(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId).observe(viewLifecycleOwner) {
+            productInShopping = it > 0
+            if (productInShopping) {
+                binding.addToCartLayout.visibility = View.GONE
+                binding.removeFromShoppingButton.visibility = View.VISIBLE
+            } else {
+                binding.removeFromShoppingButton.visibility = View.GONE
+                binding.addToCartLayout.visibility = View.VISIBLE
             }
         }
     }

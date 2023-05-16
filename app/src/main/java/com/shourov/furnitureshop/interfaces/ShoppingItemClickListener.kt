@@ -1,7 +1,7 @@
 package com.shourov.furnitureshop.interfaces
 
-import com.shourov.furnitureshop.model.ShoppingModel
+import com.shourov.furnitureshop.database.tables.ShoppingTable
 
 interface ShoppingItemClickListener {
-    fun onShoppingItemClick(currentItem: ShoppingModel?, clickOn: String?)
+    fun onShoppingItemClick(currentItem: ShoppingTable?, clickOn: String?)
 }

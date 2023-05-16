@@ -18,7 +18,7 @@ import com.shourov.furnitureshop.view.authActivity.AuthActivity
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding
 
-    private val waitingTime = 3
+    private val waitingTime = 2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -12,17 +12,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.ShoppingListAdapter
+import com.shourov.furnitureshop.database.AppDao
+import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.FragmentShoppingBinding
 import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
-import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.repository.ShoppingRepository
+import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.view_model.ShoppingViewModel
+import java.text.DecimalFormat
 
 class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
     private lateinit var binding: FragmentShoppingBinding
+
+    private lateinit var dao: AppDao
+    private lateinit var repository: ShoppingRepository
     private lateinit var viewModel: ShoppingViewModel
-    private val shoppingItemList: ArrayList<ShoppingModel> = ArrayList()
+
+    private val shoppingItemList = ArrayList<ShoppingTable?>()
     private var selectOptionVisible: Boolean = false
     private lateinit var shoppingListAdapter: ShoppingListAdapter
     private var subTotalAmount = 0.00
@@ -48,11 +56,9 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
         binding.backIcon.setOnClickListener { hideSelectOption() }
 
-        viewModel = ViewModelProvider(this, ShoppingViewModelFactory(ShoppingRepository()))[ShoppingViewModel::class.java]
-
-        if (shoppingItemList.isEmpty()) {
-            viewModel.getShoppingData()
-        }
+        dao = AppDatabase.getDatabase(requireContext()).appDao()
+        repository = ShoppingRepository(dao)
+        viewModel = ViewModelProvider(this, ShoppingViewModelFactory(repository))[ShoppingViewModel::class.java]
 
         observerList()
 
@@ -77,13 +83,13 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
             binding.deleteButton.visibility = View.VISIBLE
         }
 
-        binding.subtotalAmountTextview.text = "$${subTotalAmount}"
-        binding.shippingCostTextview.text = "$${shippingFee}"
+        binding.subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
+        binding.shippingCostTextview.text = "$${DecimalFormat("#.##").format(shippingFee)}"
         totalPayment = subTotalAmount + shippingFee
-        binding.totalPaymentAmountTextview.text = "$${totalPayment}"
+        binding.totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
 
         binding.deleteButton.setOnClickListener {
-            val newShoppingItemList = ArrayList(shoppingItemList.filter { it.isSelected == false })
+            val newShoppingItemList = ArrayList(shoppingItemList.filter { it?.isSelected == false })
             shoppingItemList.clear()
             shoppingItemList.addAll(newShoppingItemList)
             shoppingListAdapter.notifyDataSetChanged()
@@ -95,9 +101,9 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun observerList() {
-        viewModel.shoppingLiveData.observe(viewLifecycleOwner) {
+        viewModel.getShoppingData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             shoppingItemList.clear()
-            if (it.isEmpty()) {
+            if (it.isNullOrEmpty()) {
                 binding.shoppingItemRecyclerview.visibility = View.GONE
                 binding.orderSummaryLayout.visibility = View.GONE
                 binding.deleteIcon.visibility = View.GONE
@@ -116,9 +122,9 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
         viewModel.subTotalAmountLiveData.observe(viewLifecycleOwner) {
             subTotalAmount = it
-            binding.subtotalAmountTextview.text = "$${subTotalAmount}"
+            binding.subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
             totalPayment = subTotalAmount + shippingFee
-            binding.totalPaymentAmountTextview.text = "$${totalPayment}"
+            binding.totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
         }
     }
 
@@ -130,7 +136,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
             binding.deleteButton.visibility = View.GONE
             binding.orderSummaryLayout.visibility = View.VISIBLE
             shoppingItemList.forEach {
-                it.isSelected = false
+                it?.isSelected = false
             }
             shoppingListAdapter.notifyDataSetChanged()
         } else {
@@ -138,7 +144,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
         }
     }
 
-    override fun onShoppingItemClick(currentItem: ShoppingModel?, clickOn: String?) {
+    override fun onShoppingItemClick(currentItem: ShoppingTable?, clickOn: String?) {
         when(clickOn) {
             "MAIN_ITEM" -> findNavController().navigate(R.id.action_shoppingFragment_to_productDetailsFragment)
             "QUANTITY_PLUS" -> {
