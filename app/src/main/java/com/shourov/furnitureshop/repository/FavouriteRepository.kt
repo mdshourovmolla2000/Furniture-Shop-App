@@ -1,8 +1,15 @@
 package com.shourov.furnitureshop.repository
 
-import com.shourov.furnitureshop.model.FavouriteModel
+import androidx.lifecycle.LiveData
+import com.shourov.furnitureshop.database.AppDao
+import com.shourov.furnitureshop.database.tables.FavouriteTable
+import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.utils.DemoData
 
-class FavouriteRepository {
-    fun getFavouriteData(): ArrayList<FavouriteModel> = DemoData().favouriteData()
+class FavouriteRepository(private val dao: AppDao) {
+    fun getFavouriteData(userId: Int?): LiveData<List<FavouriteTable?>?> = dao.getFavouriteData(userId)
+
+    fun getProductDetails(productId: String?): ProductModel? = DemoData().productData().find { it.itemId == productId }
+
+    suspend fun deleteFavourite(favourite: FavouriteTable?) = dao.deleteFavourite(favourite)
 }

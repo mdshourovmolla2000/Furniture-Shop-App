@@ -1,17 +1,23 @@
 package com.shourov.furnitureshop.view
 
 import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.HomeCategoryListAdapter
@@ -19,6 +25,7 @@ import com.shourov.furnitureshop.adapter.PopularProductListAdapter
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
 import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
@@ -30,6 +37,8 @@ import com.shourov.furnitureshop.repository.HomeRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view_model.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductItemClickListener {
 
@@ -88,7 +97,6 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                 scrollPosition = savedInstanceState.getInt("SCROLL_POSITION")
                 binding.mainScrollView.post { binding.mainScrollView.scrollTo(0, scrollPosition) }
             } catch (_: Exception) {}
-
         }
     }
 
@@ -168,11 +176,40 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         }
     }
 
-    override fun onProductItemClick(currentItem: ProductModel) {
-        val bundle = bundleOf(
-            "PRODUCT_ID" to currentItem.itemId
-        )
-        findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+    override fun onLoadProductItem(currentItem: ProductModel, cartIconCardView: CardView, cartIconImageview: ImageView) {
+        viewModel.checkIfProductIsInFavourite(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId).observe(viewLifecycleOwner) {
+            if (it > 0) {
+                cartIconCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.themeColor))
+                cartIconImageview.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
+            } else {
+                cartIconCardView.setCardBackgroundColor(Color.parseColor("#F9F9F9"))
+                cartIconImageview.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+            }
+        }
+    }
+
+    override fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickOn: String?) {
+        when(clickOn) {
+            "MAIN_ITEM" -> {
+                val bundle = bundleOf(
+                    "PRODUCT_ID" to currentItem.itemId
+                )
+                findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+            }
+            "CART_ICON" -> {
+                val cartIconCardViewBgColor = cartIconCardView.cardBackgroundColor.defaultColor
+                val hexColor = String.format("#%06X", 0xFFFFFF and cartIconCardViewBgColor)
+                if (hexColor == "#0C8A7B") {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
+                    }
+                } else {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.insertFavourite(FavouriteTable(0, currentItem.itemId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
+                    }
+                }
+            }
+        }
     }
 }
 

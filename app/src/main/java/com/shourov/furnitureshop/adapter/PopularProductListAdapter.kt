@@ -11,7 +11,7 @@ import com.shourov.furnitureshop.interfaces.PopularProductItemClickListener
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.utils.loadImage
 
-class PopularProductListAdapter(private val itemList: ArrayList<ProductModel>, private val itemClickListener: PopularProductItemClickListener):
+class PopularProductListAdapter(private val itemList: ArrayList<ProductModel>, private val listener: PopularProductItemClickListener):
     RecyclerView.Adapter<PopularProductListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -39,8 +39,14 @@ class PopularProductListAdapter(private val itemList: ArrayList<ProductModel>, p
             binding.itemCompanyNameTextview.text = currentItem.itemCompanyName
             binding.itemPriceTextview.text = "$${currentItem.itemPrice}"
 
+            listener.onLoadProductItem(currentItem, binding.cartIconCardView, binding.cartIconImageview)
+
             itemView.setOnClickListener {
-                itemClickListener.onProductItemClick(currentItem)
+                listener.onProductItemClick(currentItem, binding.cartIconCardView, "MAIN_ITEM")
+            }
+
+            binding.cartIconCardView.setOnClickListener {
+                listener.onProductItemClick(currentItem, binding.cartIconCardView,"CART_ICON")
             }
         }
     }

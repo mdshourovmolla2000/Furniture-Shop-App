@@ -8,15 +8,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
+import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view_model.ProductDetailsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 class ProductDetailsFragment : Fragment() {
@@ -32,6 +39,7 @@ class ProductDetailsFragment : Fragment() {
 
     private lateinit var currentProduct: ProductModel
     private var productQuantity = 1
+    private var productInFavourite = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +47,7 @@ class ProductDetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
+        SharedPref.init(requireContext())
 
         productId = arguments?.getString("PRODUCT_ID").toString()
 
@@ -52,6 +61,18 @@ class ProductDetailsFragment : Fragment() {
         viewModel.getProductDetails(productId)
 
         observerList()
+
+        binding.favouriteIcon.setOnClickListener {
+            if (productInFavourite) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
+                }
+            } else {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.insertFavourite(FavouriteTable(0, productId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
+                }
+            }
+        }
 
         binding.itemQuantityPlusIcon.setOnClickListener {
             productQuantity++
@@ -93,6 +114,16 @@ class ProductDetailsFragment : Fragment() {
             it?.let {
                 binding.itemCountTextview.text = productQuantity.toString()
                 binding.totalPriceTextview.text = "$${DecimalFormat("#.##").format(it)}"
+            }
+        }
+
+        viewModel.checkIfProductIsInFavourite(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId).observe(viewLifecycleOwner) {
+            productInFavourite = it > 0
+
+            if (productInFavourite) {
+                binding.favouriteIconImageview.loadImage(R.drawable.favourite_icon_fill)
+            } else {
+                binding.favouriteIconImageview.loadImage(R.drawable.bottom_navigation_menu_favourite_icon)
             }
         }
     }

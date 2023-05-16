@@ -1,7 +1,6 @@
 package com.shourov.furnitureshop.utils
 
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.model.FavouriteModel
 import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.model.ProductImageModel
@@ -50,23 +49,6 @@ class DemoData {
         itemList.add(ProductModel("3", R.drawable.product_3_image, "Hatil Sofa", "Hatil", "Hatil is a well-known furniture brand that offers a wide range of high-quality and stylish sofas. The Hatil sofa is a perfect blend of comfort and elegance, designed to enhance the overall look of your living room. The sofa is made of premium quality materials, including high-density foam, solid wood frame, and soft fabric upholstery, ensuring durability and comfort. The Hatil sofa comes in various sizes, colors, and designs, allowing you to choose the one that best suits your taste and home decor. With its sleek and modern design, the Hatil sofa is perfect for both traditional and contemporary living spaces. Whether you want to relax with your family or entertain guests, the Hatil sofa is an excellent choice for any home.", "Sofa", 350.00))
         itemList.add(ProductModel("4", R.drawable.product_4_image, "Regal Sofa", "Regal", "The Regal sofa is a luxurious and elegant piece of furniture that exudes sophistication style. It is designed with a classic and timeless silhouette that features clean lines and a sleek profile. The sofa is upholstered in high-quality, plush fabric that is soft to the touch and provides a comfortable seating experience. The backrest and armrests are generously padded, providing ample support and cushioning for the user. The sofa is supported by sturdy, tapered legs that add to its overall aesthetic appeal. The Regal sofa is perfect for any living room or lounge area, and is sure to impress guests with its refined and sophisticated design.", "Sofa", 400.00))
         itemList.add(ProductModel("5", R.drawable.product_5_image, "HATIL Bed Obsession-151", "Hatil", "A storage bed is a type of bed that is designed to provide additional storage space in the bedroom. It typically features built-in drawers or compartments that are located underneath the mattress, allowing you to store clothing, bedding, or other items out of sight. This type of bed is ideal for smaller bedrooms or for those who need extra storage space but don't want to sacrifice floor space for additional furniture. Storage beds come in a variety of styles and materials, from traditional wooden frames to modern upholstered designs, and can be found in sizes ranging from twin to king. They are a practical and stylish solution for anyone looking to maximize their bedroom storage.", "Bed", 380.00))
-        return itemList
-    }
-
-    fun favouriteData(): ArrayList<FavouriteModel> {
-        val itemList: ArrayList<FavouriteModel> = ArrayList()
-        itemList.add(FavouriteModel(R.drawable.favourite_item_1, "Rotating Lounge Chair", "$39.00"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.00"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.21"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.68"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_1, "Rotating Lounge Chair", "$39.01"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.02"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.22"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.69"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_1, "Rotating Lounge Chair", "$39.02"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_2, "Trapeziam Arm Chair", "$36.02"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_3, "Corada D3 Lounge Chair", "$45.23"))
-        itemList.add(FavouriteModel(R.drawable.favourite_item_4, "Pearl Beading Fur Textured", "$29.67"))
         return itemList
     }
 

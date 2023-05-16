@@ -343,6 +343,7 @@
             android:foreground="?attr/selectableItemBackground">
 
             <ImageView
+                android:id="@+id/favouriteIconImageview"
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_18sdp"
                 android:src="@drawable/bottom_navigation_menu_favourite_icon"

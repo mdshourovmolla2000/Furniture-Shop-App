@@ -14,7 +14,6 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.ShoppingListAdapter
 import com.shourov.furnitureshop.databinding.FragmentShoppingBinding
 import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
-import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.repository.ShoppingRepository
 import com.shourov.furnitureshop.view_model.ShoppingViewModel

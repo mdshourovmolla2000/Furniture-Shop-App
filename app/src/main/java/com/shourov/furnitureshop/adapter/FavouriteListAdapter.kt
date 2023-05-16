@@ -6,17 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shourov.furnitureshop.R
+import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.SingleFavouriteItemLayoutBinding
 import com.shourov.furnitureshop.interfaces.FavouriteItemClickListener
-import com.shourov.furnitureshop.model.FavouriteModel
-import com.shourov.furnitureshop.utils.loadImage
 
-class FavouriteListAdapter(private var itemList: ArrayList<FavouriteModel>, private val itemClickListener: FavouriteItemClickListener):
+class FavouriteListAdapter(private var itemList: ArrayList<FavouriteTable?>, private val listener: FavouriteItemClickListener):
     RecyclerView.Adapter<FavouriteListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.single_favourite_item_layout, parent, false)
-
         return ItemViewHolder(view)
     }
 
@@ -33,15 +31,12 @@ class FavouriteListAdapter(private var itemList: ArrayList<FavouriteModel>, priv
         private val binding = SingleFavouriteItemLayoutBinding.bind(itemView)
 
         @SuppressLint("SetTextI18n")
-        fun onBind(currentItem: FavouriteModel) {
-            binding.itemImageImageview.loadImage(currentItem.itemImage)
+        fun onBind(currentItem: FavouriteTable?) {
+            listener.onLoadFavouriteItem(currentItem?.productId, binding.itemImageImageview, binding.itemNameTextview, binding.itemPriceTextview)
 
-            binding.itemNameTextview.text = currentItem.itemName
-            binding.itemPriceTextview.text = currentItem.itemPrice
+            binding.favouriteIcon.setOnClickListener { listener.onFavouriteItemClick(currentItem, "FAVOURITE_ICON") }
 
-            binding.favouriteIcon.setOnClickListener { itemClickListener.onFavouriteItemClick(currentItem, "FAVOURITE_ICON") }
-
-            itemView.setOnClickListener { itemClickListener.onFavouriteItemClick(currentItem, "MAIN_ITEM") }
+            itemView.setOnClickListener { listener.onFavouriteItemClick(currentItem, "MAIN_ITEM") }
         }
 
     }
