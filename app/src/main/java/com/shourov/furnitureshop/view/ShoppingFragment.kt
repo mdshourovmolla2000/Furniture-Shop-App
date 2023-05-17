@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.ShoppingListAdapter
@@ -20,6 +22,9 @@ import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
 import com.shourov.furnitureshop.repository.ShoppingRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.view_model.ShoppingViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 
 class ShoppingFragment : Fragment(), ShoppingItemClickListener {
@@ -76,11 +81,16 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
         }
 
         binding.deleteIcon.setOnClickListener {
-            selectOptionVisible = true
-            shoppingListAdapter.updateSelectOptionVisible(true)
-            binding.deleteIcon.visibility = View.GONE
-            binding.orderSummaryLayout.visibility = View.GONE
-            binding.deleteButton.visibility = View.VISIBLE
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.clearShoppingSelection()
+                withContext(Dispatchers.Main) {
+                    selectOptionVisible = true
+                    shoppingListAdapter.updateSelectOptionVisible(true)
+                    binding.deleteIcon.visibility = View.GONE
+                    binding.orderSummaryLayout.visibility = View.GONE
+                    binding.deleteButton.visibility = View.VISIBLE
+                }
+            }
         }
 
         binding.subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
@@ -89,11 +99,18 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
         binding.totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
 
         binding.deleteButton.setOnClickListener {
-            val newShoppingItemList = ArrayList(shoppingItemList.filter { it?.isSelected == false })
-            shoppingItemList.clear()
-            shoppingItemList.addAll(newShoppingItemList)
-            shoppingListAdapter.notifyDataSetChanged()
-            viewModel.getSubTotalAmount(shoppingItemList)
+            val selectedShoppingItemList = shoppingItemList.filter { it?.isSelected == true }
+            if (selectedShoppingItemList.isNotEmpty()) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.deleteShopping(selectedShoppingItemList)
+                    val shoppingItemCount = viewModel.shoppingItemCount(SharedPref.read("CURRENT_USER_ID", "0")?.toInt())
+                    withContext(Dispatchers.Main) {
+                        if (shoppingItemCount == 0) {
+                            selectOptionVisible = false
+                        }
+                    }
+                }
+            }
         }
 
         return binding.root
@@ -107,13 +124,13 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
                 binding.shoppingItemRecyclerview.visibility = View.GONE
                 binding.orderSummaryLayout.visibility = View.GONE
                 binding.deleteIcon.visibility = View.GONE
+                binding.deleteButton.visibility = View.GONE
                 binding.noItemLayout.visibility = View.VISIBLE
             } else {
-                shoppingItemList.addAll(it)
+                shoppingItemList.addAll(it.reversed())
                 shoppingListAdapter.notifyDataSetChanged()
 
                 binding.noItemLayout.visibility = View.GONE
-                binding.deleteIcon.visibility = View.VISIBLE
                 binding.shoppingItemRecyclerview.visibility = View.VISIBLE
 
                 viewModel.getSubTotalAmount(shoppingItemList)
@@ -135,10 +152,9 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
             binding.deleteIcon.visibility = View.VISIBLE
             binding.deleteButton.visibility = View.GONE
             binding.orderSummaryLayout.visibility = View.VISIBLE
-            shoppingItemList.forEach {
-                it?.isSelected = false
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.clearShoppingSelection()
             }
-            shoppingListAdapter.notifyDataSetChanged()
         } else {
             findNavController().popBackStack()
         }
@@ -146,16 +162,29 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
     override fun onShoppingItemClick(currentItem: ShoppingTable?, clickOn: String?) {
         when(clickOn) {
-            "MAIN_ITEM" -> findNavController().navigate(R.id.action_shoppingFragment_to_productDetailsFragment)
+            "SELECT_ICON" -> {
+                currentItem!!.isSelected = !(currentItem.isSelected)!!
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.updateShopping(currentItem)
+                }
+            }
+            "MAIN_ITEM" -> {
+                val bundle = bundleOf(
+                    "PRODUCT_ID" to currentItem?.productId
+                )
+                findNavController().navigate(R.id.action_shoppingFragment_to_productDetailsFragment, bundle)
+            }
             "QUANTITY_PLUS" -> {
                 currentItem!!.itemQuantity = currentItem.itemQuantity!! + 1
-                shoppingListAdapter.notifyDataSetChanged()
-                viewModel.getSubTotalAmount(shoppingItemList)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.updateShopping(currentItem)
+                }
             }
             "QUANTITY_MINUS" -> {
                 currentItem!!.itemQuantity = currentItem.itemQuantity!! - 1
-                shoppingListAdapter.notifyDataSetChanged()
-                viewModel.getSubTotalAmount(shoppingItemList)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.updateShopping(currentItem)
+                }
             }
         }
     }

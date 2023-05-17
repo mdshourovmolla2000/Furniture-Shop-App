@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.database.tables.UserTable
@@ -49,4 +50,16 @@ interface AppDao {
 
     @Query("DELETE FROM shopping_table WHERE userId = :userId AND productId = :productId")
     suspend fun deleteShoppingById(userId: Int?, productId: String?)
+
+    @Update
+    suspend fun updateShopping(shopping: ShoppingTable?)
+
+    @Delete
+    suspend fun deleteShopping(shoppingList: List<ShoppingTable?>)
+
+    @Query("UPDATE shopping_table SET isSelected = :isSelected")
+    suspend fun clearShoppingSelection(isSelected: Boolean? = false)
+
+    @Query("SELECT COUNT(*) FROM shopping_table WHERE userId = :userId")
+    suspend fun shoppingItemCount(userId: Int?): Int
 }

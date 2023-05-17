@@ -54,8 +54,7 @@ class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable?>, priva
             binding.itemCountTextview.text = currentItem.itemQuantity.toString()
 
             binding.selectIcon.setOnClickListener {
-                currentItem.isSelected = !currentItem.isSelected!!
-                notifyDataSetChanged()
+                listener.onShoppingItemClick(currentItem, "SELECT_ICON")
             }
 
             binding.itemQuantityPlusIcon.setOnClickListener {

@@ -25,7 +25,7 @@ import com.shourov.furnitureshop.adapter.PopularProductListAdapter
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
-import com.shourov.furnitureshop.database.tables.FavouriteTable
+import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
 import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
@@ -39,6 +39,7 @@ import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view_model.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductItemClickListener {
 
@@ -177,7 +178,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     }
 
     override fun onLoadProductItem(currentItem: ProductModel, cartIconCardView: CardView, cartIconImageview: ImageView) {
-        viewModel.checkIfProductIsInFavourite(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId).observe(viewLifecycleOwner) {
+        viewModel.checkIfProductIsInShopping(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId).observe(viewLifecycleOwner) {
             if (it > 0) {
                 cartIconCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.themeColor))
                 cartIconImageview.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
@@ -201,11 +202,11 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                 val hexColor = String.format("#%06X", 0xFFFFFF and cartIconCardViewBgColor)
                 if (hexColor == "#0C8A7B") {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
+                        viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
                     }
                 } else {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.insertFavourite(FavouriteTable(0, currentItem.itemId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
+                        viewModel.insertShopping(ShoppingTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
                     }
                 }
             }

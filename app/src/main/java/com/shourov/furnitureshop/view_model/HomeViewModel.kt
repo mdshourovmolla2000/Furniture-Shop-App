@@ -3,7 +3,7 @@ package com.shourov.furnitureshop.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.shourov.furnitureshop.database.tables.FavouriteTable
+import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.ProductModel
@@ -31,9 +31,9 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
 
     fun getPopularProduct(categoryName: String) = _popularProductLiveData.postValue(repository.getPopularProduct(categoryName))
 
-    fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int> = repository.checkIfProductIsInFavourite(userId, productId)
+    fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = repository.checkIfProductIsInShopping(userId, productId)
 
-    suspend fun insertFavourite(favourite: FavouriteTable?) = repository.insertFavourite(favourite)
+    suspend fun insertShopping(shopping: ShoppingTable?) = repository.insertShopping(shopping)
 
-    suspend fun deleteFavouriteById(userId: Int?, productId: String?) = repository.deleteFavouriteById(userId, productId)
+    suspend fun deleteShoppingById(userId: Int?, productId: String?) = repository.deleteShoppingById(userId, productId)
 }

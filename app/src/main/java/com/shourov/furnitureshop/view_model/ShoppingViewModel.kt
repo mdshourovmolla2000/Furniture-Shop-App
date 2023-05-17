@@ -17,4 +17,12 @@ class ShoppingViewModel(private val repository: ShoppingRepository): ViewModel()
 
     fun getSubTotalAmount(itemList: ArrayList<ShoppingTable?>) = _subTotalAmountLiveData.postValue(itemList.sumOf { ((it?.itemPrice
         ?: 0.0) * (it?.itemQuantity ?: 0)) })
+
+    suspend fun updateShopping(shopping: ShoppingTable?) = repository.updateShopping(shopping)
+
+    suspend fun deleteShopping(shoppingList: List<ShoppingTable?>) = repository.deleteShopping(shoppingList)
+
+    suspend fun clearShoppingSelection() = repository.clearShoppingSelection()
+
+    suspend fun shoppingItemCount(userId: Int?): Int = repository.shoppingItemCount(userId)
 }

@@ -2,7 +2,7 @@ package com.shourov.furnitureshop.repository
 
 import androidx.lifecycle.LiveData
 import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.tables.FavouriteTable
+import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.ProductModel
@@ -24,9 +24,9 @@ class HomeRepository(private val dao: AppDao) {
         }
     }
 
-    fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInFavourite(userId, productId)
+    fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInShopping(userId, productId)
 
-    suspend fun insertFavourite(favourite: FavouriteTable?) = dao.insertFavourite(favourite)
+    suspend fun insertShopping(shopping: ShoppingTable?) = dao.insertShopping(shopping)
 
-    suspend fun deleteFavouriteById(userId: Int?, productId: String?) = dao.deleteFavouriteById(userId, productId)
+    suspend fun deleteShoppingById(userId: Int?, productId: String?) = dao.deleteShoppingById(userId, productId)
 }
