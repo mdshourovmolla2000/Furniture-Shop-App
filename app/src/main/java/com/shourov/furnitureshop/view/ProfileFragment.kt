@@ -7,17 +7,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
+import com.shourov.furnitureshop.database.AppDao
+import com.shourov.furnitureshop.database.AppDatabase
 import com.shourov.furnitureshop.databinding.DialogLogoutBinding
 import com.shourov.furnitureshop.databinding.FragmentProfileBinding
+import com.shourov.furnitureshop.repository.ProfileRepository
 import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view.welcomeActivity.WelcomeActivity
+import com.shourov.furnitureshop.view_model.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
+
+    private lateinit var dao: AppDao
+    private lateinit var repository: ProfileRepository
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +39,12 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         SharedPref.init(requireContext())
 
+        dao = AppDatabase.getDatabase(requireContext()).appDao()
+        repository = ProfileRepository(dao)
+        viewModel = ViewModelProvider(this, ProfileViewModelFactory(repository))[ProfileViewModel::class.java]
+
+        observerList()
+
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
         binding.logoutButton.setOnClickListener {
@@ -34,6 +52,16 @@ class ProfileFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun observerList() {
+        viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
+            it?.let {
+                binding.profilePicImageview.loadImage(it.profile_pic.toUri())
+                binding.userNameTextview.text = it.name
+                binding.userEmailTextview.text = it.email
+            }
+        }
     }
 
     private fun logoutDialog() {
@@ -60,4 +88,12 @@ class ProfileFragment : Fragment() {
 
         alertDialog.show()
     }
+}
+
+
+
+
+
+class ProfileViewModelFactory(private val repository: ProfileRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = ProfileViewModel(repository) as T
 }
