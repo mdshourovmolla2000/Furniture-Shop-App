@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.databinding.FragmentCategoryBinding
 
 class CategoryFragment : Fragment() {
@@ -18,6 +19,7 @@ class CategoryFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
+        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
         return binding.root
     }
