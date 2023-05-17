@@ -125,6 +125,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
         binding.bottomNavigationFavouriteMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_favouriteFragment) }
         binding.bottomNavigationShoppingMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_shoppingFragment) }
+        binding.bottomNavigationProfileMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_profileFragment) }
 
         return binding.root
     }
