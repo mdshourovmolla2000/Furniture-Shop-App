@@ -39,7 +39,6 @@ import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view_model.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductItemClickListener {
 
@@ -146,7 +145,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
         viewModel.categoryLiveData.observe(viewLifecycleOwner) {
             categoryList.clear()
-            categoryList.addAll(ArrayList(it))
+            categoryList.addAll(it)
             binding.categoryRecyclerview.adapter?.notifyDataSetChanged()
         }
 

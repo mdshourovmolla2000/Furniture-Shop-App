@@ -1,6 +1,7 @@
 package com.shourov.furnitureshop.utils
 
 import com.shourov.furnitureshop.R
+import com.shourov.furnitureshop.model.CategoryModel
 import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.model.ProductImageModel
@@ -52,14 +53,6 @@ class DemoData {
         return itemList
     }
 
-    fun shoppingData(): ArrayList<ShoppingModel> {
-        val itemList: ArrayList<ShoppingModel> = ArrayList()
-        itemList.add(ShoppingModel(R.drawable.shopping_item_1,"Minimalist Chair", "Regal Do Lobo", 1.00, 1, false))
-        itemList.add(ShoppingModel(R.drawable.shopping_item_2,"Hallingdal Chair", "Hatil-Loren", 2.00, 1, false))
-        itemList.add(ShoppingModel(R.drawable.shopping_item_3,"Hiro Armchair", "Hatil-Loren", 3.00, 1, false))
-        return itemList
-    }
-
     fun productImageData(): List<ProductImageModel> {
         val itemList: ArrayList<ProductImageModel> = ArrayList()
         itemList.add(ProductImageModel("1", R.drawable.product_1_image_1))
@@ -82,6 +75,15 @@ class DemoData {
         itemList.add(ProductImageModel("5", R.drawable.product_5_image_2))
         itemList.add(ProductImageModel("5", R.drawable.product_5_image_3))
         itemList.add(ProductImageModel("5", R.drawable.product_5_image_4))
+        return itemList
+    }
+
+    fun categoryData(): List<CategoryModel> {
+        val itemList: ArrayList<CategoryModel> = ArrayList()
+        itemList.add(CategoryModel(R.drawable.category_image_1, "Armchair"))
+        itemList.add(CategoryModel(R.drawable.category_image_2, "Sofa"))
+        itemList.add(CategoryModel(R.drawable.category_image_3, "Bed"))
+        itemList.add(CategoryModel(R.drawable.category_image_4, "Light"))
         return itemList
     }
 }
