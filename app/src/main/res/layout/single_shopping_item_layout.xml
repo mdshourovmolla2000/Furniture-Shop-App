@@ -114,13 +114,13 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/itemQuantityMinusIcon"
-                    android:layout_width="@dimen/_17sdp"
-                    android:layout_height="@dimen/_17sdp"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/itemCountTextview"
                     android:layout_marginEnd="9dp"
-                    app:cardCornerRadius="@dimen/_17sdp"
+                    app:cardCornerRadius="@dimen/_9sdp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#F0F0F2"
                     android:clickable="true"
@@ -150,12 +150,12 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/itemQuantityPlusIcon"
-                    android:layout_width="@dimen/_17sdp"
-                    android:layout_height="@dimen/_17sdp"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:cardCornerRadius="@dimen/_17sdp"
+                    app:cardCornerRadius="@dimen/_9sdp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/themeColor"
                     android:clickable="true"
