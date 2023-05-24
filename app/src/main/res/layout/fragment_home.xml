@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationMenuLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:fillViewport="true"
         android:paddingHorizontal="@dimen/_18sdp"
         android:paddingVertical="@dimen/_6sdp">
@@ -214,128 +214,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:id="@+id/bottomNavigationMenuLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_43sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:weightSum="4"
-        android:orientation="horizontal"
-        android:background="@color/white">
-
-        <LinearLayout
-            android:id="@+id/bottomNavigationHomeMenu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
-            
-            <ImageView
-                android:layout_width="@dimen/_19sdp"
-                android:layout_height="@dimen/_19sdp"
-                android:src="@drawable/bottom_navigation_menu_home_icon"
-                app:tint="@color/themeColor" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textSize="@dimen/_9sdp"
-                android:textColor="@color/themeColor"
-                android:fontFamily="@font/switzer_medium"
-                android:layout_marginTop="@dimen/_3sdp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottomNavigationFavouriteMenu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
-
-            <ImageView
-                android:layout_width="@dimen/_19sdp"
-                android:layout_height="@dimen/_19sdp"
-                android:src="@drawable/bottom_navigation_menu_favourite_icon"
-                app:tint="#828A89" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Favourite"
-                android:textSize="@dimen/_9sdp"
-                android:textColor="#828A89"
-                android:fontFamily="@font/switzer_medium"
-                android:layout_marginTop="@dimen/_3sdp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottomNavigationShoppingMenu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
-
-            <ImageView
-                android:layout_width="@dimen/_19sdp"
-                android:layout_height="@dimen/_19sdp"
-                android:src="@drawable/bottom_navigation_menu_shopping_icon"
-                app:tint="#828A89" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shopping"
-                android:textSize="@dimen/_9sdp"
-                android:textColor="#828A89"
-                android:fontFamily="@font/switzer_medium"
-                android:layout_marginTop="@dimen/_3sdp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottomNavigationProfileMenu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
-
-            <ImageView
-                android:layout_width="@dimen/_19sdp"
-                android:layout_height="@dimen/_19sdp"
-                android:src="@drawable/bottom_navigation_menu_profile_icon"
-                app:tint="#828A89" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Profile"
-                android:textSize="@dimen/_9sdp"
-                android:textColor="#828A89"
-                android:fontFamily="@font/switzer_medium"
-                android:layout_marginTop="@dimen/_3sdp"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

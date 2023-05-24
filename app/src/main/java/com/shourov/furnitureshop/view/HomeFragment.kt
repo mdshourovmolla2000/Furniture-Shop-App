@@ -57,33 +57,6 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     private val popularProductList = ArrayList<ProductModel>()
     private var scrollPosition = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val builder = AlertDialog.Builder(requireContext())
-                val dialogBinding = DialogExitBinding.inflate(layoutInflater)
-
-                builder.setView(dialogBinding.root)
-                builder.setCancelable(true)
-
-                val alertDialog = builder.create()
-
-                //make transparent to default dialog
-                alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
-
-                dialogBinding.noButton.setOnClickListener { alertDialog.dismiss() }
-
-                dialogBinding.yesButton.setOnClickListener {
-                    alertDialog.dismiss()
-                    requireActivity().finish()
-                }
-
-                alertDialog.show()
-            }
-        })
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         scrollPosition = binding.mainScrollView.scrollY
@@ -121,10 +94,6 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         binding.specialOfferRecyclerview.adapter = SpecialOffersListAdapter(specialOfferItemsList)
         binding.categoryRecyclerview.adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
         binding.popularItemsRecyclerview.adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
-
-        binding.bottomNavigationFavouriteMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_favouriteFragment) }
-        binding.bottomNavigationShoppingMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_shoppingFragment) }
-        binding.bottomNavigationProfileMenu.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_profileFragment) }
 
         return binding.root
     }
