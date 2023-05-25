@@ -44,21 +44,19 @@
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
         android:name="com.shourov.furnitureshop.view.FavouriteFragment"
         android:label="Favourite"
         tools:layout="@layout/fragment_favourite" >
-        <action
-            android:id="@+id/action_favouriteFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/favouriteFragment"
-            app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/pop_enter"
-            app:popExitAnim="@anim/pop_exit"
-            app:enterAnim="@anim/enter"
-            app:exitAnim="@anim/exit" />
         <action
             android:id="@+id/action_favouriteFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment"
@@ -116,4 +114,9 @@
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit"/>
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.shourov.furnitureshop.view.NotificationFragment"
+        android:label="Notification"
+        tools:layout="@layout/fragment_notification" />
 </navigation>

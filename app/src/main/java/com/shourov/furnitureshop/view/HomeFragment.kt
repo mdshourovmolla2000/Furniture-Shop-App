@@ -87,6 +87,8 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
         observerList()
 
+        binding.notificationIcon.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_notificationFragment) }
+
         binding.specialOfferRecyclerview.adapter = SpecialOffersListAdapter(specialOfferItemsList)
         binding.categoryRecyclerview.adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
         binding.popularItemsRecyclerview.adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
