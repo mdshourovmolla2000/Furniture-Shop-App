@@ -61,11 +61,23 @@
                 android:fontFamily="@font/switzer_semibold"/>
 
             <TextView
-                android:id="@+id/productPriceTextview"
+                android:id="@+id/productCompanyNameTextview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productNameTextview"
+                android:text="Company Name"
+                android:textColor="#828A89"
+                android:textSize="@dimen/_10sdp"
+                android:fontFamily="@font/switzer_regular"
+                android:layout_marginTop="@dimen/_2sdp"/>
+
+            <TextView
+                android:id="@+id/productPriceTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/productCompanyNameTextview"
                 android:text="$279.95"
                 android:textColor="#F2A666"
                 android:textSize="@dimen/_12sdp"

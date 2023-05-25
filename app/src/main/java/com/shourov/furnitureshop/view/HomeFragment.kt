@@ -1,15 +1,12 @@
 package com.shourov.furnitureshop.view
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.activity.OnBackPressedCallback
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -26,7 +23,6 @@ import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
 import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.AppDatabase
 import com.shourov.furnitureshop.database.tables.ShoppingTable
-import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
 import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
 import com.shourov.furnitureshop.interfaces.PopularProductItemClickListener
