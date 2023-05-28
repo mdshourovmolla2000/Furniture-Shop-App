@@ -47,6 +47,8 @@ class ProfileFragment : Fragment() {
 
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
+        binding.supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
+
         binding.logoutButton.setOnClickListener {
             logoutDialog()
         }
