@@ -6,7 +6,6 @@ import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.model.ProductImageModel
 import com.shourov.furnitureshop.model.ProductModel
-import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 
 class DemoData {

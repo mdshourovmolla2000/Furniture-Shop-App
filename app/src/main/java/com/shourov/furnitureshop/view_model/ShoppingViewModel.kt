@@ -3,9 +3,7 @@ package com.shourov.furnitureshop.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.ShoppingTable
-import com.shourov.furnitureshop.model.ShoppingModel
 import com.shourov.furnitureshop.repository.ShoppingRepository
 
 class ShoppingViewModel(private val repository: ShoppingRepository): ViewModel() {

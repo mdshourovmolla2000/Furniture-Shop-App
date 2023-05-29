@@ -30,6 +30,23 @@ class ProfileFragment : Fragment() {
     private lateinit var dao: AppDao
     private lateinit var repository: ProfileRepository
     private lateinit var viewModel: ProfileViewModel
+    private var scrollPosition = 0
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        scrollPosition = binding.mainScrollView.scrollY
+        outState.putInt("SCROLL_POSITION", scrollPosition)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (savedInstanceState != null) {
+            try {
+                scrollPosition = savedInstanceState.getInt("SCROLL_POSITION")
+                binding.mainScrollView.post { binding.mainScrollView.scrollTo(0, scrollPosition) }
+            } catch (_: Exception) {}
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +63,8 @@ class ProfileFragment : Fragment() {
         observerList()
 
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
+
+        binding.profileButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
 
         binding.supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
 
