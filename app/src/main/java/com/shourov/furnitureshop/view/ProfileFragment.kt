@@ -49,9 +49,9 @@ class ProfileFragment : Fragment() {
 
         binding.supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
 
-        binding.logoutButton.setOnClickListener {
-            logoutDialog()
-        }
+        binding.legalPolicyButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_policyFragment) }
+
+        binding.logoutButton.setOnClickListener { logoutDialog() }
 
         return binding.root
     }

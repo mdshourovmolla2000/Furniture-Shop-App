@@ -108,6 +108,13 @@
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_policyFragment"
+            app:destination="@id/policyFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/categoryProductFragment"
@@ -132,4 +139,9 @@
         android:name="com.shourov.furnitureshop.view.SupportCenterFragment"
         android:label="Support Center"
         tools:layout="@layout/fragment_support_center" />
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="com.shourov.furnitureshop.view.PolicyFragment"
+        android:label="Policy"
+        tools:layout="@layout/fragment_policy" />
 </navigation>
