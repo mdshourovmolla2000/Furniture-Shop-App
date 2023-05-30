@@ -56,7 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/topSectionLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="@dimen/_18sdp">
@@ -190,8 +189,6 @@
                 android:id="@+id/updateProfileButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/changePasswordTextview"
                 android:text="Update Profile"
                 android:textSize="@dimen/_12sdp"
