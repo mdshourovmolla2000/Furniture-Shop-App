@@ -64,7 +64,9 @@ class ProfileFragment : Fragment() {
 
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
-        binding.profileButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
+        binding.editProfileButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
+
+        binding.deliveryAddressButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_deliveryAddressFragment) }
 
         binding.supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
 

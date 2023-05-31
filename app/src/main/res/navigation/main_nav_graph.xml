@@ -122,6 +122,13 @@
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/categoryProductFragment"
@@ -169,4 +176,9 @@
         android:name="com.shourov.furnitureshop.view.ChangePasswordFragment"
         android:label="Change Password"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/deliveryAddressFragment"
+        android:name="com.shourov.furnitureshop.view.DeliveryAddressFragment"
+        android:label="Delivery Address"
+        tools:layout="@layout/fragment_delivery_address" />
 </navigation>
