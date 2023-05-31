@@ -85,7 +85,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        if (binding.nameEdittext.text.trim().isEmpty()) {
+        if (binding.nameEdittext.text.toString().trim().isEmpty()) {
             binding.nameEdittext.error = "Enter name"
             binding.nameEdittext.requestFocus()
             return

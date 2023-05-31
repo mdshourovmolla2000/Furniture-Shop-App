@@ -80,13 +80,13 @@ class SignUpFragment : Fragment() {
                     KeyboardManager.showKeyboard(binding.emailEdittext)
                     return@withContext
                 } else {
-                    if (binding.passwordEdittext.text.toString().trim().isEmpty()) {
+                    if (binding.passwordEdittext.text.toString().isEmpty()) {
                         binding.passwordEdittext.error = "Enter password"
                         binding.passwordEdittext.requestFocus()
                         KeyboardManager.showKeyboard(binding.passwordEdittext)
                         return@withContext
                     }
-                    if (binding.passwordEdittext.text.toString().trim().length < 6) {
+                    if (binding.passwordEdittext.text.toString().length < 6) {
                         binding.passwordEdittext.error = "Must be 6 character"
                         binding.passwordEdittext.requestFocus()
                         KeyboardManager.showKeyboard(binding.passwordEdittext)
