@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
             alertDialog.show()
         } else {
-            navController.popBackStack()
+            super.onBackPressed()
         }
     }
 }
