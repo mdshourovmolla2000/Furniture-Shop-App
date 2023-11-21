@@ -40,9 +40,10 @@ class CategoryFragment : Fragment(), CategoryItemClickListener {
 
         observerList()
 
-        binding.categoryRecyclerview.adapter = CategoryListAdapter(categoryList, this)
-
-        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
+        binding.apply {
+            categoryRecyclerview.adapter = CategoryListAdapter(categoryList, this@CategoryFragment)
+            backIcon.setOnClickListener { findNavController().popBackStack() }
+        }
 
         return binding.root
     }
@@ -54,7 +55,6 @@ class CategoryFragment : Fragment(), CategoryItemClickListener {
             binding.categoryRecyclerview.adapter?.notifyDataSetChanged()
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     override fun onLoadCategoryItem(currentItem: CategoryModel, categoryProductCountTextview: TextView?) {

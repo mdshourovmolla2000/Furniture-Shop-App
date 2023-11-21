@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentChangePasswordBinding
 import com.shourov.furnitureshop.repository.ChangePasswordRepository
@@ -26,7 +25,6 @@ class ChangePasswordFragment : Fragment() {
 
     private lateinit var binding: FragmentChangePasswordBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: ChangePasswordRepository
     private lateinit var viewModel: ChangePasswordViewModel
 
@@ -39,24 +37,22 @@ class ChangePasswordFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = ChangePasswordRepository(dao)
+        repository = ChangePasswordRepository(database.appDao())
         viewModel = ViewModelProvider(this, ChangePasswordViewModelFactory(repository))[ChangePasswordViewModel::class.java]
 
         observerList()
 
-        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
-
-        binding.changePasswordButton.setOnClickListener { changePassword() }
+        binding.apply {
+            backIcon.setOnClickListener { findNavController().popBackStack() }
+            changePasswordButton.setOnClickListener { changePassword() }
+        }
 
         return binding.root
     }
 
     private fun observerList() {
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
-            it?.let {
-                user = it
-            }
+            it?.let { user = it }
         }
     }
 

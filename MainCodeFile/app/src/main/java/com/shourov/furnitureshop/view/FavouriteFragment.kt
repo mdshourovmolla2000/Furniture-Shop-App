@@ -15,8 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.FavouriteListAdapter
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.FragmentFavouriteBinding
 import com.shourov.furnitureshop.interfaces.FavouriteItemClickListener
@@ -31,11 +30,10 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
 
     private lateinit var binding: FragmentFavouriteBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: FavouriteRepository
     private lateinit var viewModel: FavouriteViewModel
 
-    private val favouriteItemList = ArrayList<FavouriteTable?>()
+    private val favouriteItemList = ArrayList<FavouriteTable>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +45,7 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
 
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = FavouriteRepository(dao)
+        repository = FavouriteRepository(database.appDao())
         viewModel = ViewModelProvider(this, FavouriteViewModelFactory(repository))[FavouriteViewModel::class.java]
 
         observerList()
@@ -62,15 +59,20 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
         viewModel.getFavouriteData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             favouriteItemList.clear()
             if (it.isNullOrEmpty()) {
-                binding.favouriteItemRecyclerview.visibility = View.GONE
-                binding.noItemLayout.visibility = View.VISIBLE
+                binding.apply {
+                    favouriteItemRecyclerview.visibility = View.GONE
+                    noItemLayout.visibility = View.VISIBLE
+                }
             } else {
                 favouriteItemList.addAll(it.reversed())
-                binding.favouriteItemRecyclerview.adapter?.notifyDataSetChanged()
 
-                binding.noItemLayout.visibility = View.GONE
-                binding.favouriteItemRecyclerview.visibility = View.VISIBLE
+                binding.apply {
+                    noItemLayout.visibility = View.GONE
+                    favouriteItemRecyclerview.visibility = View.VISIBLE
+                }
             }
+
+            binding.favouriteItemRecyclerview.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -84,7 +86,7 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
         }
     }
 
-    override fun onFavouriteItemClick(currentItem: FavouriteTable?, clickOn: String?) {
+    override fun onFavouriteItemClick(currentItem: FavouriteTable, clickOn: String?) {
         when(clickOn) {
             "FAVOURITE_ICON" -> {
                 lifecycleScope.launch(Dispatchers.IO) {

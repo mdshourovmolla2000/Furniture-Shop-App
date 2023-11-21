@@ -1,5 +1,6 @@
 package com.shourov.furnitureshop.view.welcomeActivity
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -30,13 +31,15 @@ class SplashFragment : Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (SharedPref.read("IS_SIGNED_IN", "no") == "yes") {
-                startActivity(Intent(requireActivity(), MainActivity::class.java))
-                requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.enter, R.anim.exit)
+                startActivity(intent, options.toBundle())
                 requireActivity().finish()
             } else {
                 if (SharedPref.read("IS_ONBOARDING_SCREEN_SHOWED", "no") == "yes") {
-                    startActivity(Intent(requireActivity(), AuthActivity::class.java))
-                    requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
+                    val intent = Intent(requireActivity(), AuthActivity::class.java)
+                    val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.enter, R.anim.exit)
+                    startActivity(intent, options.toBundle())
                     requireActivity().finish()
                 } else {
                     findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragment)

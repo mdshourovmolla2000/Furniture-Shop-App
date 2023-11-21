@@ -17,11 +17,11 @@ class ProductDetailsRepository(private val dao: AppDao) {
 
     fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInFavourite(userId, productId)
 
-    suspend fun insertFavourite(favourite: FavouriteTable?) = dao.insertFavourite(favourite)
+    suspend fun insertFavourite(favourite: FavouriteTable) = dao.insertFavourite(favourite)
 
     suspend fun deleteFavouriteById(userId: Int?, productId: String?) = dao.deleteFavouriteById(userId, productId)
 
-    suspend fun insertShopping(shopping: ShoppingTable?) = dao.insertShopping(shopping)
+    suspend fun insertShopping(shopping: ShoppingTable) = dao.insertShopping(shopping)
 
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInShopping(userId, productId)
 

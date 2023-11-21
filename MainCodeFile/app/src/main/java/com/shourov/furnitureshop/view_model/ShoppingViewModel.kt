@@ -7,18 +7,16 @@ import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.repository.ShoppingRepository
 
 class ShoppingViewModel(private val repository: ShoppingRepository): ViewModel() {
-    fun getShoppingData(userId: Int?): LiveData<List<ShoppingTable?>?> = repository.getShoppingData(userId)
+    fun getShoppingData(userId: Int?): LiveData<List<ShoppingTable>> = repository.getShoppingData(userId)
 
     private val _subTotalAmountLiveData = MutableLiveData<Double>()
-    val subTotalAmountLiveData: LiveData<Double>
-        get() = _subTotalAmountLiveData
+    val subTotalAmountLiveData: LiveData<Double> get() = _subTotalAmountLiveData
+    fun getSubTotalAmount(itemList: ArrayList<ShoppingTable>) = _subTotalAmountLiveData.postValue(itemList.sumOf { ((it.itemPrice
+        ?: 0.0) * (it.itemQuantity ?: 0)) })
 
-    fun getSubTotalAmount(itemList: ArrayList<ShoppingTable?>) = _subTotalAmountLiveData.postValue(itemList.sumOf { ((it?.itemPrice
-        ?: 0.0) * (it?.itemQuantity ?: 0)) })
+    suspend fun updateShopping(shopping: ShoppingTable) = repository.updateShopping(shopping)
 
-    suspend fun updateShopping(shopping: ShoppingTable?) = repository.updateShopping(shopping)
-
-    suspend fun deleteShopping(shoppingList: List<ShoppingTable?>) = repository.deleteShopping(shoppingList)
+    suspend fun deleteShopping(shoppingList: List<ShoppingTable>) = repository.deleteShopping(shoppingList)
 
     suspend fun clearShoppingSelection() = repository.clearShoppingSelection()
 

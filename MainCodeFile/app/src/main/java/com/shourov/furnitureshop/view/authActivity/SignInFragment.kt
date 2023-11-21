@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.databinding.FragmentSignInBinding
 import com.shourov.furnitureshop.repository.SignInRepository
 import com.shourov.furnitureshop.utils.KeyboardManager
@@ -30,7 +29,6 @@ import kotlinx.coroutines.withContext
 class SignInFragment : Fragment() {
 
     private lateinit var binding: FragmentSignInBinding
-    private lateinit var dao: AppDao
     private lateinit var repository: SignInRepository
     private lateinit var viewModel: SignInViewModel
 
@@ -42,15 +40,13 @@ class SignInFragment : Fragment() {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         SharedPref.init(requireContext())
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = SignInRepository(dao)
+        repository = SignInRepository(database.appDao())
         viewModel = ViewModelProvider(this, SignInViewModelFactory(repository))[SignInViewModel::class.java]
 
-        binding.signInButton.setOnClickListener {
-            checkUser(it)
+        binding.apply {
+            signInButton.setOnClickListener { checkUser(it) }
+            signUpTextview.setOnClickListener { findNavController().navigate(R.id.action_signInFragment_to_signUpFragment) }
         }
-
-        binding.signUpTextview.setOnClickListener { findNavController().navigate(R.id.action_signInFragment_to_signUpFragment) }
 
         return binding.root
     }

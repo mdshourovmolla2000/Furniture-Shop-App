@@ -14,8 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.ShoppingListAdapter
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.FragmentShoppingBinding
 import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
@@ -31,11 +30,10 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
     private lateinit var binding: FragmentShoppingBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: ShoppingRepository
     private lateinit var viewModel: ShoppingViewModel
 
-    private val shoppingItemList = ArrayList<ShoppingTable?>()
+    private val shoppingItemList = ArrayList<ShoppingTable>()
     private var selectOptionVisible: Boolean = false
     private lateinit var shoppingListAdapter: ShoppingListAdapter
     private var subTotalAmount = 0.00
@@ -61,52 +59,54 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
         binding.backIcon.setOnClickListener { hideSelectOption() }
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = ShoppingRepository(dao)
+        repository = ShoppingRepository(database.appDao())
         viewModel = ViewModelProvider(this, ShoppingViewModelFactory(repository))[ShoppingViewModel::class.java]
 
         observerList()
 
         shoppingListAdapter = ShoppingListAdapter(shoppingItemList, this@ShoppingFragment, selectOptionVisible)
-        binding.shoppingItemRecyclerview.adapter = shoppingListAdapter
 
-        if (selectOptionVisible) {
-            binding.deleteIcon.visibility = View.GONE
-            binding.orderSummaryLayout.visibility = View.GONE
-            binding.deleteButton.visibility = View.VISIBLE
-        } else {
-            binding.deleteButton.visibility = View.GONE
-            binding.deleteIcon.visibility = View.VISIBLE
-            binding.orderSummaryLayout.visibility = View.VISIBLE
-        }
+        binding.apply {
+            shoppingItemRecyclerview.adapter = shoppingListAdapter
 
-        binding.deleteIcon.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.clearShoppingSelection()
-                withContext(Dispatchers.Main) {
-                    selectOptionVisible = true
-                    shoppingListAdapter.updateSelectOptionVisible(true)
-                    binding.deleteIcon.visibility = View.GONE
-                    binding.orderSummaryLayout.visibility = View.GONE
-                    binding.deleteButton.visibility = View.VISIBLE
+            if (selectOptionVisible) {
+                deleteIcon.visibility = View.GONE
+                orderSummaryLayout.visibility = View.GONE
+                deleteButton.visibility = View.VISIBLE
+            } else {
+                deleteButton.visibility = View.GONE
+                deleteIcon.visibility = View.VISIBLE
+                orderSummaryLayout.visibility = View.VISIBLE
+            }
+
+            deleteIcon.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.clearShoppingSelection()
+                    withContext(Dispatchers.Main) {
+                        selectOptionVisible = true
+                        shoppingListAdapter.updateSelectOptionVisible(true)
+                        deleteIcon.visibility = View.GONE
+                        orderSummaryLayout.visibility = View.GONE
+                        deleteButton.visibility = View.VISIBLE
+                    }
                 }
             }
-        }
 
-        binding.subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
-        binding.shippingCostTextview.text = "$${DecimalFormat("#.##").format(shippingFee)}"
-        totalPayment = subTotalAmount + shippingFee
-        binding.totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
+            subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
+            shippingCostTextview.text = "$${DecimalFormat("#.##").format(shippingFee)}"
+            totalPayment = subTotalAmount + shippingFee
+            totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
 
-        binding.deleteButton.setOnClickListener {
-            val selectedShoppingItemList = shoppingItemList.filter { it?.isSelected == true }
-            if (selectedShoppingItemList.isNotEmpty()) {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.deleteShopping(selectedShoppingItemList)
-                    val shoppingItemCount = viewModel.shoppingItemCount(SharedPref.read("CURRENT_USER_ID", "0")?.toInt())
-                    withContext(Dispatchers.Main) {
-                        if (shoppingItemCount == 0) {
-                            selectOptionVisible = false
+            deleteButton.setOnClickListener {
+                val selectedShoppingItemList = shoppingItemList.filter { it?.isSelected == true }
+                if (selectedShoppingItemList.isNotEmpty()) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.deleteShopping(selectedShoppingItemList)
+                        val shoppingItemCount = viewModel.shoppingItemCount(SharedPref.read("CURRENT_USER_ID", "0")?.toInt())
+                        withContext(Dispatchers.Main) {
+                            if (shoppingItemCount == 0) {
+                                selectOptionVisible = false
+                            }
                         }
                     }
                 }
@@ -120,28 +120,32 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
     private fun observerList() {
         viewModel.getShoppingData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             shoppingItemList.clear()
-            if (it.isNullOrEmpty()) {
-                binding.shoppingItemRecyclerview.visibility = View.GONE
-                binding.orderSummaryLayout.visibility = View.GONE
-                binding.deleteIcon.visibility = View.GONE
-                binding.deleteButton.visibility = View.GONE
-                binding.noItemLayout.visibility = View.VISIBLE
-            } else {
-                shoppingItemList.addAll(it.reversed())
+            binding.apply {
+                if (it.isNullOrEmpty()) {
+                    shoppingItemRecyclerview.visibility = View.GONE
+                    orderSummaryLayout.visibility = View.GONE
+                    deleteIcon.visibility = View.GONE
+                    deleteButton.visibility = View.GONE
+                    noItemLayout.visibility = View.VISIBLE
+                } else {
+                    shoppingItemList.addAll(it.reversed())
+
+                    noItemLayout.visibility = View.GONE
+                    shoppingItemRecyclerview.visibility = View.VISIBLE
+
+                    viewModel.getSubTotalAmount(shoppingItemList)
+                }
                 shoppingListAdapter.notifyDataSetChanged()
-
-                binding.noItemLayout.visibility = View.GONE
-                binding.shoppingItemRecyclerview.visibility = View.VISIBLE
-
-                viewModel.getSubTotalAmount(shoppingItemList)
             }
         }
 
         viewModel.subTotalAmountLiveData.observe(viewLifecycleOwner) {
-            subTotalAmount = it
-            binding.subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
-            totalPayment = subTotalAmount + shippingFee
-            binding.totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
+            binding.apply {
+                subTotalAmount = it
+                subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
+                totalPayment = subTotalAmount + shippingFee
+                totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
+            }
         }
     }
 
@@ -149,12 +153,12 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
         if (selectOptionVisible) {
             selectOptionVisible = false
             shoppingListAdapter.updateSelectOptionVisible(false)
-            binding.deleteIcon.visibility = View.VISIBLE
-            binding.deleteButton.visibility = View.GONE
-            binding.orderSummaryLayout.visibility = View.VISIBLE
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.clearShoppingSelection()
+            binding.apply {
+                deleteIcon.visibility = View.VISIBLE
+                deleteButton.visibility = View.GONE
+                orderSummaryLayout.visibility = View.VISIBLE
             }
+            lifecycleScope.launch(Dispatchers.IO) { viewModel.clearShoppingSelection() }
         } else {
             findNavController().popBackStack()
         }

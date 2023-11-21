@@ -10,5 +10,5 @@ data class UserTable(
     var name: String,
     val email: String,
     var password: String,
-    var profile_pic: String
+    var profilePic: String
 )

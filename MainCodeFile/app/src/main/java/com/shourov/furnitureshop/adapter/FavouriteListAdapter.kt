@@ -10,7 +10,7 @@ import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.SingleFavouriteItemLayoutBinding
 import com.shourov.furnitureshop.interfaces.FavouriteItemClickListener
 
-class FavouriteListAdapter(private var itemList: ArrayList<FavouriteTable?>, private val listener: FavouriteItemClickListener):
+class FavouriteListAdapter(private var itemList: ArrayList<FavouriteTable>, private val listener: FavouriteItemClickListener):
     RecyclerView.Adapter<FavouriteListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -18,21 +18,17 @@ class FavouriteListAdapter(private var itemList: ArrayList<FavouriteTable?>, pri
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(itemList[position])
-    }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) = holder.onBind(itemList[position])
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding = SingleFavouriteItemLayoutBinding.bind(itemView)
 
         @SuppressLint("SetTextI18n")
-        fun onBind(currentItem: FavouriteTable?) {
-            listener.onLoadFavouriteItem(currentItem?.productId, binding.itemImageImageview, binding.itemNameTextview, binding.itemPriceTextview)
+        fun onBind(currentItem: FavouriteTable) {
+            listener.onLoadFavouriteItem(currentItem.productId, binding.itemImageImageview, binding.itemNameTextview, binding.itemPriceTextview)
 
             binding.favouriteIcon.setOnClickListener { listener.onFavouriteItemClick(currentItem, "FAVOURITE_ICON") }
 

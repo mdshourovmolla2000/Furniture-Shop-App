@@ -26,7 +26,7 @@ class HomeRepository(private val dao: AppDao) {
 
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInShopping(userId, productId)
 
-    suspend fun insertShopping(shopping: ShoppingTable?) = dao.insertShopping(shopping)
+    suspend fun insertShopping(shopping: ShoppingTable) = dao.insertShopping(shopping)
 
     suspend fun deleteShoppingById(userId: Int?, productId: String?) = dao.deleteShoppingById(userId, productId)
 }

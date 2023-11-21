@@ -7,5 +7,5 @@ import com.shourov.furnitureshop.database.tables.UserTable
 class ChangePasswordRepository(private val dao: AppDao) {
     fun getUserInfo(id: Int?): LiveData<UserTable?> = dao.getUserInfo(id)
 
-    suspend fun updateUserInfo(user: UserTable?): Int = dao.updateUser(user)
+    suspend fun updateUserInfo(user: UserTable): Int = dao.updateUser(user)
 }

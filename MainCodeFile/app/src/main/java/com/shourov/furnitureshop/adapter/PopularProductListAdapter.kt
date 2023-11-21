@@ -20,13 +20,9 @@ class PopularProductListAdapter(private val itemList: ArrayList<ProductModel>, p
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(itemList[position])
-    }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) = holder.onBind(itemList[position])
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -34,20 +30,18 @@ class PopularProductListAdapter(private val itemList: ArrayList<ProductModel>, p
 
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: ProductModel) {
-            binding.itemImageImageview.loadImage(currentItem.itemImage)
-            binding.itemNameTextview.text = currentItem.itemName
-            binding.itemCompanyNameTextview.text = currentItem.itemCompanyName
-            binding.itemPriceTextview.text = "$${currentItem.itemPrice}"
+            binding.apply {
+                itemImageImageview.loadImage(currentItem.itemImage)
+                itemNameTextview.text = currentItem.itemName
+                itemCompanyNameTextview.text = currentItem.itemCompanyName
+                itemPriceTextview.text = "$${currentItem.itemPrice}"
+            }
 
             listener.onLoadProductItem(currentItem, binding.cartIconCardView, binding.cartIconImageview)
 
-            itemView.setOnClickListener {
-                listener.onProductItemClick(currentItem, binding.cartIconCardView, "MAIN_ITEM")
-            }
+            itemView.setOnClickListener { listener.onProductItemClick(currentItem, binding.cartIconCardView, "MAIN_ITEM") }
 
-            binding.cartIconCardView.setOnClickListener {
-                listener.onProductItemClick(currentItem, binding.cartIconCardView,"CART_ICON")
-            }
+            binding.cartIconCardView.setOnClickListener { listener.onProductItemClick(currentItem, binding.cartIconCardView,"CART_ICON") }
         }
     }
 }

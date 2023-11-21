@@ -8,5 +8,5 @@ import com.shourov.furnitureshop.repository.ChangePasswordRepository
 class ChangePasswordViewModel(private val repository: ChangePasswordRepository): ViewModel() {
     fun getUserInfo(id: Int?): LiveData<UserTable?> = repository.getUserInfo(id)
 
-    suspend fun updateUserInfo(user: UserTable?): Int = repository.updateUserInfo(user)
+    suspend fun updateUserInfo(user: UserTable): Int = repository.updateUserInfo(user)
 }

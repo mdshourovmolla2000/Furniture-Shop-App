@@ -35,20 +35,28 @@ class MainActivity : AppCompatActivity() {
             currentFragmentId = destination.id
             when (currentFragmentId) {
                 R.id.homeFragment-> {
-                    binding.bottomNavigationMenuLayout.visibility = View.VISIBLE
-                    bottomMenuSelectedColor(binding.bottomNavigationHomeMenuIcon, binding.bottomNavigationHomeMenuTextview)
+                    binding.apply {
+                        bottomNavigationMenuLayout.visibility = View.VISIBLE
+                        bottomMenuSelectedColor(bottomNavigationHomeMenuIcon, bottomNavigationHomeMenuTextview)
+                    }
                 }
                 R.id.favouriteFragment-> {
-                    binding.bottomNavigationMenuLayout.visibility = View.VISIBLE
-                    bottomMenuSelectedColor(binding.bottomNavigationFavouriteMenuIcon, binding.bottomNavigationFavouriteMenuTextview)
+                    binding.apply {
+                        bottomNavigationMenuLayout.visibility = View.VISIBLE
+                        bottomMenuSelectedColor(bottomNavigationFavouriteMenuIcon, bottomNavigationFavouriteMenuTextview)
+                    }
                 }
                 R.id.shoppingFragment-> {
-                    binding.bottomNavigationMenuLayout.visibility = View.VISIBLE
-                    bottomMenuSelectedColor(binding.bottomNavigationShoppingMenuIcon, binding.bottomNavigationShoppingMenuTextview)
+                    binding.apply {
+                        bottomNavigationMenuLayout.visibility = View.VISIBLE
+                        bottomMenuSelectedColor(bottomNavigationShoppingMenuIcon, bottomNavigationShoppingMenuTextview)
+                    }
                 }
                 R.id.profileFragment-> {
-                    binding.bottomNavigationMenuLayout.visibility = View.VISIBLE
-                    bottomMenuSelectedColor(binding.bottomNavigationProfileMenuIcon, binding.bottomNavigationProfileMenuTextview)
+                    binding.apply {
+                        bottomNavigationMenuLayout.visibility = View.VISIBLE
+                        bottomMenuSelectedColor(bottomNavigationProfileMenuIcon, bottomNavigationProfileMenuTextview)
+                    }
                 }
                 else -> {
                     binding.bottomNavigationMenuLayout.visibility = View.GONE
@@ -56,50 +64,52 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.bottomNavigationHomeMenu.setOnClickListener {
-            if (currentFragmentId != R.id.homeFragment) {
-                navController.popBackStack()
+        binding.apply {
+            bottomNavigationHomeMenu.setOnClickListener {
+                if (currentFragmentId != R.id.homeFragment) { navController.popBackStack() }
             }
-        }
 
-        binding.bottomNavigationFavouriteMenu.setOnClickListener {
-            if (currentFragmentId == R.id.homeFragment) {
-                navController.navigate(R.id.action_homeFragment_to_favouriteFragment)
-            } else if(currentFragmentId != R.id.favouriteFragment) {
-                navController.popBackStack()
-                navController.navigate(R.id.action_homeFragment_to_favouriteFragment)
+            bottomNavigationFavouriteMenu.setOnClickListener {
+                if (currentFragmentId == R.id.homeFragment) {
+                    navController.navigate(R.id.action_homeFragment_to_favouriteFragment)
+                } else if(currentFragmentId != R.id.favouriteFragment) {
+                    navController.popBackStack()
+                    navController.navigate(R.id.action_homeFragment_to_favouriteFragment)
+                }
             }
-        }
 
-        binding.bottomNavigationShoppingMenu.setOnClickListener {
-            if (currentFragmentId == R.id.homeFragment) {
-                navController.navigate(R.id.action_homeFragment_to_shoppingFragment)
-            } else if(currentFragmentId != R.id.shoppingFragment) {
-                navController.popBackStack()
-                navController.navigate(R.id.action_homeFragment_to_shoppingFragment)
+            bottomNavigationShoppingMenu.setOnClickListener {
+                if (currentFragmentId == R.id.homeFragment) {
+                    navController.navigate(R.id.action_homeFragment_to_shoppingFragment)
+                } else if(currentFragmentId != R.id.shoppingFragment) {
+                    navController.popBackStack()
+                    navController.navigate(R.id.action_homeFragment_to_shoppingFragment)
+                }
             }
-        }
 
-        binding.bottomNavigationProfileMenu.setOnClickListener {
-            if (currentFragmentId == R.id.homeFragment) {
-                navController.navigate(R.id.action_homeFragment_to_profileFragment)
-            } else if(currentFragmentId != R.id.profileFragment) {
-                navController.popBackStack()
-                navController.navigate(R.id.action_homeFragment_to_profileFragment)
+            bottomNavigationProfileMenu.setOnClickListener {
+                if (currentFragmentId == R.id.homeFragment) {
+                    navController.navigate(R.id.action_homeFragment_to_profileFragment)
+                } else if(currentFragmentId != R.id.profileFragment) {
+                    navController.popBackStack()
+                    navController.navigate(R.id.action_homeFragment_to_profileFragment)
+                }
             }
         }
     }
 
     private fun bottomMenuSelectedColor(icon: ImageView, text: TextView) {
-        binding.bottomNavigationHomeMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
-        binding.bottomNavigationFavouriteMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
-        binding.bottomNavigationShoppingMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
-        binding.bottomNavigationProfileMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+        binding.apply {
+            bottomNavigationHomeMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+            bottomNavigationFavouriteMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+            bottomNavigationShoppingMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+            bottomNavigationProfileMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
 
-        binding.bottomNavigationHomeMenuTextview.setTextColor(Color.parseColor("#828A89"))
-        binding.bottomNavigationFavouriteMenuTextview.setTextColor(Color.parseColor("#828A89"))
-        binding.bottomNavigationShoppingMenuTextview.setTextColor(Color.parseColor("#828A89"))
-        binding.bottomNavigationProfileMenuTextview.setTextColor(Color.parseColor("#828A89"))
+            bottomNavigationHomeMenuTextview.setTextColor(Color.parseColor("#828A89"))
+            bottomNavigationFavouriteMenuTextview.setTextColor(Color.parseColor("#828A89"))
+            bottomNavigationShoppingMenuTextview.setTextColor(Color.parseColor("#828A89"))
+            bottomNavigationProfileMenuTextview.setTextColor(Color.parseColor("#828A89"))
+        }
 
         icon.setColorFilter(Color.parseColor("#0C8A7B"), PorterDuff.Mode.SRC_IN)
         text.setTextColor(Color.parseColor("#0C8A7B"))
@@ -118,11 +128,12 @@ class MainActivity : AppCompatActivity() {
             //make transparent to default dialog
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
 
-            dialogBinding.noButton.setOnClickListener { alertDialog.dismiss() }
-
-            dialogBinding.yesButton.setOnClickListener {
-                alertDialog.dismiss()
-                finish()
+            dialogBinding.apply {
+                noButton.setOnClickListener { alertDialog.dismiss() }
+                yesButton.setOnClickListener {
+                    alertDialog.dismiss()
+                    finish()
+                }
             }
 
             alertDialog.show()

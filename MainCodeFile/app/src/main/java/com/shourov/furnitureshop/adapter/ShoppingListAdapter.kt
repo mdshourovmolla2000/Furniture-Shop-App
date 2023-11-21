@@ -12,7 +12,7 @@ import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
 import com.shourov.furnitureshop.utils.loadImage
 import java.text.DecimalFormat
 
-class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable?>, private val listener: ShoppingItemClickListener, private var selectOptionVisible: Boolean = false):
+class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable>, private val listener: ShoppingItemClickListener, private var selectOptionVisible: Boolean = false):
     RecyclerView.Adapter<ShoppingListAdapter.ItemViewHolder>() {
 
     fun updateSelectOptionVisible(selectOptionVisible: Boolean) {
@@ -26,45 +26,35 @@ class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable?>, priva
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(itemList[position])
-    }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) = holder.onBind(itemList[position])
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding = SingleShoppingItemLayoutBinding.bind(itemView)
 
         @SuppressLint("SetTextI18n")
-        fun onBind(currentItem: ShoppingTable?) {
-            binding.selectIcon.visibility = if (selectOptionVisible) View.VISIBLE else View.GONE
-
-            when(currentItem!!.isSelected) {
-                true-> binding.selectIcon.loadImage(R.drawable.cart_select_icon)
-                else-> binding.selectIcon.loadImage(R.drawable.cart_unselect_icon)
+        fun onBind(currentItem: ShoppingTable) {
+            binding.apply {
+                selectIcon.visibility = if (selectOptionVisible) View.VISIBLE else View.GONE
+                when(currentItem.isSelected) {
+                    true-> selectIcon.loadImage(R.drawable.cart_select_icon)
+                    else-> selectIcon.loadImage(R.drawable.cart_unselect_icon)
+                }
+                itemImageImageview.loadImage(currentItem.itemImage)
+                itemNameTextview.text = currentItem.itemName
+                itemCompanyTextview.text = currentItem.itemCompany
+                itemPriceTextview.text = "$${DecimalFormat("#.##").format(currentItem.itemPrice!! * currentItem.itemQuantity!!)}"
+                itemCountTextview.text = currentItem.itemQuantity.toString()
             }
 
-            binding.itemImageImageview.loadImage(currentItem.itemImage)
-            binding.itemNameTextview.text = currentItem.itemName
-            binding.itemCompanyTextview.text = currentItem.itemCompany
-            binding.itemPriceTextview.text = "$${DecimalFormat("#.##").format(currentItem.itemPrice!! * currentItem.itemQuantity!!)}"
-            binding.itemCountTextview.text = currentItem.itemQuantity.toString()
+            binding.selectIcon.setOnClickListener { listener.onShoppingItemClick(currentItem, "SELECT_ICON") }
 
-            binding.selectIcon.setOnClickListener {
-                listener.onShoppingItemClick(currentItem, "SELECT_ICON")
-            }
-
-            binding.itemQuantityPlusIcon.setOnClickListener {
-                listener.onShoppingItemClick(currentItem, "QUANTITY_PLUS")
-            }
+            binding.itemQuantityPlusIcon.setOnClickListener { listener.onShoppingItemClick(currentItem, "QUANTITY_PLUS") }
 
             binding.itemQuantityMinusIcon.setOnClickListener {
-                if (currentItem.itemQuantity!! > 1) {
-                    listener.onShoppingItemClick(currentItem, "QUANTITY_MINUS")
-                }
+                if (currentItem.itemQuantity!! > 1) { listener.onShoppingItemClick(currentItem, "QUANTITY_MINUS") }
             }
 
             binding.mainCardView.setOnClickListener { listener.onShoppingItemClick(currentItem, "MAIN_ITEM") }

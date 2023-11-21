@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentSignUpBinding
 import com.shourov.furnitureshop.repository.SignUpRepository
@@ -29,7 +28,6 @@ import kotlinx.coroutines.withContext
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var dao: AppDao
     private lateinit var repository: SignUpRepository
     private lateinit var viewModel: SignUpViewModel
 
@@ -40,13 +38,13 @@ class SignUpFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = SignUpRepository(dao)
+        repository = SignUpRepository(database.appDao())
         viewModel = ViewModelProvider(this, SignUpViewModelFactory(repository))[SignUpViewModel::class.java]
 
-        binding.signUpButton.setOnClickListener { checkUser(it) }
-
-        binding.signInTextview.setOnClickListener { findNavController().popBackStack() }
+        binding.apply {
+            signUpButton.setOnClickListener { checkUser(it) }
+            signInTextview.setOnClickListener { findNavController().popBackStack() }
+        }
 
         return binding.root
     }

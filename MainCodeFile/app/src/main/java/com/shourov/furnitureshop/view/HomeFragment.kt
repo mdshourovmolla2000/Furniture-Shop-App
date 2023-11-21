@@ -20,8 +20,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.HomeCategoryListAdapter
 import com.shourov.furnitureshop.adapter.PopularProductListAdapter
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
 import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
@@ -40,7 +39,6 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: HomeRepository
     private lateinit var viewModel: HomeViewModel
 
@@ -77,8 +75,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         SharedPref.init(requireContext())
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = HomeRepository(dao)
+        repository = HomeRepository(database.appDao())
         viewModel = ViewModelProvider(this, HomeViewModelFactory(repository))[HomeViewModel::class.java]
 
         viewModel.getSpecialOfferData()
@@ -87,11 +84,12 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
 
         observerList()
 
-        binding.notificationIcon.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_notificationFragment) }
-
-        binding.specialOfferRecyclerview.adapter = SpecialOffersListAdapter(specialOfferItemsList)
-        binding.categoryRecyclerview.adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
-        binding.popularItemsRecyclerview.adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
+        binding.apply {
+            notificationIcon.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_notificationFragment) }
+            specialOfferRecyclerview.adapter = SpecialOffersListAdapter(specialOfferItemsList)
+            categoryRecyclerview.adapter = HomeCategoryListAdapter(categoryList, currentCategoryPosition, this@HomeFragment)
+            popularItemsRecyclerview.adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
+        }
 
         return binding.root
     }
@@ -99,8 +97,10 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     private fun observerList() {
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
-                binding.profilePicImageview.loadImage(it.profile_pic.toUri())
-                binding.userNameTextview.text = it.name
+                binding.apply {
+                    profilePicImageview.loadImage(it.profilePic.toUri())
+                    userNameTextview.text = it.name
+                }
             }
         }
 
@@ -119,12 +119,16 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         viewModel.popularProductLiveData.observe(viewLifecycleOwner) {
             popularProductList.clear()
             if (it.isEmpty()) {
-                binding.popularItemsRecyclerview.visibility = View.GONE
-                binding.noPopularItemLayout.visibility = View.VISIBLE
+                binding.apply {
+                    popularItemsRecyclerview.visibility = View.GONE
+                    noPopularItemLayout.visibility = View.VISIBLE
+                }
             } else {
                 popularProductList.addAll(it)
-                binding.noPopularItemLayout.visibility = View.GONE
-                binding.popularItemsRecyclerview.visibility = View.VISIBLE
+                binding.apply {
+                    noPopularItemLayout.visibility = View.GONE
+                    popularItemsRecyclerview.visibility = View.VISIBLE
+                }
             }
 
             binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()

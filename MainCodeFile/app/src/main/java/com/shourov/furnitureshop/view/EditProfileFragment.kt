@@ -15,8 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentEditProfileBinding
 import com.shourov.furnitureshop.repository.EditProfileRepository
@@ -34,7 +33,6 @@ class EditProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentEditProfileBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: EditProfileRepository
     private lateinit var viewModel: EditProfileViewModel
 
@@ -48,27 +46,23 @@ class EditProfileFragment : Fragment() {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         SharedPref.init(requireContext())
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = EditProfileRepository(dao)
+        repository = EditProfileRepository(database.appDao())
         viewModel = ViewModelProvider(this, EditProfileViewModelFactory(repository))[EditProfileViewModel::class.java]
 
         observerList()
 
-        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
-
-        binding.profilePicImageview.setOnClickListener {
-            ImagePicker.with(this)
-                .crop(5f, 5f)
-                .compress(800)         //Final image size will be less than 0.8 MB(Optional)
-                .createIntent { intent ->
-                    startForProfileImageResult.launch(intent)
-                }
-        }
-
-        binding.changePasswordTextview.setOnClickListener { findNavController().navigate(R.id.action_editProfileFragment_to_changePasswordFragment) }
-
-        binding.updateProfileButton.setOnClickListener {
-            updateProfile()
+        binding.apply {
+            backIcon.setOnClickListener { findNavController().popBackStack() }
+            profilePicImageview.setOnClickListener {
+                ImagePicker.with(this@EditProfileFragment)
+                    .crop(5f, 5f)
+                    .compress(800)         //Final image size will be less than 0.8 MB(Optional)
+                    .createIntent { intent ->
+                        startForProfileImageResult.launch(intent)
+                    }
+            }
+            changePasswordTextview.setOnClickListener { findNavController().navigate(R.id.action_editProfileFragment_to_changePasswordFragment) }
+            updateProfileButton.setOnClickListener { updateProfile() }
         }
 
         return binding.root
@@ -78,7 +72,7 @@ class EditProfileFragment : Fragment() {
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 user = it
-                binding.profilePicImageview.loadImage(it.profile_pic.toUri())
+                binding.profilePicImageview.loadImage(it.profilePic.toUri())
                 binding.nameEdittext.setText(it.name)
             }
         }
@@ -112,7 +106,7 @@ class EditProfileFragment : Fragment() {
                 Activity.RESULT_OK -> {
                     val fileUri = data?.data!!
                     binding.profilePicImageview.loadImage(fileUri)
-                    user.profile_pic = fileUri.toString()
+                    user.profilePic = fileUri.toString()
                 }
                 ImagePicker.RESULT_ERROR -> {
                     requireContext().showErrorToast(ImagePicker.getError(data))

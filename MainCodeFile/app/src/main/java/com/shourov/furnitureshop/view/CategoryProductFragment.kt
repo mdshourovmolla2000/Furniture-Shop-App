@@ -17,8 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.CategoryProductListAdapter
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.FragmentCategoryProductBinding
 import com.shourov.furnitureshop.interfaces.CategoryProductItemClickListener
@@ -33,7 +32,6 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
 
     private lateinit var binding: FragmentCategoryProductBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: CategoryProductRepository
     private lateinit var viewModel: CategoryProductViewModel
 
@@ -50,19 +48,18 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
 
         categoryName = arguments?.getString("CATEGORY_NAME", "").toString()
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = CategoryProductRepository(dao)
+        repository = CategoryProductRepository(database.appDao())
         viewModel = ViewModelProvider(this, CategoryProductViewModelFactory(repository))[CategoryProductViewModel::class.java]
 
         viewModel.getCategoryProduct(categoryName)
 
         observerList()
 
-        binding.productRecyclerview.adapter = CategoryProductListAdapter(productList, this@CategoryProductFragment)
-
-        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
-
-        binding.titleTextview.text = categoryName
+        binding.apply {
+            productRecyclerview.adapter = CategoryProductListAdapter(productList, this@CategoryProductFragment)
+            backIcon.setOnClickListener { findNavController().popBackStack() }
+            titleTextview.text = categoryName
+        }
 
         return binding.root
     }
@@ -71,12 +68,16 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
         viewModel.categoryProductLiveData.observe(viewLifecycleOwner) {
             productList.clear()
             if (it.isEmpty()) {
-                binding.productRecyclerview.visibility = View.GONE
-                binding.noItemLayout.visibility = View.VISIBLE
+                binding.apply {
+                    productRecyclerview.visibility = View.GONE
+                    noItemLayout.visibility = View.VISIBLE
+                }
             } else {
                 productList.addAll(it)
-                binding.noItemLayout.visibility = View.GONE
-                binding.productRecyclerview.visibility = View.VISIBLE
+                binding.apply {
+                    noItemLayout.visibility = View.GONE
+                    productRecyclerview.visibility = View.VISIBLE
+                }
             }
 
             binding.productRecyclerview.adapter?.notifyDataSetChanged()

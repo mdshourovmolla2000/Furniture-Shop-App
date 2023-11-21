@@ -42,38 +42,38 @@ class OnBoardingFragment : Fragment() {
         observerList()
 
         onBoardingViewPagerAdapter = OnBoardingViewPagerAdapter(onBoardingData)
-        binding.screenPager.adapter = onBoardingViewPagerAdapter
-        binding.tabIndicator.setupWithViewPager(binding.screenPager)
 
-        position = binding.screenPager.currentItem
+        binding.apply {
+            screenPager.adapter = onBoardingViewPagerAdapter
+            tabIndicator.setupWithViewPager(screenPager)
+            position = screenPager.currentItem
 
-        binding.skipTextview.setOnClickListener { openNextActivity() }
-
-        binding.getStartedButton.setOnClickListener { openNextActivity() }
-
-        binding.nextButton.setOnClickListener {
-            if (position < onBoardingData.size) {
-                position++
-                binding.screenPager.currentItem = position
-            }
-        }
-
-        binding.tabIndicator.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                position = tab!!.position
-                if (position == onBoardingData.size - 1) {
-                    binding.nextSectionLayout.visibility = View.GONE
-                    binding.getStartedButton.visibility = View.VISIBLE
-                } else{
-                    binding.getStartedButton.visibility = View.GONE
-                    binding.nextSectionLayout.visibility = View.VISIBLE
+            skipTextview.setOnClickListener { openNextActivity() }
+            getStartedButton.setOnClickListener { openNextActivity() }
+            nextButton.setOnClickListener {
+                if (position < onBoardingData.size) {
+                    position++
+                    screenPager.currentItem = position
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            tabIndicator.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    position = tab!!.position
+                    if (position == onBoardingData.size - 1) {
+                        nextSectionLayout.visibility = View.GONE
+                        getStartedButton.visibility = View.VISIBLE
+                    } else{
+                        getStartedButton.visibility = View.GONE
+                        nextSectionLayout.visibility = View.VISIBLE
+                    }
+                }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+            })
+        }
 
         return binding.root
     }
@@ -85,7 +85,6 @@ class OnBoardingFragment : Fragment() {
             binding.screenPager.adapter?.notifyDataSetChanged()
         }
     }
-
 
     private fun openNextActivity() {
         SharedPref.write("IS_ONBOARDING_SCREEN_SHOWED", "yes")

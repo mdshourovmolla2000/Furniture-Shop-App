@@ -16,10 +16,10 @@ interface AppDao {
     suspend fun checkIfUserExists(email: String?): Int
 
     @Insert
-    suspend fun insertUser(user: UserTable?): Long
+    suspend fun insertUser(user: UserTable): Long
 
     @Update
-    suspend fun updateUser(user: UserTable?): Int
+    suspend fun updateUser(user: UserTable): Int
 
     @Query("SELECT * FROM user_table WHERE LOWER(email) = LOWER(:email) AND password = :password")
     suspend fun checkIfUserIsValid(email: String?, password: String?): UserTable?
@@ -28,13 +28,13 @@ interface AppDao {
     fun getUserInfo(id: Int?): LiveData<UserTable?>
 
     @Insert
-    suspend fun insertFavourite(favourite: FavouriteTable?)
+    suspend fun insertFavourite(favourite: FavouriteTable)
 
     @Query("SELECT * FROM favourite_table WHERE userId = :userId")
-    fun getFavouriteData(userId: Int?): LiveData<List<FavouriteTable?>?>
+    fun getFavouriteData(userId: Int?): LiveData<List<FavouriteTable>>
 
     @Delete
-    suspend fun deleteFavourite(favourite: FavouriteTable?)
+    suspend fun deleteFavourite(favourite: FavouriteTable)
 
     @Query("DELETE FROM favourite_table WHERE userId = :userId AND productId = :productId")
     suspend fun deleteFavouriteById(userId: Int?, productId: String?)
@@ -43,10 +43,10 @@ interface AppDao {
     fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int>
 
     @Query("SELECT * FROM shopping_table WHERE userId = :userId")
-    fun getShoppingData(userId: Int?): LiveData<List<ShoppingTable?>?>
+    fun getShoppingData(userId: Int?): LiveData<List<ShoppingTable>>
 
     @Insert
-    suspend fun insertShopping(shopping: ShoppingTable?)
+    suspend fun insertShopping(shopping: ShoppingTable)
 
     @Query("SELECT COUNT(*) FROM shopping_table WHERE userId = :userId AND productId = :productId")
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int>
@@ -55,10 +55,10 @@ interface AppDao {
     suspend fun deleteShoppingById(userId: Int?, productId: String?)
 
     @Update
-    suspend fun updateShopping(shopping: ShoppingTable?)
+    suspend fun updateShopping(shopping: ShoppingTable)
 
     @Delete
-    suspend fun deleteShopping(shoppingList: List<ShoppingTable?>)
+    suspend fun deleteShopping(shoppingList: List<ShoppingTable>)
 
     @Query("UPDATE shopping_table SET isSelected = :isSelected")
     suspend fun clearShoppingSelection(isSelected: Boolean? = false)

@@ -1,5 +1,6 @@
 package com.shourov.furnitureshop.view
 
+import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
@@ -13,8 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.databinding.DialogLogoutBinding
 import com.shourov.furnitureshop.databinding.FragmentProfileBinding
 import com.shourov.furnitureshop.repository.ProfileRepository
@@ -27,7 +27,6 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: ProfileRepository
     private lateinit var viewModel: ProfileViewModel
     private var scrollPosition = 0
@@ -56,23 +55,24 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         SharedPref.init(requireContext())
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = ProfileRepository(dao)
+        repository = ProfileRepository(database.appDao())
         viewModel = ViewModelProvider(this, ProfileViewModelFactory(repository))[ProfileViewModel::class.java]
 
         observerList()
 
-        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
+        binding.apply {
+            backIcon.setOnClickListener { findNavController().popBackStack() }
 
-        binding.editProfileButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
+            editProfileButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
 
-        binding.deliveryAddressButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_deliveryAddressFragment) }
+            deliveryAddressButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_deliveryAddressFragment) }
 
-        binding.supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
+            supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
 
-        binding.legalPolicyButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_policyFragment) }
+            legalPolicyButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_policyFragment) }
 
-        binding.logoutButton.setOnClickListener { logoutDialog() }
+            logoutButton.setOnClickListener { logoutDialog() }
+        }
 
         return binding.root
     }
@@ -80,9 +80,11 @@ class ProfileFragment : Fragment() {
     private fun observerList() {
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
-                binding.profilePicImageview.loadImage(it.profile_pic.toUri())
-                binding.userNameTextview.text = it.name
-                binding.userEmailTextview.text = it.email
+                binding.apply {
+                    profilePicImageview.loadImage(it.profilePic.toUri())
+                    userNameTextview.text = it.name
+                    userEmailTextview.text = it.email
+                }
             }
         }
     }
@@ -99,14 +101,17 @@ class ProfileFragment : Fragment() {
         //make transparent to default dialog
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
 
-        dialogBinding.noButton.setOnClickListener { alertDialog.dismiss() }
+        dialogBinding.apply {
+            noButton.setOnClickListener { alertDialog.dismiss() }
 
-        dialogBinding.yesButton.setOnClickListener {
-            alertDialog.dismiss()
-            SharedPref.write("IS_SIGNED_IN", "no")
-            startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
-            requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
-            requireActivity().finish()
+            yesButton.setOnClickListener {
+                alertDialog.dismiss()
+                SharedPref.write("IS_SIGNED_IN", "no")
+                val intent = Intent(requireActivity(), WelcomeActivity::class.java)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.enter, R.anim.exit)
+                startActivity(intent, options.toBundle())
+                requireActivity().finish()
+            }
         }
 
         alertDialog.show()

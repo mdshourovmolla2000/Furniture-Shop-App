@@ -19,13 +19,9 @@ class CategoryListAdapter(private val itemList: ArrayList<CategoryModel>, privat
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(itemList[position])
-    }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) = holder.onBind(itemList[position])
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,14 +29,14 @@ class CategoryListAdapter(private val itemList: ArrayList<CategoryModel>, privat
 
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: CategoryModel) {
-            binding.categoryImage.loadImage(currentItem.categoryImage)
-            binding.categoryNameTextview.text = currentItem.categoryName
+            binding.apply {
+                categoryImage.loadImage(currentItem.categoryImage)
+                categoryNameTextview.text = currentItem.categoryName
+            }
 
             listener.onLoadCategoryItem(currentItem, binding.categoryProductCountTextview)
 
-            itemView.setOnClickListener {
-                listener.onCategoryItemClick(currentItem.categoryName)
-            }
+            itemView.setOnClickListener { listener.onCategoryItemClick(currentItem.categoryName) }
         }
     }
 }

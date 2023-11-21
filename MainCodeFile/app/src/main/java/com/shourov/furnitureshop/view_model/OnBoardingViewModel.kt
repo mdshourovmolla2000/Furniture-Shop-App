@@ -8,8 +8,6 @@ import com.shourov.furnitureshop.repository.OnBoardingRepository
 
 class OnBoardingViewModel(private val repository: OnBoardingRepository): ViewModel() {
     private val _onBoardingLiveData = MutableLiveData<List<OnBoardingModel>>()
-    val onBoardingLiveData: LiveData<List<OnBoardingModel>>
-        get() = _onBoardingLiveData
-
+    val onBoardingLiveData: LiveData<List<OnBoardingModel>> get() = _onBoardingLiveData
     fun getOnBoardingData() = _onBoardingLiveData.postValue(repository.getOnBoardingData())
 }

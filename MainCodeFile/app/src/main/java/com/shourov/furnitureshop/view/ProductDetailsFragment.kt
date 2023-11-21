@@ -13,8 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.AppDatabase
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
@@ -31,7 +30,6 @@ class ProductDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentProductDetailsBinding
 
-    private lateinit var dao: AppDao
     private lateinit var repository: ProductDetailsRepository
     private lateinit var viewModel: ProductDetailsViewModel
 
@@ -55,8 +53,7 @@ class ProductDetailsFragment : Fragment() {
 
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
-        dao = AppDatabase.getDatabase(requireContext()).appDao()
-        repository = ProductDetailsRepository(dao)
+        repository = ProductDetailsRepository(database.appDao())
         viewModel = ViewModelProvider(this, ProductDetailsViewModelFactory(repository))[ProductDetailsViewModel::class.java]
 
         viewModel.getProductImages(productId)
@@ -64,39 +61,41 @@ class ProductDetailsFragment : Fragment() {
 
         observerList()
 
-        binding.favouriteIcon.setOnClickListener {
-            if (productInFavourite) {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
-                }
-            } else {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.insertFavourite(FavouriteTable(0, productId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
+        binding.apply {
+            favouriteIcon.setOnClickListener {
+                if (productInFavourite) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
+                    }
+                } else {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        viewModel.insertFavourite(FavouriteTable(0, productId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
+                    }
                 }
             }
-        }
 
-        binding.itemQuantityPlusIcon.setOnClickListener {
-            productQuantity++
-            viewModel.getTotalAmount(currentProduct.itemPrice, productQuantity)
-        }
-
-        binding.itemQuantityMinusIcon.setOnClickListener {
-            if (productQuantity > 1) {
-                productQuantity--
+            itemQuantityPlusIcon.setOnClickListener {
+                productQuantity++
                 viewModel.getTotalAmount(currentProduct.itemPrice, productQuantity)
             }
-        }
 
-        binding.addToCartButton.setOnClickListener{
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.insertShopping(ShoppingTable(0, productId, currentProduct.itemImage, currentProduct.itemName, currentProduct.itemCompanyName, currentProduct.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productQuantity, false))
+            itemQuantityMinusIcon.setOnClickListener {
+                if (productQuantity > 1) {
+                    productQuantity--
+                    viewModel.getTotalAmount(currentProduct.itemPrice, productQuantity)
+                }
             }
-        }
 
-        binding.removeFromShoppingButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
+            addToCartButton.setOnClickListener{
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.insertShopping(ShoppingTable(0, productId, currentProduct.itemImage, currentProduct.itemName, currentProduct.itemCompanyName, currentProduct.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productQuantity, false))
+                }
+            }
+
+            removeFromShoppingButton.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
+                }
             }
         }
 
@@ -106,19 +105,19 @@ class ProductDetailsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun observerList() {
         viewModel.productImageLiveData.observe(viewLifecycleOwner) {
-            for (item in it) {
-                productImageList.add(SlideModel(item?.productImage))
-            }
+            for (item in it) { productImageList.add(SlideModel(item?.productImage)) }
             binding.productImageSlider.setImageList(productImageList, ScaleTypes.FIT)
         }
 
         viewModel.productDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 currentProduct = it
-                binding.productNameTextview.text = it.itemName
-                binding.productPriceTextview.text = "$${it.itemPrice}"
-                binding.productDescriptionTextview.text = it.itemDescription
-                binding.itemCountTextview.text = productQuantity.toString()
+                binding.apply {
+                    productNameTextview.text = it.itemName
+                    productPriceTextview.text = "$${it.itemPrice}"
+                    productDescriptionTextview.text = it.itemDescription
+                    itemCountTextview.text = productQuantity.toString()
+                }
 
                 viewModel.getTotalAmount(it.itemPrice, productQuantity)
             }
@@ -126,8 +125,10 @@ class ProductDetailsFragment : Fragment() {
 
         viewModel.totalAmountLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                binding.itemCountTextview.text = productQuantity.toString()
-                binding.totalPriceTextview.text = "$${DecimalFormat("#.##").format(it)}"
+                binding.apply {
+                    itemCountTextview.text = productQuantity.toString()
+                    totalPriceTextview.text = "$${DecimalFormat("#.##").format(it)}"
+                }
             }
         }
 
@@ -144,11 +145,15 @@ class ProductDetailsFragment : Fragment() {
         viewModel.checkIfProductIsInShopping(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId).observe(viewLifecycleOwner) {
             productInShopping = it > 0
             if (productInShopping) {
-                binding.addToCartLayout.visibility = View.GONE
-                binding.removeFromShoppingButton.visibility = View.VISIBLE
+                binding.apply {
+                    addToCartLayout.visibility = View.GONE
+                    removeFromShoppingButton.visibility = View.VISIBLE
+                }
             } else {
-                binding.removeFromShoppingButton.visibility = View.GONE
-                binding.addToCartLayout.visibility = View.VISIBLE
+                binding.apply {
+                    removeFromShoppingButton.visibility = View.GONE
+                    addToCartLayout.visibility = View.VISIBLE
+                }
             }
         }
     }

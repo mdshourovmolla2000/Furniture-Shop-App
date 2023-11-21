@@ -19,13 +19,9 @@ class SpecialOffersListAdapter(private var itemList: ArrayList<SpecialOfferModel
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(itemList[position])
-    }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) = holder.onBind(itemList[position])
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,12 +29,12 @@ class SpecialOffersListAdapter(private var itemList: ArrayList<SpecialOfferModel
 
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: SpecialOfferModel) {
-            binding.itemImageview.loadImage(currentItem.itemImage)
-
-            binding.discountTitleTextview.text = currentItem.discountTitle
-            binding.discountTaglineTextview.text = currentItem.discountTagline
-            binding.actionButton.text = currentItem.actionText
-
+            binding.apply {
+                itemImageview.loadImage(currentItem.itemImage)
+                discountTitleTextview.text = currentItem.discountTitle
+                discountTaglineTextview.text = currentItem.discountTagline
+                actionButton.text = currentItem.actionText
+            }
         }
     }
 }

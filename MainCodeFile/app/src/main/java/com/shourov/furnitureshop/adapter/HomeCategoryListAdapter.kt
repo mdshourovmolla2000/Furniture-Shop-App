@@ -25,13 +25,9 @@ class HomeCategoryListAdapter(private val itemList: ArrayList<HomeCategoryModel>
         return ItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.onBind(itemList[position], position)
-    }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) = holder.onBind(itemList[position], position)
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
+    override fun getItemCount(): Int = itemList.size
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -39,18 +35,24 @@ class HomeCategoryListAdapter(private val itemList: ArrayList<HomeCategoryModel>
 
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: HomeCategoryModel, position: Int) {
-            binding.categoryImageImageview.loadImage(currentItem.categoryImage)
-            binding.categoryNameTextview.text = currentItem.categoryName
+            binding.apply {
+                categoryImageImageview.loadImage(currentItem.categoryImage)
+                categoryNameTextview.text = currentItem.categoryName
+            }
 
             //selecting bg color of current selected item
             if (currentIndex == position) {
-                binding.categoryNameCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.themeColor))
-                binding.categoryImageImageview.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
-                binding.categoryNameTextview.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
+                binding.apply {
+                    categoryNameCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.themeColor))
+                    categoryImageImageview.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
+                    categoryNameTextview.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
+                }
             } else {
-                binding.categoryNameCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
-                binding.categoryImageImageview.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
-                binding.categoryNameTextview.setTextColor(Color.parseColor("#828A89"))
+                binding.apply {
+                    categoryNameCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+                    categoryImageImageview.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+                    categoryNameTextview.setTextColor(Color.parseColor("#828A89"))
+                }
             }
 
             itemView.setOnClickListener {
