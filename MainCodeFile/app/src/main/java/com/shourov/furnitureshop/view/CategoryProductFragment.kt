@@ -44,7 +44,6 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCategoryProductBinding.inflate(inflater, container, false)
-        SharedPref.init(requireContext())
 
         categoryName = arguments?.getString("CATEGORY_NAME", "").toString()
 

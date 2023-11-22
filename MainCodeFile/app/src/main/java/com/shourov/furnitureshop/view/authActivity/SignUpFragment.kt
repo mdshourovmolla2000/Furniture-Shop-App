@@ -43,7 +43,10 @@ class SignUpFragment : Fragment() {
 
         binding.apply {
             signUpButton.setOnClickListener { checkUser(it) }
-            signInTextview.setOnClickListener { findNavController().popBackStack() }
+            signInTextview.setOnClickListener {
+            KeyboardManager.hideKeyBoard(requireContext(), it)
+                findNavController().popBackStack()
+            }
         }
 
         return binding.root
@@ -119,6 +122,8 @@ class SignUpFragment : Fragment() {
         }
     }
 }
+
+
 
 
 

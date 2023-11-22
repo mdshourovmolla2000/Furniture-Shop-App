@@ -162,6 +162,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
+                tools:listitem="@layout/single_special_offer_item_layout"
                 android:padding="@dimen/_2sdp"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -172,6 +173,7 @@
                 android:layout_marginTop="@dimen/_18sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
+                tools:listitem="@layout/single_home_category_item_layout"
                 android:padding="@dimen/_2sdp"/>
 
             <TextView
@@ -194,7 +196,8 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
-                android:padding="@dimen/_2sdp"/>
+                android:padding="@dimen/_2sdp"
+                tools:listitem="@layout/single_home_popular_product_item_layout"/>
 
             <TextView
                 android:id="@+id/noPopularItemLayout"

@@ -33,7 +33,6 @@ class OnBoardingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentOnBoardingBinding.inflate(inflater, container, false)
-        SharedPref.init(requireContext())
 
         viewModel = ViewModelProvider(this, OnBoardingViewModelFactory(OnBoardingRepository()))[OnBoardingViewModel::class.java]
 

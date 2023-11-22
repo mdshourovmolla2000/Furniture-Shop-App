@@ -9,11 +9,17 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.databinding.ActivityMainBinding
 import com.shourov.furnitureshop.databinding.DialogExitBinding
+import com.shourov.furnitureshop.repository.MainRepository
+import com.shourov.furnitureshop.utils.LoadingDialog
+import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.view_model.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,13 +28,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private var currentFragmentId = R.id.homeFragment
 
+    lateinit var viewModel: MainViewModel
+
+    private lateinit var loadingDialog: LoadingDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        SharedPref.init(this)
+        loadingDialog = LoadingDialog(this)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        viewModel = ViewModelProvider(this, MainViewModelFactory(MainRepository()))[MainViewModel::class.java]
+
+        observerList()
 
         //this will run every time when any fragment changes
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -98,6 +114,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun observerList() {
+        viewModel.loadingDialogLiveData.observe(this) { it?.let { isLoading -> if (isLoading) loadingDialog.show() else loadingDialog.dismiss() } }
+
+        viewModel.loadingDialogTextLiveData.observe(this) { loadingDialog.setText(it) }
+    }
+
     private fun bottomMenuSelectedColor(icon: ImageView, text: TextView) {
         binding.apply {
             bottomNavigationHomeMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
@@ -141,4 +163,13 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+}
+
+
+
+
+
+
+class MainViewModelFactory(private val repository: MainRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(repository) as T
 }

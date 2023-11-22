@@ -1,5 +1,6 @@
 package com.shourov.furnitureshop.view.authActivity
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
@@ -38,14 +39,16 @@ class SignInFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentSignInBinding.inflate(inflater, container, false)
-        SharedPref.init(requireContext())
 
         repository = SignInRepository(database.appDao())
         viewModel = ViewModelProvider(this, SignInViewModelFactory(repository))[SignInViewModel::class.java]
 
         binding.apply {
             signInButton.setOnClickListener { checkUser(it) }
-            signUpTextview.setOnClickListener { findNavController().navigate(R.id.action_signInFragment_to_signUpFragment) }
+            signUpTextview.setOnClickListener {
+                KeyboardManager.hideKeyBoard(requireContext(), it)
+                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+            }
         }
 
         return binding.root
@@ -109,8 +112,9 @@ class SignInFragment : Fragment() {
                     requireContext().showSuccessToast("Successfully signed in")
                     SharedPref.write("CURRENT_USER_ID", result.id.toString())
                     SharedPref.write("IS_SIGNED_IN", "yes")
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
-                    requireActivity().overridePendingTransition(R.anim.enter, R.anim.exit)
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.enter, R.anim.exit)
+                    startActivity(intent, options.toBundle())
                     requireActivity().finish()
                 }
                 binding.signInButton.isClickable = true
@@ -118,6 +122,9 @@ class SignInFragment : Fragment() {
         }
     }
 }
+
+
+
 
 
 class SignInViewModelFactory(private val repository: SignInRepository): ViewModelProvider.Factory {

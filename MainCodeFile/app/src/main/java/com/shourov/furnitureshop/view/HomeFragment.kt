@@ -73,7 +73,6 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        SharedPref.init(requireContext())
 
         repository = HomeRepository(database.appDao())
         viewModel = ViewModelProvider(this, HomeViewModelFactory(repository))[HomeViewModel::class.java]

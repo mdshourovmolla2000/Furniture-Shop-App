@@ -47,7 +47,6 @@ class ProductDetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
-        SharedPref.init(requireContext())
 
         productId = arguments?.getString("PRODUCT_ID").toString()
 

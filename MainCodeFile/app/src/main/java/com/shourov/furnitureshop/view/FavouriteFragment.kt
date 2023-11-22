@@ -41,7 +41,6 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentFavouriteBinding.inflate(inflater, container, false)
-        SharedPref.init(requireContext())
 
         binding.backIcon.setOnClickListener { findNavController().popBackStack() }
 
