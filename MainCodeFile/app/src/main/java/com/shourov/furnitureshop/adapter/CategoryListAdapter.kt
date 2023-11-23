@@ -36,7 +36,7 @@ class CategoryListAdapter(private val itemList: ArrayList<CategoryModel>, privat
 
             listener.onLoadCategoryItem(currentItem, binding.categoryProductCountTextview)
 
-            itemView.setOnClickListener { listener.onCategoryItemClick(currentItem.categoryName) }
+            itemView.setOnClickListener { listener.onCategoryItemClick(currentItem.categoryName!!) }
         }
     }
 }

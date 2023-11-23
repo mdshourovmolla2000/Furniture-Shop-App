@@ -1,6 +1,5 @@
 package com.shourov.furnitureshop.view.authActivity
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -9,9 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentSignUpBinding
@@ -21,9 +18,6 @@ import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.utils.showSuccessToast
 import com.shourov.furnitureshop.view_model.SignUpViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SignUpFragment : Fragment() {
 
@@ -44,7 +38,7 @@ class SignUpFragment : Fragment() {
         binding.apply {
             signUpButton.setOnClickListener { checkUser(it) }
             signInTextview.setOnClickListener {
-            KeyboardManager.hideKeyBoard(requireContext(), it)
+                KeyboardManager.hideKeyBoard(requireContext(), it)
                 findNavController().popBackStack()
             }
         }
@@ -71,54 +65,47 @@ class SignUpFragment : Fragment() {
             KeyboardManager.showKeyboard(binding.emailEdittext)
             return
         }
-        lifecycleScope.launch(Dispatchers.IO) {
-            val count = viewModel.checkIfUserExists(binding.emailEdittext.text.toString().trim())
-
-            withContext(Dispatchers.Main) {
-                if (count > 0) {
-                    binding.emailEdittext.error = "email already registered"
-                    binding.emailEdittext.requestFocus()
-                    KeyboardManager.showKeyboard(binding.emailEdittext)
-                    return@withContext
-                } else {
-                    if (binding.passwordEdittext.text.toString().isEmpty()) {
-                        binding.passwordEdittext.error = "Enter password"
-                        binding.passwordEdittext.requestFocus()
-                        KeyboardManager.showKeyboard(binding.passwordEdittext)
-                        return@withContext
-                    }
-                    if (binding.passwordEdittext.text.toString().length < 6) {
-                        binding.passwordEdittext.error = "Must be 6 character"
-                        binding.passwordEdittext.requestFocus()
-                        KeyboardManager.showKeyboard(binding.passwordEdittext)
-                        return@withContext
-                    }
-                    KeyboardManager.hideKeyBoard(requireContext(), view)
-                    if (NetworkManager.isInternetAvailable(requireContext())) {
-                        binding.signUpButton.isClickable = false
-                        insertUser()
-                    } else {
-                        requireContext().showErrorToast("No internet available")
-                    }
-                }
-            }
+        if (binding.passwordEdittext.text.toString().isEmpty()) {
+            binding.passwordEdittext.error = "Enter password"
+            binding.passwordEdittext.requestFocus()
+            KeyboardManager.showKeyboard(binding.passwordEdittext)
+            return
+        }
+        if (binding.passwordEdittext.text.toString().length < 6) {
+            binding.passwordEdittext.error = "Must be 6 character"
+            binding.passwordEdittext.requestFocus()
+            KeyboardManager.showKeyboard(binding.passwordEdittext)
+            return
         }
 
+        KeyboardManager.hideKeyBoard(requireContext(), view)
+        if (NetworkManager.isInternetAvailable(requireContext())) {
+            try { (activity as AuthActivity).viewModel.setLoadingDialogText("Creating account") } catch (_: Exception) { }
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(true) } catch (_: Exception) { }
+
+            signUpUser(UserTable(0, binding.nameEdittext.text.toString().trim(), binding.emailEdittext.text.toString().trim(), binding.passwordEdittext.text.toString().trim(), ""))
+        } else {
+            requireContext().showErrorToast("No internet available")
+        }
     }
 
-    private fun insertUser() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = viewModel.insertUser(UserTable(0, binding.nameEdittext.text.toString().trim(), binding.emailEdittext.text.toString().trim(), binding.passwordEdittext.text.toString().trim(), Uri.parse("android.resource://" + requireContext().packageName + "/" + R.drawable.user_profile_pic_placeholder_image).toString()))
-
-            withContext(Dispatchers.Main) {
-                if (result > 0) {
-                    requireContext().showSuccessToast("Account created successfully")
-                    findNavController().popBackStack()
-                } else {
-                    requireContext().showErrorToast("Something wrong")
+    private fun signUpUser(user: UserTable?) {
+        viewModel.signUp(user) { message ->
+            when(message) {
+                "Email already registered" -> {
+                    binding.emailEdittext.error = message
+                    binding.emailEdittext.requestFocus()
                 }
-                binding.signUpButton.isClickable = true
+                "Account created successfully" -> {
+                    requireContext().showSuccessToast(message)
+                    findNavController().popBackStack()
+                }
+                "Something wrong" -> {
+                    requireContext().showErrorToast(message)
+                }
             }
+
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }
         }
     }
 }

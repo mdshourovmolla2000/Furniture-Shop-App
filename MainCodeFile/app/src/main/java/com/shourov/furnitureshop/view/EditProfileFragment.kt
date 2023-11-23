@@ -71,7 +71,7 @@ class EditProfileFragment : Fragment() {
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 user = it
-                binding.profilePicImageview.loadImage(it.profilePic.toUri())
+                binding.profilePicImageview.loadImage(it.profilePic?.toUri())
                 binding.nameEdittext.setText(it.name)
             }
         }

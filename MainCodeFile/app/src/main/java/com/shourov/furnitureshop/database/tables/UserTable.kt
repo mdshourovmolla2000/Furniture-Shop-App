@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 data class UserTable(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    var name: String,
-    val email: String,
-    var password: String,
-    var profilePic: String
+    var name: String? = "",
+    val email: String? = "",
+    var password: String? = "",
+    var profilePic: String? = ""
 )

@@ -97,7 +97,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
-                    profilePicImageview.loadImage(it.profilePic.toUri())
+                    profilePicImageview.loadImage(it.profilePic?.toUri())
                     userNameTextview.text = it.name
                 }
             }

@@ -60,7 +60,7 @@ class HomeCategoryListAdapter(private val itemList: ArrayList<HomeCategoryModel>
                     "More" -> itemClickListener.onCategoryItemClick("More", position)
                     else -> {
                         currentIndex = position
-                        itemClickListener.onCategoryItemClick(currentItem.categoryName, position)
+                        itemClickListener.onCategoryItemClick(currentItem.categoryName!!, position)
                         notifyDataSetChanged()
                     }
                 }
