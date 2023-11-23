@@ -20,7 +20,7 @@ import com.shourov.furnitureshop.databinding.FragmentShoppingBinding
 import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
 import com.shourov.furnitureshop.repository.ShoppingRepository
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.view_model.ShoppingViewModel
+import com.shourov.furnitureshop.viewModel.ShoppingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

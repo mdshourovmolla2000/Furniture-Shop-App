@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view.welcomeActivity
+package com.shourov.furnitureshop.view.welcomePage
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,8 +15,8 @@ import com.shourov.furnitureshop.databinding.FragmentOnBoardingBinding
 import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.repository.OnBoardingRepository
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.view.authActivity.AuthActivity
-import com.shourov.furnitureshop.view_model.OnBoardingViewModel
+import com.shourov.furnitureshop.view.authPage.AuthActivity
+import com.shourov.furnitureshop.viewModel.OnBoardingViewModel
 
 class OnBoardingFragment : Fragment() {
 

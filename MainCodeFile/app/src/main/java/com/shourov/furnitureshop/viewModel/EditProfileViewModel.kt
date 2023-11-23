@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view_model
+package com.shourov.furnitureshop.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

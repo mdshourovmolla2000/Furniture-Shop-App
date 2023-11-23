@@ -31,7 +31,7 @@ import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.repository.HomeRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
-import com.shourov.furnitureshop.view_model.HomeViewModel
+import com.shourov.furnitureshop.viewModel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

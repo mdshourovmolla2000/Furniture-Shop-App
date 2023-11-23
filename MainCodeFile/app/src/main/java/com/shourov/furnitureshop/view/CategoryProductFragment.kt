@@ -24,7 +24,7 @@ import com.shourov.furnitureshop.interfaces.CategoryProductItemClickListener
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.CategoryProductRepository
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.view_model.CategoryProductViewModel
+import com.shourov.furnitureshop.viewModel.CategoryProductViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

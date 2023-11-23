@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view.welcomeActivity
+package com.shourov.furnitureshop.view.welcomePage
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -14,7 +14,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.databinding.FragmentSplashBinding
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.view.MainActivity
-import com.shourov.furnitureshop.view.authActivity.AuthActivity
+import com.shourov.furnitureshop.view.authPage.AuthActivity
 
 class SplashFragment : Fragment() {
     private lateinit var binding: FragmentSplashBinding

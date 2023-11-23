@@ -22,7 +22,7 @@ import com.shourov.furnitureshop.interfaces.FavouriteItemClickListener
 import com.shourov.furnitureshop.repository.FavouriteRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
-import com.shourov.furnitureshop.view_model.FavouriteViewModel
+import com.shourov.furnitureshop.viewModel.FavouriteViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

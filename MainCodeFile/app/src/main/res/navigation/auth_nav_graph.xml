@@ -6,7 +6,7 @@
     app:startDestination="@id/signInFragment">
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.shourov.furnitureshop.view.authActivity.SignInFragment"
+        android:name="com.shourov.furnitureshop.view.authPage.SignInFragment"
         android:label="Sign In"
         tools:layout="@layout/fragment_sign_in" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.shourov.furnitureshop.view.authActivity.SignUpFragment"
+        android:name="com.shourov.furnitureshop.view.authPage.SignUpFragment"
         android:label="Sign Up"
         tools:layout="@layout/fragment_sign_up" />
 </navigation>

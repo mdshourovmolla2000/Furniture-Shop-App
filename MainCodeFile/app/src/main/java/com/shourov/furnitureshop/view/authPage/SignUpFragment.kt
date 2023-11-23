@@ -1,7 +1,5 @@
-package com.shourov.furnitureshop.view.authActivity
+package com.shourov.furnitureshop.view.authPage
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -11,39 +9,37 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
-import com.shourov.furnitureshop.databinding.FragmentSignInBinding
-import com.shourov.furnitureshop.repository.SignInRepository
+import com.shourov.furnitureshop.database.tables.UserTable
+import com.shourov.furnitureshop.databinding.FragmentSignUpBinding
+import com.shourov.furnitureshop.repository.SignUpRepository
 import com.shourov.furnitureshop.utils.KeyboardManager
 import com.shourov.furnitureshop.utils.NetworkManager
-import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.utils.showSuccessToast
-import com.shourov.furnitureshop.view.MainActivity
-import com.shourov.furnitureshop.view_model.SignInViewModel
+import com.shourov.furnitureshop.viewModel.SignUpViewModel
 
-class SignInFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
-    private lateinit var binding: FragmentSignInBinding
-    private lateinit var repository: SignInRepository
-    private lateinit var viewModel: SignInViewModel
+    private lateinit var binding: FragmentSignUpBinding
+    private lateinit var repository: SignUpRepository
+    private lateinit var viewModel: SignUpViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentSignInBinding.inflate(inflater, container, false)
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
 
-        repository = SignInRepository(database.appDao())
-        viewModel = ViewModelProvider(this, SignInViewModelFactory(repository))[SignInViewModel::class.java]
+        repository = SignUpRepository(database.appDao())
+        viewModel = ViewModelProvider(this, SignUpViewModelFactory(repository))[SignUpViewModel::class.java]
 
         binding.apply {
-            signInButton.setOnClickListener { checkUser(it) }
-            signUpTextview.setOnClickListener {
+            signUpButton.setOnClickListener { checkUser(it) }
+            signInTextview.setOnClickListener {
                 KeyboardManager.hideKeyBoard(requireContext(), it)
-                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+                findNavController().popBackStack()
             }
         }
 
@@ -51,6 +47,12 @@ class SignInFragment : Fragment() {
     }
 
     private fun checkUser(view: View) {
+        if (binding.nameEdittext.text.toString().trim().isEmpty()) {
+            binding.nameEdittext.error = "Enter name"
+            binding.nameEdittext.requestFocus()
+            KeyboardManager.showKeyboard(binding.nameEdittext)
+            return
+        }
         if (binding.emailEdittext.text.toString().trim().isEmpty()) {
             binding.emailEdittext.error = "Enter email"
             binding.emailEdittext.requestFocus()
@@ -63,13 +65,13 @@ class SignInFragment : Fragment() {
             KeyboardManager.showKeyboard(binding.emailEdittext)
             return
         }
-        if (binding.passwordEdittext.text.toString().trim().isEmpty()) {
+        if (binding.passwordEdittext.text.toString().isEmpty()) {
             binding.passwordEdittext.error = "Enter password"
             binding.passwordEdittext.requestFocus()
             KeyboardManager.showKeyboard(binding.passwordEdittext)
             return
         }
-        if (binding.passwordEdittext.text.toString().trim().length < 6) {
+        if (binding.passwordEdittext.text.toString().length < 6) {
             binding.passwordEdittext.error = "Must be 6 character"
             binding.passwordEdittext.requestFocus()
             KeyboardManager.showKeyboard(binding.passwordEdittext)
@@ -78,34 +80,28 @@ class SignInFragment : Fragment() {
 
         KeyboardManager.hideKeyBoard(requireContext(), view)
         if (NetworkManager.isInternetAvailable(requireContext())) {
-            try { (activity as AuthActivity).viewModel.setLoadingDialogText("Signing in") } catch (_: Exception) { }
+            try { (activity as AuthActivity).viewModel.setLoadingDialogText("Creating account") } catch (_: Exception) { }
             try { (activity as AuthActivity).viewModel.setLoadingDialog(true) } catch (_: Exception) { }
 
-            signInUser(binding.emailEdittext.text.toString().trim(), binding.passwordEdittext.text.toString().trim())
+            signUpUser(UserTable(0, binding.nameEdittext.text.toString().trim(), binding.emailEdittext.text.toString().trim(), binding.passwordEdittext.text.toString().trim(), ""))
         } else {
             requireContext().showErrorToast("No internet available")
         }
     }
 
-    private fun signInUser(email: String?, password: String?) {
-        viewModel.signIn(email, password) { data, message ->
+    private fun signUpUser(user: UserTable?) {
+        viewModel.signUp(user) { message ->
             when(message) {
-                "Email not registered" -> {
+                "Email already registered" -> {
                     binding.emailEdittext.error = message
                     binding.emailEdittext.requestFocus()
                 }
-                "Password incorrect" -> {
-                    binding.passwordEdittext.error = message
-                    binding.passwordEdittext.requestFocus()
-                }
-                "Successfully signed in" -> {
+                "Account created successfully" -> {
                     requireContext().showSuccessToast(message)
-                    SharedPref.write("CURRENT_USER_ID", data?.id.toString())
-                    SharedPref.write("IS_SIGNED_IN", "yes")
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.enter, R.anim.exit)
-                    startActivity(intent, options.toBundle())
-                    requireActivity().finish()
+                    findNavController().popBackStack()
+                }
+                "Something wrong" -> {
+                    requireContext().showErrorToast(message)
                 }
             }
 
@@ -118,6 +114,6 @@ class SignInFragment : Fragment() {
 
 
 
-class SignInViewModelFactory(private val repository: SignInRepository): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = SignInViewModel(repository) as T
+class SignUpViewModelFactory(private val repository: SignUpRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = SignUpViewModel(repository) as T
 }

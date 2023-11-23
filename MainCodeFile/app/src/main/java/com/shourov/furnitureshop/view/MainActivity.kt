@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -19,7 +20,7 @@ import com.shourov.furnitureshop.databinding.DialogExitBinding
 import com.shourov.furnitureshop.repository.MainRepository
 import com.shourov.furnitureshop.utils.LoadingDialog
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.view_model.MainViewModel
+import com.shourov.furnitureshop.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -133,8 +134,8 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationProfileMenuTextview.setTextColor(Color.parseColor("#828A89"))
         }
 
-        icon.setColorFilter(Color.parseColor("#0C8A7B"), PorterDuff.Mode.SRC_IN)
-        text.setTextColor(Color.parseColor("#0C8A7B"))
+        icon.setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_IN)
+        text.setTextColor(ContextCompat.getColor(this, R.color.themeColor))
     }
 
     override fun onBackPressed() {

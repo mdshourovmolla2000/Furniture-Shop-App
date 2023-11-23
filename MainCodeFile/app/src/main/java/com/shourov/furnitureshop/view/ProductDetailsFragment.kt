@@ -21,7 +21,7 @@ import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
-import com.shourov.furnitureshop.view_model.ProductDetailsViewModel
+import com.shourov.furnitureshop.viewModel.ProductDetailsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat

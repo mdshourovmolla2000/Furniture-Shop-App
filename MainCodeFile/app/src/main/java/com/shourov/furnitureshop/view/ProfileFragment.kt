@@ -20,8 +20,8 @@ import com.shourov.furnitureshop.databinding.FragmentProfileBinding
 import com.shourov.furnitureshop.repository.ProfileRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
-import com.shourov.furnitureshop.view.welcomeActivity.WelcomeActivity
-import com.shourov.furnitureshop.view_model.ProfileViewModel
+import com.shourov.furnitureshop.view.welcomePage.WelcomeActivity
+import com.shourov.furnitureshop.viewModel.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 

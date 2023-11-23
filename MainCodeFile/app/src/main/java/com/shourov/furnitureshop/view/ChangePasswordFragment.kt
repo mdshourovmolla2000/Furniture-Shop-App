@@ -16,7 +16,7 @@ import com.shourov.furnitureshop.repository.ChangePasswordRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.utils.showSuccessToast
-import com.shourov.furnitureshop.view_model.ChangePasswordViewModel
+import com.shourov.furnitureshop.viewModel.ChangePasswordViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

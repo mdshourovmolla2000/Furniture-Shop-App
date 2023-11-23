@@ -24,7 +24,7 @@ import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.utils.showInfoToast
 import com.shourov.furnitureshop.utils.showSuccessToast
-import com.shourov.furnitureshop.view_model.EditProfileViewModel
+import com.shourov.furnitureshop.viewModel.EditProfileViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

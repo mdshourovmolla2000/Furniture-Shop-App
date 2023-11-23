@@ -17,7 +17,7 @@ import com.shourov.furnitureshop.databinding.FragmentCategoryBinding
 import com.shourov.furnitureshop.interfaces.CategoryItemClickListener
 import com.shourov.furnitureshop.model.CategoryModel
 import com.shourov.furnitureshop.repository.CategoryRepository
-import com.shourov.furnitureshop.view_model.CategoryViewModel
+import com.shourov.furnitureshop.viewModel.CategoryViewModel
 
 class CategoryFragment : Fragment(), CategoryItemClickListener {
 

@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view.authActivity
+package com.shourov.furnitureshop.view.authPage
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.repository.AuthRepository
 import com.shourov.furnitureshop.utils.LoadingDialog
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.view_model.AuthViewModel
+import com.shourov.furnitureshop.viewModel.AuthViewModel
 
 class AuthActivity : AppCompatActivity() {
 

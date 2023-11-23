@@ -6,7 +6,7 @@
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.shourov.furnitureshop.view.welcomeActivity.SplashFragment"
+        android:name="com.shourov.furnitureshop.view.welcomePage.SplashFragment"
         android:label="Splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.shourov.furnitureshop.view.welcomeActivity.OnBoardingFragment"
+        android:name="com.shourov.furnitureshop.view.welcomePage.OnBoardingFragment"
         android:label="On Boarding"
         tools:layout="@layout/fragment_on_boarding" />
 </navigation>
