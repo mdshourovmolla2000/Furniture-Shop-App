@@ -8,10 +8,9 @@ import com.bumptech.glide.Glide
 import com.shourov.furnitureshop.R
 import es.dmoral.toasty.Toasty
 
-fun ImageView.loadImage(resource: Int?, placeholder: Int = R.drawable.image_placeholder_square) = Glide.with(this.context).load(resource).placeholder(placeholder).error(placeholder).into(this)
+fun ImageView.loadImage(resource: Int?, placeholder: Int = R.drawable.image_placeholder_square) = Glide.with(this.context).load(resource).placeholder(placeholder).error(placeholder).skipMemoryCache(true).into(this)
 
-fun ImageView.loadImage(resource: Uri?, placeholder: Int = R.drawable.image_placeholder_square) = Glide.with(this.context).load(resource).placeholder(placeholder).error(placeholder).into(this)
-
+fun ImageView.loadImage(resource: Uri?, placeholder: Int = R.drawable.image_placeholder_square) = Glide.with(this.context).load(resource).placeholder(placeholder).error(placeholder).skipMemoryCache(true).into(this)
 
 fun Context.showSuccessToast(
     message: String,

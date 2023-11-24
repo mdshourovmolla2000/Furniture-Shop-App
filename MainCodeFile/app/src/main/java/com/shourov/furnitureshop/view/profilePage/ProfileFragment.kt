@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.profilePage
 
 import android.app.ActivityOptions
 import android.app.AlertDialog

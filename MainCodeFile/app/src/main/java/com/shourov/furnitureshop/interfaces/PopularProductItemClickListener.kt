@@ -7,5 +7,5 @@ import com.shourov.furnitureshop.model.ProductModel
 interface PopularProductItemClickListener {
     fun onLoadProductItem(currentItem: ProductModel, cartIconCardView: CardView, cartIconImageview: ImageView)
 
-    fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickOn: String?)
+    fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickedOn: String?)
 }

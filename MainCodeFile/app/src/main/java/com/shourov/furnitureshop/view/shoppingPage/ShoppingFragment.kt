@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.shoppingPage
 
 import android.annotation.SuppressLint
 import android.os.Bundle

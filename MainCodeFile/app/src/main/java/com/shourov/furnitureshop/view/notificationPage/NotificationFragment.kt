@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.notificationPage
 
 import android.os.Bundle
 import android.view.LayoutInflater

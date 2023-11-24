@@ -40,11 +40,9 @@ class SignInFragment : Fragment() {
         viewModel = ViewModelProvider(this, SignInViewModelFactory(repository))[SignInViewModel::class.java]
 
         binding.apply {
+            forgotPasswordTextview.setOnClickListener { findNavController().navigate(R.id.action_signInFragment_to_forgotPasswordFragment) }
             signInButton.setOnClickListener { checkUser(it) }
-            signUpTextview.setOnClickListener {
-                KeyboardManager.hideKeyBoard(requireContext(), it)
-                findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
-            }
+            signUpTextview.setOnClickListener { findNavController().navigate(R.id.action_signInFragment_to_signUpFragment) }
         }
 
         return binding.root

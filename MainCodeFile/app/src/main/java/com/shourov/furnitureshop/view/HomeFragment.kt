@@ -97,7 +97,11 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
-                    profilePicImageview.loadImage(it.profilePic?.toUri())
+                    if (it.profilePic.isNullOrEmpty()) {
+                        profilePicImageview.loadImage(R.drawable.user_profile_pic_placeholder_image)
+                    } else {
+                        profilePicImageview.loadImage(it.profilePic?.toUri())
+                    }
                     userNameTextview.text = it.name
                 }
             }
@@ -159,8 +163,8 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         }
     }
 
-    override fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickOn: String?) {
-        when(clickOn) {
+    override fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickedOn: String?) {
+        when(clickedOn) {
             "MAIN_ITEM" -> {
                 val bundle = bundleOf(
                     "PRODUCT_ID" to currentItem.itemId
@@ -170,7 +174,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
             "CART_ICON" -> {
                 val cartIconCardViewBgColor = cartIconCardView.cardBackgroundColor.defaultColor
                 val hexColor = String.format("#%06X", 0xFFFFFF and cartIconCardViewBgColor)
-                if (hexColor == "#0C8A7B") {
+                if (hexColor == String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(requireContext(), R.color.themeColor))) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
                     }

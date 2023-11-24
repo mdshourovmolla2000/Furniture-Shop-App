@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.shourov.furnitureshop.view.FavouriteFragment"
+        android:name="com.shourov.furnitureshop.view.favouritePage.FavouriteFragment"
         android:label="Favourite"
         tools:layout="@layout/fragment_favourite" >
         <action
@@ -72,7 +72,7 @@
         tools:layout="@layout/fragment_product_details" />
     <fragment
         android:id="@+id/shoppingFragment"
-        android:name="com.shourov.furnitureshop.view.ShoppingFragment"
+        android:name="com.shourov.furnitureshop.view.shoppingPage.ShoppingFragment"
         android:label="Shopping"
         tools:layout="@layout/fragment_shopping" >
         <action
@@ -98,7 +98,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.shourov.furnitureshop.view.ProfileFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -145,22 +145,22 @@
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.shourov.furnitureshop.view.NotificationFragment"
+        android:name="com.shourov.furnitureshop.view.notificationPage.NotificationFragment"
         android:label="Notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/supportCenterFragment"
-        android:name="com.shourov.furnitureshop.view.SupportCenterFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.SupportCenterFragment"
         android:label="Support Center"
         tools:layout="@layout/fragment_support_center" />
     <fragment
         android:id="@+id/policyFragment"
-        android:name="com.shourov.furnitureshop.view.PolicyFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.PolicyFragment"
         android:label="Policy"
         tools:layout="@layout/fragment_policy" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.shourov.furnitureshop.view.EditProfileFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.editProfilePage.EditProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action
@@ -173,12 +173,12 @@
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.shourov.furnitureshop.view.ChangePasswordFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.editProfilePage.ChangePasswordFragment"
         android:label="Change Password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/deliveryAddressFragment"
-        android:name="com.shourov.furnitureshop.view.DeliveryAddressFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.DeliveryAddressFragment"
         android:label="Delivery Address"
         tools:layout="@layout/fragment_delivery_address" />
 </navigation>

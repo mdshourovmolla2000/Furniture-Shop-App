@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.profilePage.editProfilePage
 
 import android.app.Activity
 import android.os.Bundle
