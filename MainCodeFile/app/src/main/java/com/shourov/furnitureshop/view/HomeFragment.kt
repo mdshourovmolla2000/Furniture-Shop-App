@@ -16,12 +16,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.HomeCategoryListAdapter
 import com.shourov.furnitureshop.adapter.PopularProductListAdapter
 import com.shourov.furnitureshop.adapter.SpecialOffersListAdapter
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.ShoppingTable
+import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentHomeBinding
 import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
 import com.shourov.furnitureshop.interfaces.PopularProductItemClickListener
@@ -90,6 +92,8 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
             popularItemsRecyclerview.adapter = PopularProductListAdapter(popularProductList, this@HomeFragment)
         }
 
+        updateView()
+
         return binding.root
     }
 
@@ -97,12 +101,8 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
-                    if (it.profilePic.isNullOrEmpty()) {
-                        profilePicImageview.loadImage(R.drawable.user_profile_pic_placeholder_image)
-                    } else {
-                        profilePicImageview.loadImage(it.profilePic?.toUri())
-                    }
-                    userNameTextview.text = it.name
+                    SharedPref.write("PROFILE_RESPONSE", Gson().toJson(it))
+                    updateView()
                 }
             }
         }
@@ -184,6 +184,23 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                     }
                 }
             }
+        }
+    }
+
+    private fun updateView() {
+        if (SharedPref.read("PROFILE_RESPONSE", "").isNullOrEmpty()) {
+        } else {
+            try {
+                val response = Gson().fromJson(SharedPref.read("PROFILE_RESPONSE", ""), UserTable::class.java)
+                binding.apply {
+                    if (response.profilePic.isNullOrEmpty()) {
+                        profilePicImageview.loadImage(R.drawable.user_profile_pic_placeholder_image)
+                    } else {
+                        profilePicImageview.loadImage(response.profilePic?.toUri())
+                    }
+                    userNameTextview.text = response.name
+                }
+            } catch (_: Exception) { }
         }
     }
 }

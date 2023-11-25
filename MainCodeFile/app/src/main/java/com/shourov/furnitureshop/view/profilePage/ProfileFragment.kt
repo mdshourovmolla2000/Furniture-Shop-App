@@ -10,25 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.application.BaseApplication.Companion.database
+import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.DialogLogoutBinding
 import com.shourov.furnitureshop.databinding.FragmentProfileBinding
-import com.shourov.furnitureshop.repository.ProfileRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.view.welcomePage.WelcomeActivity
-import com.shourov.furnitureshop.viewModel.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-    private lateinit var repository: ProfileRepository
-    private lateinit var viewModel: ProfileViewModel
     private var scrollPosition = 0
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -54,11 +49,6 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        repository = ProfileRepository(database.appDao())
-        viewModel = ViewModelProvider(this, ProfileViewModelFactory(repository))[ProfileViewModel::class.java]
-
-        observerList()
-
         binding.apply {
             backIcon.setOnClickListener { findNavController().popBackStack() }
 
@@ -73,19 +63,9 @@ class ProfileFragment : Fragment() {
             logoutButton.setOnClickListener { logoutDialog() }
         }
 
-        return binding.root
-    }
+        updateView()
 
-    private fun observerList() {
-        viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
-            it?.let {
-                binding.apply {
-                    profilePicImageview.loadImage(it.profilePic?.toUri())
-                    userNameTextview.text = it.name
-                    userEmailTextview.text = it.email
-                }
-            }
-        }
+        return binding.root
     }
 
     private fun logoutDialog() {
@@ -115,12 +95,19 @@ class ProfileFragment : Fragment() {
 
         alertDialog.show()
     }
-}
 
-
-
-
-
-class ProfileViewModelFactory(private val repository: ProfileRepository): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = ProfileViewModel(repository) as T
+    private fun updateView() {
+        try {
+            val response = Gson().fromJson(SharedPref.read("PROFILE_RESPONSE", ""), UserTable::class.java)
+            binding.apply {
+                if (response.profilePic.isNullOrEmpty()) {
+                    profilePicImageview.loadImage(R.drawable.user_profile_pic_placeholder_image)
+                } else {
+                    profilePicImageview.loadImage(response.profilePic?.toUri())
+                }
+                userNameTextview.text = response.name
+                userEmailTextview.text = response.email
+            }
+        } catch (_: Exception) { }
+    }
 }

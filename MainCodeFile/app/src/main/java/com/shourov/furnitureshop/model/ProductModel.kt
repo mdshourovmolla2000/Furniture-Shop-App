@@ -4,7 +4,7 @@ import com.shourov.furnitureshop.R
 
 data class ProductModel(
     val itemId: String? = "1",
-    val itemImage: Int? = R.drawable.image_placeholder_square,
+    val itemImage: Int? = R.drawable.loading_image,
     val itemName: String? = "",
     val itemCompanyName: String? = "",
     val itemDescription: String? = "",

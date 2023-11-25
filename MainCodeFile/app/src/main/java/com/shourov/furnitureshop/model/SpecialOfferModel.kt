@@ -6,5 +6,5 @@ data class SpecialOfferModel(
     val discountTitle: String? = "",
     val discountTagline: String? = "",
     val actionText: String? = "",
-    val itemImage: Int? = R.drawable.image_placeholder_square
+    val itemImage: Int? = R.drawable.loading_image
 )

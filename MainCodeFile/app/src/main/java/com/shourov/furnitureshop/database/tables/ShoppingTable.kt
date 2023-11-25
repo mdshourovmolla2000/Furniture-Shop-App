@@ -9,7 +9,7 @@ data class ShoppingTable(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val productId: String? = "1",
-    val itemImage: Int? = R.drawable.image_placeholder_square,
+    val itemImage: Int? = R.drawable.loading_image,
     val itemName: String? = "",
     val itemCompany: String? = "",
     val itemPrice: Double? = 0.0,

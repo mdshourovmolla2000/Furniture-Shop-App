@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            android:src="@drawable/image_placeholder_square"
+            android:src="@drawable/loading_image"
             android:layout_margin="@dimen/_10sdp"/>
 
         <TextView

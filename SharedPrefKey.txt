@@ -1,3 +1,4 @@
 IS_SIGNED_IN - String (yes,no)
 IS_ONBOARDING_SCREEN_SHOWED - String (yes,no)
 CURRENT_USER_ID - String
+PROFILE_RESPONSE - String
