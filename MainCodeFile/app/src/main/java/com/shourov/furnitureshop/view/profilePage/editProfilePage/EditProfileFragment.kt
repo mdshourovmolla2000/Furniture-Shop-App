@@ -11,23 +11,23 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.gson.Gson
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentEditProfileBinding
 import com.shourov.furnitureshop.repository.EditProfileRepository
+import com.shourov.furnitureshop.utils.KeyboardManager
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.utils.showInfoToast
 import com.shourov.furnitureshop.utils.showSuccessToast
+import com.shourov.furnitureshop.view.authPage.AuthActivity
 import com.shourov.furnitureshop.viewModel.EditProfileViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class EditProfileFragment : Fragment() {
 
@@ -61,7 +61,7 @@ class EditProfileFragment : Fragment() {
                     }
             }
             changePasswordTextview.setOnClickListener { findNavController().navigate(R.id.action_editProfileFragment_to_changePasswordFragment) }
-            updateProfileButton.setOnClickListener { updateProfile() }
+            updateProfileButton.setOnClickListener { checkInput(it) }
         }
 
         return binding.root
@@ -71,29 +71,50 @@ class EditProfileFragment : Fragment() {
         viewModel.getUserInfo(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             it?.let {
                 user = it
-                binding.profilePicImageview.loadImage(it.profilePic?.toUri())
-                binding.nameEdittext.setText(it.name)
+                SharedPref.write("PROFILE_RESPONSE", Gson().toJson(it))
+                binding.apply {
+                    if (user.profilePic.isNullOrEmpty()) {
+                        profilePicImageview.loadImage(R.drawable.user_profile_pic_placeholder_image)
+                    } else {
+                        profilePicImageview.loadImage(user.profilePic?.toUri())
+                    }
+                    nameEdittext.setText(it.name)
+                }
             }
         }
     }
 
-    private fun updateProfile() {
+    private fun checkInput(view: View) {
         if (binding.nameEdittext.text.toString().trim().isEmpty()) {
             binding.nameEdittext.error = "Enter name"
             binding.nameEdittext.requestFocus()
             return
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = viewModel.updateUserInfo(user)
+        KeyboardManager.hideKeyBoard(requireContext(), view)
+        if (NetworkManager.isInternetAvailable(requireContext())) {
+            user.name = binding.nameEdittext.text.toString().trim()
+            try { (activity as AuthActivity).viewModel.setLoadingDialogText("Updating profile") } catch (_: Exception) { }
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(true) } catch (_: Exception) { }
 
-            withContext(Dispatchers.Main) {
-                if (result > 0) {
-                    requireContext().showSuccessToast("Updated")
-                } else {
-                    requireContext().showErrorToast("Something wrong")
+            updateProfile()
+        } else {
+            requireContext().showErrorToast("No internet available")
+        }
+    }
+
+    private fun updateProfile() {
+        viewModel.updateProfile(user) { message ->
+            when(message) {
+                "Updated" -> {
+                    requireContext().showSuccessToast(message)
+                }
+                "Something wrong" -> {
+                    requireContext().showErrorToast(message)
                 }
             }
+
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }
         }
     }
 

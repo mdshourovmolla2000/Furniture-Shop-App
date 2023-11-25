@@ -13,7 +13,7 @@ fun ImageView.loadImage(resource: String?, placeholder: Int = R.drawable.loading
 
 fun ImageView.loadImage(resource: Int?, placeholder: Int = R.drawable.loading_image) = Glide.with(this.context).load(resource).placeholder(placeholder).error(placeholder).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(this)
 
-fun ImageView.loadImage(resource: Uri?, placeholder: Int = R.drawable.loading_image) = Glide.with(this.context).load(resource).placeholder(placeholder).diskCacheStrategy(DiskCacheStrategy.NONE).error(placeholder).skipMemoryCache(true).into(this)
+fun ImageView.loadImage(resource: Uri?, placeholder: Int = R.drawable.loading_image) = Glide.with(this.context).load(resource).placeholder(placeholder).error(placeholder).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(this)
 
 fun Context.showSuccessToast(
     message: String,
