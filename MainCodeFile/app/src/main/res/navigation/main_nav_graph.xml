@@ -129,6 +129,13 @@
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_profileFragment_to_orderHistoryFragment"
+            app:destination="@id/orderHistoryFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
     </fragment>
     <fragment
         android:id="@+id/categoryProductFragment"
@@ -181,4 +188,9 @@
         android:name="com.shourov.furnitureshop.view.profilePage.DeliveryAddressFragment"
         android:label="Delivery Address"
         tools:layout="@layout/fragment_delivery_address" />
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.shourov.furnitureshop.view.profilePage.orderHistoryPage.OrderHistoryFragment"
+        android:label="fragment_order_history"
+        tools:layout="@layout/fragment_order_history" />
 </navigation>

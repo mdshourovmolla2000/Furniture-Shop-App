@@ -54,6 +54,8 @@ class ProfileFragment : Fragment() {
 
             editProfileButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
 
+            orderHistoryButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_orderHistoryFragment) }
+
             deliveryAddressButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_deliveryAddressFragment) }
 
             supportCenterButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_supportCenterFragment) }
