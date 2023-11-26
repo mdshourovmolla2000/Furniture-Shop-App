@@ -7,19 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.databinding.FragmentChangePasswordBinding
 import com.shourov.furnitureshop.repository.ChangePasswordRepository
+import com.shourov.furnitureshop.utils.KeyboardManager
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.utils.showSuccessToast
+import com.shourov.furnitureshop.view.authPage.AuthActivity
 import com.shourov.furnitureshop.viewModel.ChangePasswordViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ChangePasswordFragment : Fragment() {
 
@@ -44,7 +43,7 @@ class ChangePasswordFragment : Fragment() {
 
         binding.apply {
             backIcon.setOnClickListener { findNavController().popBackStack() }
-            changePasswordButton.setOnClickListener { changePassword() }
+            changePasswordButton.setOnClickListener { checkInput(it) }
         }
 
         return binding.root
@@ -56,7 +55,7 @@ class ChangePasswordFragment : Fragment() {
         }
     }
 
-    private fun changePassword() {
+    private fun checkInput(view: View) {
         if (binding.currentPasswordEdittext.text.toString().isEmpty()) {
             binding.currentPasswordEdittext.error = "Enter current password"
             binding.currentPasswordEdittext.requestFocus()
@@ -81,22 +80,35 @@ class ChangePasswordFragment : Fragment() {
             return
         }
 
-        user.password = binding.confirmNewPasswordEdittext.text.toString()
+        KeyboardManager.hideKeyBoard(requireContext(), view)
+        if (NetworkManager.isInternetAvailable(requireContext())) {
+            user.password = binding.confirmNewPasswordEdittext.text.toString()
+            try { (activity as AuthActivity).viewModel.setLoadingDialogText("Changing password") } catch (_: Exception) { }
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(true) } catch (_: Exception) { }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = viewModel.updateUserInfo(user)
+            changePassword()
+        } else {
+            requireContext().showErrorToast("No internet available")
+        }
+    }
 
-            withContext(Dispatchers.Main) {
-                if (result > 0) {
-                    requireContext().showSuccessToast("Password changed")
+    private fun changePassword() {
+        viewModel.changePassword(user) { message ->
+            when(message) {
+                "Password changed" -> {
+                    requireContext().showSuccessToast(message)
                     findNavController().popBackStack()
-                } else {
-                    requireContext().showErrorToast("Something wrong")
+                }
+                "Something wrong" -> {
+                    requireContext().showErrorToast(message)
                 }
             }
+
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }
         }
     }
 }
+
 
 
 
