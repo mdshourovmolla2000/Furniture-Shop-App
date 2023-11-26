@@ -67,7 +67,7 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
         shoppingListAdapter = ShoppingListAdapter(shoppingItemList, this@CartFragment, selectOptionVisible)
 
         binding.apply {
-            shoppingItemRecyclerview.adapter = shoppingListAdapter
+            cartItemRecyclerview.adapter = shoppingListAdapter
 
             if (selectOptionVisible) {
                 deleteIcon.visibility = View.GONE
@@ -122,7 +122,7 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
             shoppingItemList.clear()
             binding.apply {
                 if (it.isNullOrEmpty()) {
-                    shoppingItemRecyclerview.visibility = View.GONE
+                    cartItemRecyclerview.visibility = View.GONE
                     orderSummaryLayout.visibility = View.GONE
                     deleteIcon.visibility = View.GONE
                     deleteButton.visibility = View.GONE
@@ -131,7 +131,7 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
                     shoppingItemList.addAll(it.reversed())
 
                     noItemLayout.visibility = View.GONE
-                    shoppingItemRecyclerview.visibility = View.VISIBLE
+                    cartItemRecyclerview.visibility = View.VISIBLE
 
                     viewModel.getSubTotalAmount(shoppingItemList)
                 }

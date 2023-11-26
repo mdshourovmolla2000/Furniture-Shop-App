@@ -1,16 +1,35 @@
 package com.shourov.furnitureshop.view.profilePage
 
+import android.app.AlertDialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.shourov.furnitureshop.application.BaseApplication.Companion.database
+import com.shourov.furnitureshop.database.tables.AddressTable
+import com.shourov.furnitureshop.databinding.DialogAddAddressBinding
 import com.shourov.furnitureshop.databinding.FragmentDeliveryAddressBinding
+import com.shourov.furnitureshop.repository.DeliveryAddressRepository
+import com.shourov.furnitureshop.utils.KeyboardManager
+import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.utils.showErrorToast
+import com.shourov.furnitureshop.utils.showSuccessToast
+import com.shourov.furnitureshop.view.authPage.AuthActivity
+import com.shourov.furnitureshop.viewModel.DeliveryAddressViewModel
 
 class DeliveryAddressFragment : Fragment() {
 
     private lateinit var binding: FragmentDeliveryAddressBinding
+
+    private lateinit var repository: DeliveryAddressRepository
+    private lateinit var viewModel: DeliveryAddressViewModel
+
+    private val addressList = ArrayList<AddressTable>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,8 +38,100 @@ class DeliveryAddressFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentDeliveryAddressBinding.inflate(inflater, container, false)
 
-        binding.backIcon.setOnClickListener { findNavController().popBackStack() }
+        repository = DeliveryAddressRepository(database.appDao())
+        viewModel = ViewModelProvider(this, DeliveryAddressViewModelFactory(repository))[DeliveryAddressViewModel::class.java]
+
+        observerList()
+
+        binding.apply {
+            backIcon.setOnClickListener { findNavController().popBackStack() }
+            addIcon.setOnClickListener { addAddressDialog() }
+        }
 
         return binding.root
     }
+
+    private fun observerList() {
+        viewModel.getAddressData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
+            addressList.clear()
+            binding.apply {
+                if (it.isNullOrEmpty()) {
+                    addressRecyclerview.visibility = View.GONE
+                    noItemLayout.visibility = View.VISIBLE
+                } else {
+                    addressList.addAll(it.reversed())
+
+                    noItemLayout.visibility = View.GONE
+                    addressRecyclerview.visibility = View.VISIBLE
+                }
+
+                addressRecyclerview.adapter?.notifyDataSetChanged()
+            }
+
+        }
+    }
+
+    private fun addAddressDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        val dialogBinding = DialogAddAddressBinding.inflate(layoutInflater)
+
+        builder.setView(dialogBinding.root)
+        builder.setCancelable(true)
+
+        val alertDialog = builder.create()
+
+        //make transparent to default dialog
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogBinding.apply {
+            saveButton.setOnClickListener {
+                if (dialogBinding.fullNameEdittext.text.toString().trim().isEmpty()) {
+                    dialogBinding.fullNameEdittext.error = "Enter full name"
+                    dialogBinding.fullNameEdittext.requestFocus()
+                    return@setOnClickListener
+                }
+                if (dialogBinding.mobileNumberEdittext.text.toString().trim().isEmpty()) {
+                    dialogBinding.mobileNumberEdittext.error = "Enter mobile number"
+                    dialogBinding.mobileNumberEdittext.requestFocus()
+                    return@setOnClickListener
+                }
+                if (dialogBinding.fullAddressEdittext.text.toString().trim().isEmpty()) {
+                dialogBinding.fullAddressEdittext.error = "Enter full address"
+                dialogBinding.fullAddressEdittext.requestFocus()
+                return@setOnClickListener
+                }
+
+                KeyboardManager.hideKeyBoard(requireContext(), it)
+                try { (activity as AuthActivity).viewModel.setLoadingDialogText("Adding address") } catch (_: Exception) { }
+                try { (activity as AuthActivity).viewModel.setLoadingDialog(true) } catch (_: Exception) { }
+
+                insertAddress(AddressTable(0, dialogBinding.fullNameEdittext.text.toString().trim(), dialogBinding.mobileNumberEdittext.text.toString().trim(), dialogBinding.fullAddressEdittext.text.toString().trim()), alertDialog)
+            }
+        }
+
+        alertDialog.show()
+    }
+
+    private fun insertAddress(address: AddressTable?, alertDialog: AlertDialog) {
+        viewModel.insertAddress(address) { message ->
+            when(message) {
+                "Address added" -> {
+                    requireContext().showSuccessToast(message)
+                    alertDialog.dismiss()
+                }
+                "Something wrong" -> {
+                    requireContext().showErrorToast(message)
+                }
+            }
+
+            try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }
+        }
+    }
+}
+
+
+
+
+class DeliveryAddressViewModelFactory(private val repository: DeliveryAddressRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = DeliveryAddressViewModel(repository) as T
 }

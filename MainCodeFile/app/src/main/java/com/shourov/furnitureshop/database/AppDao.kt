@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.shourov.furnitureshop.database.tables.AddressTable
 import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.database.tables.UserTable
@@ -65,4 +66,13 @@ interface AppDao {
 
     @Query("SELECT COUNT(*) FROM shopping_table WHERE userId = :userId")
     suspend fun shoppingItemCount(userId: Int?): Int
+
+    @Insert
+    suspend fun insertAddress(address: AddressTable): Long
+
+    @Update
+    suspend fun updateAddress(address: AddressTable): Int
+
+    @Query("SELECT * FROM address_table WHERE userId = :userId")
+    fun getAddressData(userId: Int?): LiveData<List<AddressTable>>
 }
