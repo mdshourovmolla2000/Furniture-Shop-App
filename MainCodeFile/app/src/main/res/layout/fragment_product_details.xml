@@ -307,7 +307,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/removeFromShoppingButton"
+            android:id="@+id/removeFromCartButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -315,13 +315,32 @@
             android:insetLeft="0dp"
             android:insetRight="0dp"
             android:insetTop="0dp"
-            android:text="Remove From Shopping"
+            android:text="Remove From Cart"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             android:fontFamily="@font/switzer_medium"
             android:backgroundTint="@color/themeColor"
             app:cornerRadius="@dimen/_12sdp"
             android:padding="@dimen/_12sdp"
+            android:visibility="gone"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/goToCartButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/removeFromCartButton"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:insetTop="0dp"
+            android:text="Go To Cart"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:fontFamily="@font/switzer_medium"
+            android:backgroundTint="@color/themeColor"
+            app:cornerRadius="@dimen/_12sdp"
+            android:padding="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

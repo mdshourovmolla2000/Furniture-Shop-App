@@ -18,7 +18,7 @@
             app:exitAnim="@anim/exit" />
         <action
             android:id="@+id/action_homeFragment_to_shoppingFragment"
-            app:destination="@id/shoppingFragment"
+            app:destination="@id/cartFragment"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
@@ -69,14 +69,24 @@
         android:id="@+id/productDetailsFragment"
         android:name="com.shourov.furnitureshop.view.ProductDetailsFragment"
         android:label="Product Details"
-        tools:layout="@layout/fragment_product_details" />
-    <fragment
-        android:id="@+id/shoppingFragment"
-        android:name="com.shourov.furnitureshop.view.shoppingPage.ShoppingFragment"
-        android:label="Shopping"
-        tools:layout="@layout/fragment_shopping" >
+        tools:layout="@layout/fragment_product_details" >
         <action
-            android:id="@+id/action_shoppingFragment_to_productDetailsFragment"
+            android:id="@+id/action_productDetailsFragment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:popUpTo="@id/productDetailsFragment"
+            app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.shourov.furnitureshop.view.cartPage.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit"

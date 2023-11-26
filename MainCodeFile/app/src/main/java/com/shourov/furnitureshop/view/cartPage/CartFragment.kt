@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view.shoppingPage
+package com.shourov.furnitureshop.view.cartPage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -16,7 +16,7 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.ShoppingListAdapter
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.ShoppingTable
-import com.shourov.furnitureshop.databinding.FragmentShoppingBinding
+import com.shourov.furnitureshop.databinding.FragmentCartBinding
 import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
 import com.shourov.furnitureshop.repository.ShoppingRepository
 import com.shourov.furnitureshop.utils.SharedPref
@@ -26,9 +26,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 
-class ShoppingFragment : Fragment(), ShoppingItemClickListener {
+class CartFragment : Fragment(), ShoppingItemClickListener {
 
-    private lateinit var binding: FragmentShoppingBinding
+    private lateinit var binding: FragmentCartBinding
 
     private lateinit var repository: ShoppingRepository
     private lateinit var viewModel: ShoppingViewModel
@@ -55,7 +55,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentShoppingBinding.inflate(inflater, container, false)
+        binding = FragmentCartBinding.inflate(inflater, container, false)
 
         binding.backIcon.setOnClickListener { hideSelectOption() }
 
@@ -64,7 +64,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
 
         observerList()
 
-        shoppingListAdapter = ShoppingListAdapter(shoppingItemList, this@ShoppingFragment, selectOptionVisible)
+        shoppingListAdapter = ShoppingListAdapter(shoppingItemList, this@CartFragment, selectOptionVisible)
 
         binding.apply {
             shoppingItemRecyclerview.adapter = shoppingListAdapter
@@ -176,7 +176,7 @@ class ShoppingFragment : Fragment(), ShoppingItemClickListener {
                 val bundle = bundleOf(
                     "PRODUCT_ID" to currentItem?.productId
                 )
-                findNavController().navigate(R.id.action_shoppingFragment_to_productDetailsFragment, bundle)
+                findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment, bundle)
             }
             "QUANTITY_PLUS" -> {
                 currentItem!!.itemQuantity = currentItem.itemQuantity!! + 1

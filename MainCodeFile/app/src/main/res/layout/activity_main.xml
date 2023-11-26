@@ -86,7 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/bottomNavigationShoppingMenu"
+            android:id="@+id/bottomNavigationCartMenu"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -97,17 +97,17 @@
             android:foreground="?attr/selectableItemBackground">
 
             <ImageView
-                android:id="@+id/bottomNavigationShoppingMenuIcon"
+                android:id="@+id/bottomNavigationCartMenuIcon"
                 android:layout_width="@dimen/_19sdp"
                 android:layout_height="@dimen/_19sdp"
-                android:src="@drawable/bottom_navigation_menu_shopping_icon"
+                android:src="@drawable/bottom_navigation_menu_cart_icon"
                 app:tint="#828A89" />
 
             <TextView
-                android:id="@+id/bottomNavigationShoppingMenuTextview"
+                android:id="@+id/bottomNavigationCartMenuTextview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shopping"
+                android:text="Cart"
                 android:textSize="@dimen/_9sdp"
                 android:textColor="#828A89"
                 android:fontFamily="@font/switzer_medium"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.shoppingPage.ShoppingFragment">
+    tools:context=".view.cartPage.CartFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topSectionLayout"
@@ -44,7 +44,7 @@
             app:layout_constraintEnd_toStartOf="@id/deleteIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Shopping"
+            android:text="Cart"
             android:textColor="@color/blackTextColor"
             android:textSize="@dimen/_15sdp"
             android:fontFamily="@font/switzer_medium"/>
@@ -74,7 +74,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shoppingItemRecyclerview"
+        android:id="@+id/cartItemRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/topSectionLayout"
@@ -91,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topSectionLayout"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="No item in shopping"
+        android:text="No item in cart"
         android:textColor="@color/blackTextColor"
         android:textSize="@dimen/_13sdp"
         android:fontFamily="@font/switzer_medium"

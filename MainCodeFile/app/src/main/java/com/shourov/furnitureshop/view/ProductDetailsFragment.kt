@@ -91,10 +91,14 @@ class ProductDetailsFragment : Fragment() {
                 }
             }
 
-            removeFromShoppingButton.setOnClickListener {
+            removeFromCartButton.setOnClickListener {
                 lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
                 }
+            }
+
+            goToCartButton.setOnClickListener {
+                findNavController().navigate(R.id.action_productDetailsFragment_to_cartFragment)
             }
         }
 
@@ -143,14 +147,14 @@ class ProductDetailsFragment : Fragment() {
 
         viewModel.checkIfProductIsInShopping(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId).observe(viewLifecycleOwner) {
             productInShopping = it > 0
-            if (productInShopping) {
-                binding.apply {
+            binding.apply {
+                if (productInShopping) {
                     addToCartLayout.visibility = View.GONE
-                    removeFromShoppingButton.visibility = View.VISIBLE
-                }
-            } else {
-                binding.apply {
-                    removeFromShoppingButton.visibility = View.GONE
+                    removeFromCartButton.visibility = View.VISIBLE
+                    goToCartButton.visibility = View.VISIBLE
+                } else {
+                    removeFromCartButton.visibility = View.GONE
+                    goToCartButton.visibility = View.GONE
                     addToCartLayout.visibility = View.VISIBLE
                 }
             }

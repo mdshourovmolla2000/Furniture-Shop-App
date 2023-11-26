@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity() {
                         bottomMenuSelectedColor(bottomNavigationFavouriteMenuIcon, bottomNavigationFavouriteMenuTextview)
                     }
                 }
-                R.id.shoppingFragment-> {
+                R.id.cartFragment-> {
                     binding.apply {
                         bottomNavigationMenuLayout.visibility = View.VISIBLE
-                        bottomMenuSelectedColor(bottomNavigationShoppingMenuIcon, bottomNavigationShoppingMenuTextview)
+                        bottomMenuSelectedColor(bottomNavigationCartMenuIcon, bottomNavigationCartMenuTextview)
                     }
                 }
                 R.id.profileFragment-> {
@@ -95,10 +95,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            bottomNavigationShoppingMenu.setOnClickListener {
+            bottomNavigationCartMenu.setOnClickListener {
                 if (currentFragmentId == R.id.homeFragment) {
                     navController.navigate(R.id.action_homeFragment_to_shoppingFragment)
-                } else if(currentFragmentId != R.id.shoppingFragment) {
+                } else if(currentFragmentId != R.id.cartFragment) {
                     navController.popBackStack()
                     navController.navigate(R.id.action_homeFragment_to_shoppingFragment)
                 }
@@ -125,12 +125,12 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             bottomNavigationHomeMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
             bottomNavigationFavouriteMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
-            bottomNavigationShoppingMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
+            bottomNavigationCartMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
             bottomNavigationProfileMenuIcon.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
 
             bottomNavigationHomeMenuTextview.setTextColor(Color.parseColor("#828A89"))
             bottomNavigationFavouriteMenuTextview.setTextColor(Color.parseColor("#828A89"))
-            bottomNavigationShoppingMenuTextview.setTextColor(Color.parseColor("#828A89"))
+            bottomNavigationCartMenuTextview.setTextColor(Color.parseColor("#828A89"))
             bottomNavigationProfileMenuTextview.setTextColor(Color.parseColor("#828A89"))
         }
 
