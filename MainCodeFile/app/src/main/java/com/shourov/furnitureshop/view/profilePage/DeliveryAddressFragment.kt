@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.shourov.furnitureshop.adapter.AddressListAdapter
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.AddressTable
 import com.shourov.furnitureshop.databinding.DialogAddAddressBinding
 import com.shourov.furnitureshop.databinding.FragmentDeliveryAddressBinding
+import com.shourov.furnitureshop.interfaces.AddressItemClickListener
 import com.shourov.furnitureshop.repository.DeliveryAddressRepository
 import com.shourov.furnitureshop.utils.KeyboardManager
 import com.shourov.furnitureshop.utils.SharedPref
@@ -22,7 +24,7 @@ import com.shourov.furnitureshop.utils.showSuccessToast
 import com.shourov.furnitureshop.view.authPage.AuthActivity
 import com.shourov.furnitureshop.viewModel.DeliveryAddressViewModel
 
-class DeliveryAddressFragment : Fragment() {
+class DeliveryAddressFragment : Fragment(), AddressItemClickListener {
 
     private lateinit var binding: FragmentDeliveryAddressBinding
 
@@ -46,6 +48,7 @@ class DeliveryAddressFragment : Fragment() {
         binding.apply {
             backIcon.setOnClickListener { findNavController().popBackStack() }
             addIcon.setOnClickListener { addAddressDialog() }
+            addressRecyclerview.adapter = AddressListAdapter(addressList, this@DeliveryAddressFragment)
         }
 
         return binding.root
@@ -105,7 +108,7 @@ class DeliveryAddressFragment : Fragment() {
                 try { (activity as AuthActivity).viewModel.setLoadingDialogText("Adding address") } catch (_: Exception) { }
                 try { (activity as AuthActivity).viewModel.setLoadingDialog(true) } catch (_: Exception) { }
 
-                insertAddress(AddressTable(0, dialogBinding.fullNameEdittext.text.toString().trim(), dialogBinding.mobileNumberEdittext.text.toString().trim(), dialogBinding.fullAddressEdittext.text.toString().trim()), alertDialog)
+                insertAddress(AddressTable(0, dialogBinding.fullNameEdittext.text.toString().trim(), dialogBinding.mobileNumberEdittext.text.toString().trim(), dialogBinding.fullAddressEdittext.text.toString().trim(), SharedPref.read("CURRENT_USER_ID", "0")?.toInt()), alertDialog)
             }
         }
 
@@ -126,6 +129,10 @@ class DeliveryAddressFragment : Fragment() {
 
             try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }
         }
+    }
+
+    override fun onAddressItemClick(currentItem: AddressTable, clickedOn: String) {
+
     }
 }
 

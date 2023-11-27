@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_6sdp"
+    app:cardCornerRadius="@dimen/_11sdp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_12sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/editIcon"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/nameTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/blackTextColor"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/switzer_medium"/>
+
+            <TextView
+                android:id="@+id/mobileNumberTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobile number"
+                android:textColor="#828A89"
+                android:textSize="@dimen/_10sdp"
+                android:fontFamily="@font/switzer_regular"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+            <TextView
+                android:id="@+id/addressTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textColor="#828A89"
+                android:textSize="@dimen/_10sdp"
+                android:fontFamily="@font/switzer_regular"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/editIcon"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:src="@drawable/edit_icon"
+            android:layout_toStartOf="@id/deleteIcon"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_15sdp"/>
+
+        <ImageView
+            android:id="@+id/deleteIcon"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:src="@drawable/delete_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
