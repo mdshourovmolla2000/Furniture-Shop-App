@@ -19,8 +19,10 @@ import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.FragmentFavouriteBinding
 import com.shourov.furnitureshop.interfaces.FavouriteItemClickListener
 import com.shourov.furnitureshop.repository.FavouriteRepository
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
+import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.viewModel.FavouriteViewModel
 
 class FavouriteFragment : Fragment(), FavouriteItemClickListener {
@@ -86,10 +88,14 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
                 viewModel.deleteFavourite(currentItem)
             }
             "MAIN_ITEM" -> {
-                val bundle = bundleOf(
-                    "PRODUCT_ID" to (currentItem.productId)
-                )
-                findNavController().navigate(R.id.action_favouriteFragment_to_productDetailsFragment, bundle)
+                if (NetworkManager.isInternetAvailable(requireContext())) {
+                    val bundle = bundleOf(
+                        "PRODUCT_ID" to (currentItem.productId)
+                    )
+                    findNavController().navigate(R.id.action_favouriteFragment_to_productDetailsFragment, bundle)
+                } else {
+                    requireContext().showErrorToast("No internet available")
+                }
             }
         }
     }
