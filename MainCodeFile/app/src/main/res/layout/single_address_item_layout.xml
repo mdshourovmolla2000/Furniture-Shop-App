@@ -58,8 +58,12 @@
 
         <ImageView
             android:id="@+id/editIcon"
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
+            android:layout_width="@dimen/_29sdp"
+            android:layout_height="@dimen/_29sdp"
+            android:background="@drawable/ripple_effect_background_in_white"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/_6sdp"
             android:src="@drawable/edit_icon"
             android:layout_toStartOf="@id/deleteIcon"
             android:layout_centerVertical="true"
@@ -67,8 +71,12 @@
 
         <ImageView
             android:id="@+id/deleteIcon"
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
+            android:layout_width="@dimen/_29sdp"
+            android:layout_height="@dimen/_29sdp"
+            android:background="@drawable/ripple_effect_background_in_white"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/_6sdp"
             android:src="@drawable/delete_icon"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"/>

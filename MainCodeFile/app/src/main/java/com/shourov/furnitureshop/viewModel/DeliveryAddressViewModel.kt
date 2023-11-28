@@ -11,4 +11,8 @@ class DeliveryAddressViewModel(private val repository: DeliveryAddressRepository
     fun getAddressData(userId: Int?): LiveData<List<AddressTable>> = repository.getAddressData(userId)
 
     fun insertAddress(address: AddressTable?, callback: (message: String?) -> Unit) = viewModelScope.launch { repository.insertAddress(address, callback) }
+
+    fun updateAddress(address: AddressTable?, callback: (message: String?) -> Unit) = viewModelScope.launch { repository.updateAddress(address, callback) }
+
+    fun deleteAddress(address: AddressTable) = viewModelScope.launch { repository.deleteAddress(address) }
 }

@@ -8,7 +8,7 @@ data class AddressTable(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     var fullName: String? = "",
-    val mobileNumber: String? = "",
+    var mobileNumber: String? = "",
     var fullAddress: String? = "",
     val userId: Int? = 0,
 )

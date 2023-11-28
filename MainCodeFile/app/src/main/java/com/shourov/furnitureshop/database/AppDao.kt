@@ -70,6 +70,9 @@ interface AppDao {
     @Insert
     suspend fun insertAddress(address: AddressTable): Long
 
+    @Delete
+    suspend fun deleteAddress(address: AddressTable)
+
     @Update
     suspend fun updateAddress(address: AddressTable): Int
 

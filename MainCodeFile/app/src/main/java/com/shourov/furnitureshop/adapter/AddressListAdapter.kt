@@ -32,9 +32,11 @@ class AddressListAdapter(private val itemList: ArrayList<AddressTable>, private 
                 nameTextview.text = currentItem.fullName
                 mobileNumberTextview.text = currentItem.mobileNumber
                 addressTextview.text = currentItem.fullAddress
-            }
 
-            //itemView.setOnClickListener { listener.onCategoryItemClick(currentItem.categoryName!!) }
+                deleteIcon.setOnClickListener { listener.onAddressItemClick(currentItem, "DELETE_ICON") }
+
+                editIcon.setOnClickListener { listener.onAddressItemClick(currentItem, "EDIT_ICON") }
+            }
         }
     }
 }

@@ -16,4 +16,16 @@ class DeliveryAddressRepository(private val dao: AppDao) {
             callback("Something wrong")
         }
     }
+
+    suspend fun updateAddress(address: AddressTable?, callback: (message: String?) -> Unit) {
+        val result = dao.updateAddress(address!!)
+
+        if (result > 0) {
+            callback("Updated")
+        } else {
+            callback("Something wrong")
+        }
+    }
+
+    suspend fun deleteAddress(address: AddressTable) = dao.deleteAddress(address)
 }

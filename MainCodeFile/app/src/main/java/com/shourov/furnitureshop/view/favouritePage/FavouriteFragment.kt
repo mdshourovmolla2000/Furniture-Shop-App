@@ -85,8 +85,8 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
         }
     }
 
-    override fun onFavouriteItemClick(currentItem: FavouriteTable, clickOn: String?) {
-        when(clickOn) {
+    override fun onFavouriteItemClick(currentItem: FavouriteTable, clickedOn: String?) {
+        when(clickedOn) {
             "FAVOURITE_ICON" -> {
                 lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.deleteFavourite(currentItem)
@@ -94,7 +94,7 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
             }
             "MAIN_ITEM" -> {
                 val bundle = bundleOf(
-                    "PRODUCT_ID" to (currentItem?.productId)
+                    "PRODUCT_ID" to (currentItem.productId)
                 )
                 findNavController().navigate(R.id.action_favouriteFragment_to_productDetailsFragment, bundle)
             }
