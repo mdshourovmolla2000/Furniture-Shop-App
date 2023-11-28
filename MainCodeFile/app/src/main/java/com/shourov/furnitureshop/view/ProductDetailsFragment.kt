@@ -20,7 +20,6 @@ import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.viewModel.ProductDetailsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,13 +62,9 @@ class ProductDetailsFragment : Fragment() {
         binding.apply {
             favouriteIcon.setOnClickListener {
                 if (productInFavourite) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
-                    }
+                    viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
                 } else {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.insertFavourite(FavouriteTable(0, productId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
-                    }
+                    viewModel.insertFavourite(FavouriteTable(0, productId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
                 }
             }
 
@@ -138,10 +133,12 @@ class ProductDetailsFragment : Fragment() {
         viewModel.checkIfProductIsInFavourite(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId).observe(viewLifecycleOwner) {
             productInFavourite = it > 0
 
-            if (productInFavourite) {
-                binding.favouriteIconImageview.loadImage(R.drawable.favourite_icon_fill)
-            } else {
-                binding.favouriteIconImageview.loadImage(R.drawable.bottom_navigation_menu_favourite_icon)
+            binding.apply {
+                if (productInFavourite) {
+                    favouriteIconImageview.setImageResource(R.drawable.favourite_icon_fill)
+                } else {
+                    favouriteIconImageview.setImageResource(R.drawable.bottom_navigation_menu_favourite_icon)
+                }
             }
         }
 

@@ -3,11 +3,13 @@ package com.shourov.furnitureshop.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.model.ProductImageModel
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
+import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(private val repository: ProductDetailsRepository) : ViewModel() {
     private val _productImagesLiveData = MutableLiveData<List<ProductImageModel?>>()
@@ -24,9 +26,9 @@ class ProductDetailsViewModel(private val repository: ProductDetailsRepository) 
 
     fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int> = repository.checkIfProductIsInFavourite(userId, productId)
 
-    suspend fun insertFavourite(favourite: FavouriteTable) = repository.insertFavourite(favourite)
+    fun insertFavourite(favourite: FavouriteTable) = viewModelScope.launch { repository.insertFavourite(favourite) }
 
-    suspend fun deleteFavouriteById(userId: Int?, productId: String?) = repository.deleteFavouriteById(userId, productId)
+    fun deleteFavouriteById(userId: Int?, productId: String?) = viewModelScope.launch { repository.deleteFavouriteById(userId, productId) }
 
     suspend fun insertShopping(shopping: ShoppingTable) = repository.insertShopping(shopping)
 

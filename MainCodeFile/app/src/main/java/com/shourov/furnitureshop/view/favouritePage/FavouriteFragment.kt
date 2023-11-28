@@ -11,7 +11,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.FavouriteListAdapter
@@ -23,8 +22,6 @@ import com.shourov.furnitureshop.repository.FavouriteRepository
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
 import com.shourov.furnitureshop.viewModel.FavouriteViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FavouriteFragment : Fragment(), FavouriteItemClickListener {
 
@@ -49,7 +46,7 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
 
         observerList()
 
-        binding.favouriteItemRecyclerview.adapter = FavouriteListAdapter(favouriteItemList, this@FavouriteFragment)
+        binding.favouriteItemRecyclerview.adapter = FavouriteListAdapter(favouriteItemList, this)
 
         return binding.root
     }
@@ -57,21 +54,19 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
     private fun observerList() {
         viewModel.getFavouriteData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
             favouriteItemList.clear()
-            if (it.isNullOrEmpty()) {
-                binding.apply {
+            binding.apply {
+                if (it.isNullOrEmpty()) {
                     favouriteItemRecyclerview.visibility = View.GONE
                     noItemLayout.visibility = View.VISIBLE
-                }
-            } else {
-                favouriteItemList.addAll(it.reversed())
+                } else {
+                    favouriteItemList.addAll(it.reversed())
 
-                binding.apply {
                     noItemLayout.visibility = View.GONE
                     favouriteItemRecyclerview.visibility = View.VISIBLE
                 }
-            }
 
-            binding.favouriteItemRecyclerview.adapter?.notifyDataSetChanged()
+                favouriteItemRecyclerview.adapter?.notifyDataSetChanged()
+            }
         }
     }
 
@@ -88,9 +83,7 @@ class FavouriteFragment : Fragment(), FavouriteItemClickListener {
     override fun onFavouriteItemClick(currentItem: FavouriteTable, clickedOn: String?) {
         when(clickedOn) {
             "FAVOURITE_ICON" -> {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.deleteFavourite(currentItem)
-                }
+                viewModel.deleteFavourite(currentItem)
             }
             "MAIN_ITEM" -> {
                 val bundle = bundleOf(
