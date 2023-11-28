@@ -96,12 +96,8 @@ class SignInFragment : Fragment() {
                     binding.passwordEdittext.error = message
                     binding.passwordEdittext.requestFocus()
                 }
-                "Network error" -> {
-                    requireContext().showErrorToast(message)
-                }
-                "Something wrong" -> {
-                    requireContext().showErrorToast(message)
-                }
+                "Network error" -> requireContext().showErrorToast(message)
+                "Something wrong" -> requireContext().showErrorToast(message)
                 "Successfully signed in" -> {
                     requireContext().showSuccessToast(message)
                     SharedPref.write("CURRENT_USER_ID", data?.id.toString())

@@ -18,13 +18,10 @@ class DeliveryAddressRepository(private val dao: AppDao) {
             } else {
                 callback("Something wrong")
             }
-        } catch (e: IOException) {
-            callback("Network error")
-        } catch (e: SocketException) {
-            callback("Network error")
-        } catch (e: Exception) {
-            callback("Something wrong")
         }
+        catch (e: IOException) { callback("Network error") }
+        catch (e: SocketException) { callback("Network error") }
+        catch (e: Exception) { callback("Something wrong") }
     }
 
     suspend fun updateAddress(address: AddressTable?, callback: (message: String?) -> Unit) {
@@ -36,13 +33,10 @@ class DeliveryAddressRepository(private val dao: AppDao) {
             } else {
                 callback("Something wrong")
             }
-        } catch (e: IOException) {
-            callback("Network error")
-        } catch (e: SocketException) {
-            callback("Network error")
-        } catch (e: Exception) {
-            callback("Something wrong")
         }
+        catch (e: IOException) { callback("Network error") }
+        catch (e: SocketException) { callback("Network error") }
+        catch (e: Exception) { callback("Something wrong") }
     }
 
     suspend fun deleteAddress(address: AddressTable) = dao.deleteAddress(address)

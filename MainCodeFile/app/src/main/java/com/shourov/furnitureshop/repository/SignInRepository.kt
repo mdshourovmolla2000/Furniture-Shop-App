@@ -19,13 +19,10 @@ class SignInRepository(private val dao: AppDao) {
             } else {
                 callback(null, "Email not registered")
             }
-        } catch (e: IOException) {
-            callback(null, "Network error")
-        } catch (e: SocketException) {
-            callback(null, "Network error")
-        } catch (e: Exception) {
-            callback(null, "Something wrong")
         }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
     }
 
     private suspend fun validateUser(email: String?, password: String?, callback: (data: UserTable?, message: String?) -> Unit) {
@@ -37,12 +34,9 @@ class SignInRepository(private val dao: AppDao) {
             } else {
                 callback(result, "Successfully signed in")
             }
-        } catch (e: IOException) {
-            callback(null, "Network error")
-        } catch (e: SocketException) {
-            callback(null, "Network error")
-        } catch (e: Exception) {
-            callback(null, "Something wrong")
         }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
     }
 }

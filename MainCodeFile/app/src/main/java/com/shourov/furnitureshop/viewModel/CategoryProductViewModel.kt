@@ -1,20 +1,19 @@
 package com.shourov.furnitureshop.viewModel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.CategoryProductRepository
+import kotlinx.coroutines.launch
 
 class CategoryProductViewModel(private val repository: CategoryProductRepository): ViewModel() {
-    private val _categoryProductLiveData = MutableLiveData<List<ProductModel>>()
-    val categoryProductLiveData: LiveData<List<ProductModel>> get() = _categoryProductLiveData
-    fun getCategoryProduct(categoryName: String) = _categoryProductLiveData.postValue(repository.getCategoryProduct(categoryName))
+    fun getCategoryProduct(categoryName: String, callback: (data: List<ProductModel>?, message: String?) -> Unit) = viewModelScope.launch { repository.getCategoryProduct(categoryName, callback) }
 
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = repository.checkIfProductIsInShopping(userId, productId)
 
-    suspend fun insertShopping(shopping: ShoppingTable) = repository.insertShopping(shopping)
+    fun insertShopping(shopping: ShoppingTable) = viewModelScope.launch { repository.insertShopping(shopping) }
 
-    suspend fun deleteShoppingById(userId: Int?, productId: String?) = repository.deleteShoppingById(userId, productId)
+    fun deleteShoppingById(userId: Int?, productId: String?) = viewModelScope.launch { repository.deleteShoppingById(userId, productId) }
 }

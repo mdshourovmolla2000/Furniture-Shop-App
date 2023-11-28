@@ -11,13 +11,10 @@ class CategoryRepository() {
             val response = DemoData().categoryData()
 
             callback(response, "Successful")
-        } catch (e: IOException) {
-            callback(null, "Network error")
-        } catch (e: SocketException) {
-            callback(null, "Network error")
-        } catch (e: Exception) {
-            callback(null, "Something wrong")
         }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
     }
 
     fun categoryProductCount(categoryName: String?): Int = DemoData().productData().count { it.itemCategory == categoryName }

@@ -18,12 +18,9 @@ class ChangePasswordRepository(private val dao: AppDao) {
             } else {
                 callback("Something wrong")
             }
-        } catch (e: IOException) {
-            callback("Network error")
-        } catch (e: SocketException) {
-            callback("Network error")
-        } catch (e: Exception) {
-            callback("Something wrong")
         }
+        catch (e: IOException) { callback("Network error") }
+        catch (e: SocketException) { callback("Network error") }
+        catch (e: Exception) { callback("Something wrong") }
     }
 }

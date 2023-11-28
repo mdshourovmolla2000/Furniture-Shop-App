@@ -158,16 +158,11 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
         viewModel.getPopularProductData(categoryName) { data, message ->
             binding.apply {
                 when(message) {
-                    "Something wrong" -> {
-                        requireContext().showErrorToast(message)
-                        progressBar.visibility = View.GONE
-                    }
-                    "Network error" -> {
-                        requireContext().showErrorToast(message)
-                        progressBar.visibility = View.GONE
-                    }
+                    "Something wrong" -> requireContext().showErrorToast(message)
+                    "Network error" -> requireContext().showErrorToast(message)
                     "Successful" -> {
                         popularProductList.clear()
+
                         if (data.isNullOrEmpty()) {
                             popularItemsRecyclerview.visibility = View.GONE
                             noPopularItemLayout.visibility = View.VISIBLE
@@ -178,11 +173,12 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                             popularItemsRecyclerview.visibility = View.VISIBLE
                         }
 
-                        binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()
-                        progressBar.visibility = View.GONE
+                        popularItemsRecyclerview.adapter?.notifyDataSetChanged()
                         mainScrollView.visibility = View.VISIBLE
                     }
                 }
+
+                progressBar.visibility = View.GONE
             }
         }
     }

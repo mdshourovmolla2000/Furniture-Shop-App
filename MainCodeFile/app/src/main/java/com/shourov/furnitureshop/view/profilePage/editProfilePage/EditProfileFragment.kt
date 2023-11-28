@@ -106,15 +106,9 @@ class EditProfileFragment : Fragment() {
     private fun updateProfile() {
         viewModel.updateProfile(user) { message ->
             when(message) {
-                "Updated" -> {
-                    requireContext().showSuccessToast(message)
-                }
-                "Network error" -> {
-                    requireContext().showErrorToast(message)
-                }
-                "Something wrong" -> {
-                    requireContext().showErrorToast(message)
-                }
+                "Updated" -> requireContext().showSuccessToast(message)
+                "Network error" -> requireContext().showErrorToast(message)
+                "Something wrong" -> requireContext().showErrorToast(message)
             }
 
             try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }

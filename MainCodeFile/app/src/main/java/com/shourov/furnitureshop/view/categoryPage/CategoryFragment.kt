@@ -54,12 +54,8 @@ class CategoryFragment : Fragment(), CategoryItemClickListener {
         viewModel.getCategory { data, message ->
             binding.apply {
                 when(message) {
-                    "Something wrong" -> {
-                        requireContext().showErrorToast(message)
-                    }
-                    "Network error" -> {
-                        requireContext().showErrorToast(message)
-                    }
+                    "Something wrong" -> requireContext().showErrorToast(message)
+                    "Network error" -> requireContext().showErrorToast(message)
                     "Successful" -> {
                         categoryList.clear()
                         if (!data.isNullOrEmpty()) { categoryList.addAll(data) }
@@ -68,6 +64,7 @@ class CategoryFragment : Fragment(), CategoryItemClickListener {
                         categoryRecyclerview.visibility = View.VISIBLE
                     }
                 }
+
                 progressBar.visibility = View.GONE
             }
         }

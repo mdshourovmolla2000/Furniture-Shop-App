@@ -13,7 +13,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.CategoryProductListAdapter
@@ -23,10 +22,10 @@ import com.shourov.furnitureshop.databinding.FragmentCategoryProductBinding
 import com.shourov.furnitureshop.interfaces.CategoryProductItemClickListener
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.CategoryProductRepository
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.viewModel.CategoryProductViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
 
@@ -45,41 +44,49 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
         // Inflate the layout for this fragment
         binding = FragmentCategoryProductBinding.inflate(inflater, container, false)
 
+        binding.productRecyclerview.visibility = View.VISIBLE
+
         categoryName = arguments?.getString("CATEGORY_NAME", "").toString()
 
         repository = CategoryProductRepository(database.appDao())
         viewModel = ViewModelProvider(this, CategoryProductViewModelFactory(repository))[CategoryProductViewModel::class.java]
 
-        viewModel.getCategoryProduct(categoryName)
-
-        observerList()
+        getCategoryProduct()
 
         binding.apply {
-            productRecyclerview.adapter = CategoryProductListAdapter(productList, this@CategoryProductFragment)
             backIcon.setOnClickListener { findNavController().popBackStack() }
             titleTextview.text = categoryName
+            productRecyclerview.adapter = CategoryProductListAdapter(productList, this@CategoryProductFragment)
         }
 
         return binding.root
     }
 
-    private fun observerList() {
-        viewModel.categoryProductLiveData.observe(viewLifecycleOwner) {
-            productList.clear()
-            if (it.isEmpty()) {
-                binding.apply {
-                    productRecyclerview.visibility = View.GONE
-                    noItemLayout.visibility = View.VISIBLE
-                }
-            } else {
-                productList.addAll(it)
-                binding.apply {
-                    noItemLayout.visibility = View.GONE
-                    productRecyclerview.visibility = View.VISIBLE
-                }
-            }
+    private fun getCategoryProduct() {
+        viewModel.getCategoryProduct(categoryName) { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> requireContext().showErrorToast(message)
+                    "Network error" -> requireContext().showErrorToast(message)
+                    "Successful" -> {
+                        productList.clear()
 
-            binding.productRecyclerview.adapter?.notifyDataSetChanged()
+                        if (data.isNullOrEmpty()) {
+                            productRecyclerview.visibility = View.GONE
+                            noItemLayout.visibility = View.VISIBLE
+                        } else {
+                            productList.addAll(data)
+
+                            noItemLayout.visibility = View.GONE
+                            productRecyclerview.visibility = View.VISIBLE
+                        }
+
+                        productRecyclerview.adapter?.notifyDataSetChanged()
+                    }
+                }
+
+                progressBar.visibility = View.GONE
+            }
         }
     }
 
@@ -95,25 +102,25 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
         }
     }
 
-    override fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickOn: String?) {
-        when(clickOn) {
+    override fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickedOn: String?) {
+        when(clickedOn) {
             "MAIN_ITEM" -> {
-                val bundle = bundleOf(
-                    "PRODUCT_ID" to currentItem.itemId
-                )
-                findNavController().navigate(R.id.action_categoryProductFragment_to_productDetailsFragment, bundle)
+                if (NetworkManager.isInternetAvailable(requireContext())) {
+                    val bundle = bundleOf(
+                        "PRODUCT_ID" to currentItem.itemId
+                    )
+                    findNavController().navigate(R.id.action_categoryProductFragment_to_productDetailsFragment, bundle)
+                } else {
+                    requireContext().showErrorToast("No internet available")
+                }
             }
             "CART_ICON" -> {
                 val cartIconCardViewBgColor = cartIconCardView.cardBackgroundColor.defaultColor
                 val hexColor = String.format("#%06X", 0xFFFFFF and cartIconCardViewBgColor)
-                if (hexColor == "#0C8A7B") {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
-                    }
+                if (hexColor == String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(requireContext(), R.color.themeColor))) {
+                    viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
                 } else {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.insertShopping(ShoppingTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
-                    }
+                    viewModel.insertShopping(ShoppingTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
                 }
             }
         }

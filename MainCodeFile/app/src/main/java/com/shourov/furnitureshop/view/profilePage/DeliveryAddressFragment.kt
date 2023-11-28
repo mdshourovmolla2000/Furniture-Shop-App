@@ -123,12 +123,8 @@ class DeliveryAddressFragment : Fragment(), AddressItemClickListener {
                     requireContext().showSuccessToast(message)
                     alertDialog.dismiss()
                 }
-                "Network error" -> {
-                    requireContext().showErrorToast(message)
-                }
-                "Something wrong" -> {
-                    requireContext().showErrorToast(message)
-                }
+                "Network error" -> requireContext().showErrorToast(message)
+                "Something wrong" -> requireContext().showErrorToast(message)
             }
 
             try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }
@@ -142,12 +138,8 @@ class DeliveryAddressFragment : Fragment(), AddressItemClickListener {
                     requireContext().showSuccessToast(message)
                     alertDialog.dismiss()
                 }
-                "Network error" -> {
-                    requireContext().showErrorToast(message)
-                }
-                "Something wrong" -> {
-                    requireContext().showErrorToast(message)
-                }
+                "Network error" -> requireContext().showErrorToast(message)
+                "Something wrong" -> requireContext().showErrorToast(message)
             }
 
             try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }

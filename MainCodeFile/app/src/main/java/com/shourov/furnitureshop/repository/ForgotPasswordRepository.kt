@@ -18,12 +18,9 @@ class ForgotPasswordRepository(private val dao: AppDao) {
             } else {
                 callback("Email not registered")
             }
-        } catch (e: IOException) {
-            callback("Network error")
-        } catch (e: SocketException) {
-            callback("Network error")
-        } catch (e: Exception) {
-            callback("Something wrong")
         }
+        catch (e: IOException) { callback("Network error") }
+        catch (e: SocketException) { callback("Network error") }
+        catch (e: Exception) { callback("Something wrong") }
     }
 }

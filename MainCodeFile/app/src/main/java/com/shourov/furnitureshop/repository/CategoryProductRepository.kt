@@ -5,9 +5,20 @@ import com.shourov.furnitureshop.database.AppDao
 import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.utils.DemoData
+import java.io.IOException
+import java.net.SocketException
 
 class CategoryProductRepository(private val dao: AppDao) {
-    fun getCategoryProduct(categoryName: String): List<ProductModel> = DemoData().productData().filter { it.itemCategory == categoryName }
+    fun getCategoryProduct(categoryName: String, callback: (data: List<ProductModel>?, message: String?) -> Unit) {
+        try {
+            val response = DemoData().productData().filter { it.itemCategory == categoryName }
+
+            callback(response, "Successful")
+        }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
+    }
 
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInShopping(userId, productId)
 

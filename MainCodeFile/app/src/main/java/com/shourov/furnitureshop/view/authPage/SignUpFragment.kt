@@ -97,12 +97,8 @@ class SignUpFragment : Fragment() {
                     requireContext().showSuccessToast(message)
                     findNavController().popBackStack()
                 }
-                "Network error" -> {
-                    requireContext().showErrorToast(message)
-                }
-                "Something wrong" -> {
-                    requireContext().showErrorToast(message)
-                }
+                "Network error" -> requireContext().showErrorToast(message)
+                "Something wrong" -> requireContext().showErrorToast(message)
             }
 
             try { (activity as AuthActivity).viewModel.setLoadingDialog(false) } catch (_: Exception) { }

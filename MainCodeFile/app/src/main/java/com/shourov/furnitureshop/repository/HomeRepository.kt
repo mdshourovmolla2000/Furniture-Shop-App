@@ -19,13 +19,10 @@ class HomeRepository(private val dao: AppDao) {
             val response = DemoData().specialOfferData()
 
             callback(response, "Successful")
-        } catch (e: IOException) {
-            callback(null, "Network error")
-        } catch (e: SocketException) {
-            callback(null, "Network error")
-        } catch (e: Exception) {
-            callback(null, "Something wrong")
         }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
     }
 
     fun getCategoryData(callback: (data: List<HomeCategoryModel>?, message: String?) -> Unit) {
@@ -33,13 +30,10 @@ class HomeRepository(private val dao: AppDao) {
             val response = DemoData().homeCategoryData()
 
             callback(response, "Successful")
-        } catch (e: IOException) {
-            callback(null, "Network error")
-        } catch (e: SocketException) {
-            callback(null, "Network error")
-        } catch (e: Exception) {
-            callback(null, "Something wrong")
         }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
     }
 
     fun getPopularProductData(categoryName: String, callback: (data: List<ProductModel>?, message: String?) -> Unit) {
@@ -51,13 +45,10 @@ class HomeRepository(private val dao: AppDao) {
             }
 
             callback(response, "Successful")
-        } catch (e: IOException) {
-            callback(null, "Network error")
-        } catch (e: SocketException) {
-            callback(null, "Network error")
-        } catch (e: Exception) {
-            callback(null, "Something wrong")
         }
+        catch (e: IOException) { callback(null, "Network error") }
+        catch (e: SocketException) { callback(null, "Network error") }
+        catch (e: Exception) { callback(null, "Something wrong") }
     }
 
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInShopping(userId, productId)
