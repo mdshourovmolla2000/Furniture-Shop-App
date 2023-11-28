@@ -14,7 +14,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.shourov.furnitureshop.R
@@ -31,11 +30,11 @@ import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.repository.HomeRepository
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
 import com.shourov.furnitureshop.utils.loadImage
+import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.viewModel.HomeViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductItemClickListener {
 
@@ -75,13 +74,12 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.progressBar.visibility = View.VISIBLE
 
         repository = HomeRepository(database.appDao())
         viewModel = ViewModelProvider(this, HomeViewModelFactory(repository))[HomeViewModel::class.java]
 
-        viewModel.getSpecialOfferData()
-        viewModel.getCategory()
-        viewModel.getPopularProduct(currentCategory)
+        getSpecialOfferData()
 
         observerList()
 
@@ -106,48 +104,104 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                 }
             }
         }
+    }
 
-        viewModel.specialOfferLiveData.observe(viewLifecycleOwner) {
-            specialOfferItemsList.clear()
-            specialOfferItemsList.addAll(it)
-            binding.specialOfferRecyclerview.adapter?.notifyDataSetChanged()
-        }
+    private fun getSpecialOfferData() {
+        viewModel.getSpecialOfferData { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Network error" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Successful" -> {
+                        specialOfferItemsList.clear()
+                        if (!data.isNullOrEmpty()) { specialOfferItemsList.addAll(data) }
 
-        viewModel.categoryLiveData.observe(viewLifecycleOwner) {
-            categoryList.clear()
-            categoryList.addAll(it)
-            binding.categoryRecyclerview.adapter?.notifyDataSetChanged()
-        }
-
-        viewModel.popularProductLiveData.observe(viewLifecycleOwner) {
-            popularProductList.clear()
-            if (it.isEmpty()) {
-                binding.apply {
-                    popularItemsRecyclerview.visibility = View.GONE
-                    noPopularItemLayout.visibility = View.VISIBLE
-                }
-            } else {
-                popularProductList.addAll(it)
-                binding.apply {
-                    noPopularItemLayout.visibility = View.GONE
-                    popularItemsRecyclerview.visibility = View.VISIBLE
+                        specialOfferRecyclerview.adapter?.notifyDataSetChanged()
+                        getCategoryData()
+                    }
                 }
             }
+        }
+    }
 
-            binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()
+    private fun getCategoryData() {
+        viewModel.getCategoryData { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Network error" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Successful" -> {
+                        categoryList.clear()
+                        if (!data.isNullOrEmpty()) { categoryList.addAll(data) }
+
+                        categoryRecyclerview.adapter?.notifyDataSetChanged()
+                        getPopularProductData(currentCategory)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getPopularProductData(categoryName: String) {
+        viewModel.getPopularProductData(categoryName) { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Network error" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Successful" -> {
+                        popularProductList.clear()
+                        if (data.isNullOrEmpty()) {
+                            popularItemsRecyclerview.visibility = View.GONE
+                            noPopularItemLayout.visibility = View.VISIBLE
+                        } else {
+                            popularProductList.addAll(data)
+
+                            noPopularItemLayout.visibility = View.GONE
+                            popularItemsRecyclerview.visibility = View.VISIBLE
+                        }
+
+                        binding.popularItemsRecyclerview.adapter?.notifyDataSetChanged()
+                        progressBar.visibility = View.GONE
+                        mainScrollView.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
     }
 
     override fun onCategoryItemClick(currentItem: String, currentItemPosition: Int) {
-        when(currentItem) {
-            "More" -> findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
-            else -> {
-                if (currentCategoryPosition != currentItemPosition) {
-                    currentCategoryPosition = currentItemPosition
-                    currentCategory = currentItem
-                    viewModel.getPopularProduct(currentCategory)
+        if (NetworkManager.isInternetAvailable(requireContext())) {
+            when(currentItem) {
+                "More" -> findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
+                else -> {
+                    if (currentCategoryPosition != currentItemPosition) {
+                        currentCategoryPosition = currentItemPosition
+                        currentCategory = currentItem
+                        binding.progressBar.visibility = View.VISIBLE
+                        getPopularProductData(currentCategory)
+                    }
                 }
             }
+        } else {
+            requireContext().showErrorToast("No internet available")
         }
     }
 
@@ -166,22 +220,22 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     override fun onProductItemClick(currentItem: ProductModel, cartIconCardView: CardView, clickedOn: String?) {
         when(clickedOn) {
             "MAIN_ITEM" -> {
-                val bundle = bundleOf(
-                    "PRODUCT_ID" to currentItem.itemId
-                )
-                findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+                if (NetworkManager.isInternetAvailable(requireContext())) {
+                    val bundle = bundleOf(
+                        "PRODUCT_ID" to currentItem.itemId
+                    )
+                    findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
+                } else {
+                    requireContext().showErrorToast("No internet available")
+                }
             }
             "CART_ICON" -> {
                 val cartIconCardViewBgColor = cartIconCardView.cardBackgroundColor.defaultColor
                 val hexColor = String.format("#%06X", 0xFFFFFF and cartIconCardViewBgColor)
                 if (hexColor == String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(requireContext(), R.color.themeColor))) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
-                    }
+                    viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
                 } else {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.insertShopping(ShoppingTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
-                    }
+                    viewModel.insertShopping(ShoppingTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
                 }
             }
         }

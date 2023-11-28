@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.categoryPage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,6 +17,8 @@ import com.shourov.furnitureshop.databinding.FragmentCategoryBinding
 import com.shourov.furnitureshop.interfaces.CategoryItemClickListener
 import com.shourov.furnitureshop.model.CategoryModel
 import com.shourov.furnitureshop.repository.CategoryRepository
+import com.shourov.furnitureshop.utils.NetworkManager
+import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.viewModel.CategoryViewModel
 
 class CategoryFragment : Fragment(), CategoryItemClickListener {
@@ -34,25 +36,40 @@ class CategoryFragment : Fragment(), CategoryItemClickListener {
         // Inflate the layout for this fragment
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
+        binding.progressBar.visibility = View.VISIBLE
+
         viewModel = ViewModelProvider(this, CategoryViewModelFactory(CategoryRepository()))[CategoryViewModel::class.java]
 
-        viewModel.getCategory()
-
-        observerList()
+        getCategory()
 
         binding.apply {
-            categoryRecyclerview.adapter = CategoryListAdapter(categoryList, this@CategoryFragment)
             backIcon.setOnClickListener { findNavController().popBackStack() }
+            categoryRecyclerview.adapter = CategoryListAdapter(categoryList, this@CategoryFragment)
         }
 
         return binding.root
     }
 
-    private fun observerList() {
-        viewModel.categoryLiveData.observe(viewLifecycleOwner) {
-            categoryList.clear()
-            categoryList.addAll(it)
-            binding.categoryRecyclerview.adapter?.notifyDataSetChanged()
+    private fun getCategory() {
+        viewModel.getCategory { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> {
+                        requireContext().showErrorToast(message)
+                    }
+                    "Network error" -> {
+                        requireContext().showErrorToast(message)
+                    }
+                    "Successful" -> {
+                        categoryList.clear()
+                        if (!data.isNullOrEmpty()) { categoryList.addAll(data) }
+
+                        categoryRecyclerview.adapter?.notifyDataSetChanged()
+                        categoryRecyclerview.visibility = View.VISIBLE
+                    }
+                }
+                progressBar.visibility = View.GONE
+            }
         }
     }
 
@@ -62,10 +79,14 @@ class CategoryFragment : Fragment(), CategoryItemClickListener {
     }
 
     override fun onCategoryItemClick(categoryName: String) {
-        val bundle = bundleOf(
-            "CATEGORY_NAME" to categoryName
-        )
-        findNavController().navigate(R.id.action_categoryFragment_to_categoryProductFragment, bundle)
+        if (NetworkManager.isInternetAvailable(requireContext())) {
+            val bundle = bundleOf(
+                "CATEGORY_NAME" to categoryName
+            )
+            findNavController().navigate(R.id.action_categoryFragment_to_categoryProductFragment, bundle)
+        } else {
+            requireContext().showErrorToast("No internet available")
+        }
     }
 }
 

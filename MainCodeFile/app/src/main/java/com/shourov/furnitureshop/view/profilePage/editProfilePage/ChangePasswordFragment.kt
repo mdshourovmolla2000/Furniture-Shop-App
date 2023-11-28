@@ -99,6 +99,9 @@ class ChangePasswordFragment : Fragment() {
                     requireContext().showSuccessToast(message)
                     findNavController().popBackStack()
                 }
+                "Network error" -> {
+                    requireContext().showErrorToast(message)
+                }
                 "Something wrong" -> {
                     requireContext().showErrorToast(message)
                 }

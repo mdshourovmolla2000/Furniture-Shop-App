@@ -8,19 +8,55 @@ import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 import com.shourov.furnitureshop.utils.DemoData
+import java.io.IOException
+import java.net.SocketException
 
 class HomeRepository(private val dao: AppDao) {
     fun getUserInfo(id: Int?): LiveData<UserTable?> = dao.getUserInfo(id)
 
-    fun getSpecialOfferData(): List<SpecialOfferModel> = DemoData().specialOfferData()
+    fun getSpecialOfferData(callback: (data: List<SpecialOfferModel>?, message: String?) -> Unit) {
+        try {
+            val response = DemoData().specialOfferData()
 
-    fun getCategory(): List<HomeCategoryModel> = DemoData().homeCategoryData()
+            callback(response, "Successful")
+        } catch (e: IOException) {
+            callback(null, "Network error")
+        } catch (e: SocketException) {
+            callback(null, "Network error")
+        } catch (e: Exception) {
+            callback(null, "Something wrong")
+        }
+    }
 
-    fun getPopularProduct(categoryName: String): List<ProductModel> {
-        return if (categoryName == "All") {
-            DemoData().productData()
-        } else {
-            DemoData().productData().filter { it.itemCategory == categoryName }
+    fun getCategoryData(callback: (data: List<HomeCategoryModel>?, message: String?) -> Unit) {
+        try {
+            val response = DemoData().homeCategoryData()
+
+            callback(response, "Successful")
+        } catch (e: IOException) {
+            callback(null, "Network error")
+        } catch (e: SocketException) {
+            callback(null, "Network error")
+        } catch (e: Exception) {
+            callback(null, "Something wrong")
+        }
+    }
+
+    fun getPopularProductData(categoryName: String, callback: (data: List<ProductModel>?, message: String?) -> Unit) {
+        try {
+            val response = if (categoryName == "All") {
+                DemoData().productData()
+            } else {
+                DemoData().productData().filter { it.itemCategory == categoryName }
+            }
+
+            callback(response, "Successful")
+        } catch (e: IOException) {
+            callback(null, "Network error")
+        } catch (e: SocketException) {
+            callback(null, "Network error")
+        } catch (e: Exception) {
+            callback(null, "Something wrong")
         }
     }
 

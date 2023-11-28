@@ -1,4 +1,4 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.categoryPage
 
 import android.graphics.Color
 import android.graphics.PorterDuff

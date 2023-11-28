@@ -123,6 +123,9 @@ class DeliveryAddressFragment : Fragment(), AddressItemClickListener {
                     requireContext().showSuccessToast(message)
                     alertDialog.dismiss()
                 }
+                "Network error" -> {
+                    requireContext().showErrorToast(message)
+                }
                 "Something wrong" -> {
                     requireContext().showErrorToast(message)
                 }
@@ -138,6 +141,9 @@ class DeliveryAddressFragment : Fragment(), AddressItemClickListener {
                 "Updated" -> {
                     requireContext().showSuccessToast(message)
                     alertDialog.dismiss()
+                }
+                "Network error" -> {
+                    requireContext().showErrorToast(message)
                 }
                 "Something wrong" -> {
                     requireContext().showErrorToast(message)

@@ -74,6 +74,13 @@ class ForgotPasswordFragment : Fragment() {
                     binding.emailEdittext.error = message
                     binding.emailEdittext.requestFocus()
                 }
+                "Network error" -> {
+                    requireContext().showErrorToast(message)
+                }
+                "Something wrong" -> {
+                    requireContext().showErrorToast(message)
+                }
+
                 "Recovery mail sent" -> requireContext().showSuccessToast(message)
             }
 

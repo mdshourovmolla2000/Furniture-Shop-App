@@ -95,7 +95,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.shourov.furnitureshop.view.CategoryFragment"
+        android:name="com.shourov.furnitureshop.view.categoryPage.CategoryFragment"
         android:label="Category"
         tools:layout="@layout/fragment_category" >
         <action
@@ -149,7 +149,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryProductFragment"
-        android:name="com.shourov.furnitureshop.view.CategoryProductFragment"
+        android:name="com.shourov.furnitureshop.view.categoryPage.CategoryProductFragment"
         android:label="Category Product"
         tools:layout="@layout/fragment_category_product" >
         <action

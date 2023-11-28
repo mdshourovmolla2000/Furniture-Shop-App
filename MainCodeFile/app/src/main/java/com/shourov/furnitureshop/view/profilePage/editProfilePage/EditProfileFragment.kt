@@ -109,6 +109,9 @@ class EditProfileFragment : Fragment() {
                 "Updated" -> {
                     requireContext().showSuccessToast(message)
                 }
+                "Network error" -> {
+                    requireContext().showErrorToast(message)
+                }
                 "Something wrong" -> {
                     requireContext().showErrorToast(message)
                 }

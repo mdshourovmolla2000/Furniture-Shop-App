@@ -12,7 +12,6 @@ import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.databinding.SingleHomeCategoryItemLayoutBinding
 import com.shourov.furnitureshop.interfaces.HomeCategoryItemClickListener
 import com.shourov.furnitureshop.model.HomeCategoryModel
-import com.shourov.furnitureshop.utils.loadImage
 
 class HomeCategoryListAdapter(private val itemList: ArrayList<HomeCategoryModel>, currentCategoryPosition: Int, private val itemClickListener: HomeCategoryItemClickListener):
     RecyclerView.Adapter<HomeCategoryListAdapter.ItemViewHolder>() {
@@ -36,24 +35,22 @@ class HomeCategoryListAdapter(private val itemList: ArrayList<HomeCategoryModel>
         @SuppressLint("SetTextI18n")
         fun onBind(currentItem: HomeCategoryModel, position: Int) {
             binding.apply {
-                categoryImageImageview.loadImage(currentItem.categoryImage)
+                categoryImageImageview.setImageResource(currentItem.categoryImage!!)
                 categoryNameTextview.text = currentItem.categoryName
-            }
 
-            //selecting bg color of current selected item
-            if (currentIndex == position) {
-                binding.apply {
+                //selecting bg color of current selected item
+                if (currentIndex == position) {
                     categoryNameCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.themeColor))
                     categoryImageImageview.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
                     categoryNameTextview.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
-                }
-            } else {
-                binding.apply {
+                } else {
                     categoryNameCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
                     categoryImageImageview.setColorFilter(Color.parseColor("#828A89"), PorterDuff.Mode.SRC_IN)
                     categoryNameTextview.setTextColor(Color.parseColor("#828A89"))
                 }
             }
+
+
 
             itemView.setOnClickListener {
                 when(currentItem.categoryName) {
