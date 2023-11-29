@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.database.tables.ShoppingTable
-import com.shourov.furnitureshop.databinding.SingleShoppingItemLayoutBinding
-import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
+import com.shourov.furnitureshop.database.tables.CartTable
+import com.shourov.furnitureshop.databinding.SingleCartItemLayoutBinding
+import com.shourov.furnitureshop.interfaces.CartItemClickListener
 import com.shourov.furnitureshop.utils.loadImage
 import java.text.DecimalFormat
 
-class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable>, private val listener: ShoppingItemClickListener, private var selectOptionVisible: Boolean = false):
-    RecyclerView.Adapter<ShoppingListAdapter.ItemViewHolder>() {
+class CartListAdapter(private var itemList: ArrayList<CartTable>, private val listener: CartItemClickListener, private var selectOptionVisible: Boolean = false):
+    RecyclerView.Adapter<CartListAdapter.ItemViewHolder>() {
 
     fun updateSelectOptionVisible(selectOptionVisible: Boolean) {
         this.selectOptionVisible = selectOptionVisible
@@ -21,7 +21,7 @@ class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable>, privat
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_shopping_item_layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_cart_item_layout, parent, false)
 
         return ItemViewHolder(view)
     }
@@ -32,32 +32,32 @@ class ShoppingListAdapter(private var itemList: ArrayList<ShoppingTable>, privat
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val binding = SingleShoppingItemLayoutBinding.bind(itemView)
+        private val binding = SingleCartItemLayoutBinding.bind(itemView)
 
         @SuppressLint("SetTextI18n")
-        fun onBind(currentItem: ShoppingTable) {
+        fun onBind(currentItem: CartTable) {
             binding.apply {
                 selectIcon.visibility = if (selectOptionVisible) View.VISIBLE else View.GONE
                 when(currentItem.isSelected) {
-                    true-> selectIcon.loadImage(R.drawable.cart_select_icon)
-                    else-> selectIcon.loadImage(R.drawable.cart_unselect_icon)
+                    true-> selectIcon.setImageResource(R.drawable.cart_select_icon)
+                    else-> selectIcon.setImageResource(R.drawable.cart_unselect_icon)
                 }
                 itemImageImageview.loadImage(currentItem.itemImage)
                 itemNameTextview.text = currentItem.itemName
                 itemCompanyTextview.text = currentItem.itemCompany
                 itemPriceTextview.text = "$${DecimalFormat("#.##").format(currentItem.itemPrice!! * currentItem.itemQuantity!!)}"
                 itemCountTextview.text = currentItem.itemQuantity.toString()
+
+                selectIcon.setOnClickListener { listener.onCartItemClick(currentItem, "SELECT_ICON") }
+
+                itemQuantityPlusIcon.setOnClickListener { listener.onCartItemClick(currentItem, "QUANTITY_PLUS") }
+
+                itemQuantityMinusIcon.setOnClickListener {
+                    if (currentItem.itemQuantity!! > 1) { listener.onCartItemClick(currentItem, "QUANTITY_MINUS") }
+                }
+
+                mainCardView.setOnClickListener { listener.onCartItemClick(currentItem, "MAIN_ITEM") }
             }
-
-            binding.selectIcon.setOnClickListener { listener.onShoppingItemClick(currentItem, "SELECT_ICON") }
-
-            binding.itemQuantityPlusIcon.setOnClickListener { listener.onShoppingItemClick(currentItem, "QUANTITY_PLUS") }
-
-            binding.itemQuantityMinusIcon.setOnClickListener {
-                if (currentItem.itemQuantity!! > 1) { listener.onShoppingItemClick(currentItem, "QUANTITY_MINUS") }
-            }
-
-            binding.mainCardView.setOnClickListener { listener.onShoppingItemClick(currentItem, "MAIN_ITEM") }
         }
     }
 }

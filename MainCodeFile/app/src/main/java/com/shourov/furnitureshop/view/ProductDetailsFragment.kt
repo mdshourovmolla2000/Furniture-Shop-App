@@ -15,7 +15,7 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
 import com.shourov.furnitureshop.database.tables.FavouriteTable
-import com.shourov.furnitureshop.database.tables.ShoppingTable
+import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
@@ -82,7 +82,7 @@ class ProductDetailsFragment : Fragment() {
 
             addToCartButton.setOnClickListener{
                 lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.insertShopping(ShoppingTable(0, productId, currentProduct.itemImage, currentProduct.itemName, currentProduct.itemCompanyName, currentProduct.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productQuantity, false))
+                    viewModel.insertShopping(CartTable(0, productId, currentProduct.itemImage, currentProduct.itemName, currentProduct.itemCompanyName, currentProduct.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productQuantity, false))
                 }
             }
 

@@ -2,7 +2,7 @@ package com.shourov.furnitureshop.repository
 
 import androidx.lifecycle.LiveData
 import com.shourov.furnitureshop.database.AppDao
-import com.shourov.furnitureshop.database.tables.ShoppingTable
+import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.database.tables.UserTable
 import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.ProductModel
@@ -51,9 +51,9 @@ class HomeRepository(private val dao: AppDao) {
         catch (e: Exception) { callback(null, "Something wrong") }
     }
 
-    fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInShopping(userId, productId)
+    fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = dao.checkIfProductIsInCart(userId, productId)
 
-    suspend fun insertShopping(shopping: ShoppingTable) = dao.insertShopping(shopping)
+    suspend fun insertShopping(shopping: CartTable) = dao.insertCart(shopping)
 
-    suspend fun deleteShoppingById(userId: Int?, productId: String?) = dao.deleteShoppingById(userId, productId)
+    suspend fun deleteShoppingById(userId: Int?, productId: String?) = dao.deleteCartById(userId, productId)
 }

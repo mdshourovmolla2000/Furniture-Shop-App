@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.CategoryProductListAdapter
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
-import com.shourov.furnitureshop.database.tables.ShoppingTable
+import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.databinding.FragmentCategoryProductBinding
 import com.shourov.furnitureshop.interfaces.CategoryProductItemClickListener
 import com.shourov.furnitureshop.model.ProductModel
@@ -120,7 +120,7 @@ class CategoryProductFragment : Fragment(), CategoryProductItemClickListener {
                 if (hexColor == String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(requireContext(), R.color.themeColor))) {
                     viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
                 } else {
-                    viewModel.insertShopping(ShoppingTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
+                    viewModel.insertShopping(CartTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
                 }
             }
         }

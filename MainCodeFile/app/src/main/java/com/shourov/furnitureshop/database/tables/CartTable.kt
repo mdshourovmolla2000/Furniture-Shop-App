@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.shourov.furnitureshop.R
 
-@Entity(tableName = "shopping_table")
-data class ShoppingTable(
+@Entity(tableName = "cart_table")
+data class CartTable(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val productId: String? = "1",

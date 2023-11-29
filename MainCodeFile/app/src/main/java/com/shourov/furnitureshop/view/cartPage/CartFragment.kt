@@ -13,29 +13,32 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shourov.furnitureshop.R
-import com.shourov.furnitureshop.adapter.ShoppingListAdapter
+import com.shourov.furnitureshop.adapter.CartListAdapter
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
-import com.shourov.furnitureshop.database.tables.ShoppingTable
+import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.databinding.FragmentCartBinding
-import com.shourov.furnitureshop.interfaces.ShoppingItemClickListener
-import com.shourov.furnitureshop.repository.ShoppingRepository
+import com.shourov.furnitureshop.interfaces.CartItemClickListener
+import com.shourov.furnitureshop.repository.CartRepository
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
-import com.shourov.furnitureshop.viewModel.ShoppingViewModel
+import com.shourov.furnitureshop.utils.showErrorToast
+import com.shourov.furnitureshop.utils.showInfoToast
+import com.shourov.furnitureshop.viewModel.CartViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 
-class CartFragment : Fragment(), ShoppingItemClickListener {
+class CartFragment : Fragment(), CartItemClickListener {
 
     private lateinit var binding: FragmentCartBinding
 
-    private lateinit var repository: ShoppingRepository
-    private lateinit var viewModel: ShoppingViewModel
+    private lateinit var repository: CartRepository
+    private lateinit var viewModel: CartViewModel
 
-    private val shoppingItemList = ArrayList<ShoppingTable>()
+    private val cartItemList = ArrayList<CartTable>()
     private var selectOptionVisible: Boolean = false
-    private lateinit var shoppingListAdapter: ShoppingListAdapter
+    private lateinit var cartListAdapter: CartListAdapter
     private var subTotalAmount = 0.00
     private val shippingFee = 10.00
     private var totalPayment = 0.0
@@ -57,17 +60,16 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
         // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
-        binding.backIcon.setOnClickListener { hideSelectOption() }
-
-        repository = ShoppingRepository(database.appDao())
-        viewModel = ViewModelProvider(this, ShoppingViewModelFactory(repository))[ShoppingViewModel::class.java]
+        repository = CartRepository(database.appDao())
+        viewModel = ViewModelProvider(this, CartViewModelFactory(repository))[CartViewModel::class.java]
 
         observerList()
 
-        shoppingListAdapter = ShoppingListAdapter(shoppingItemList, this@CartFragment, selectOptionVisible)
+        cartListAdapter = CartListAdapter(cartItemList, this, selectOptionVisible)
 
         binding.apply {
-            cartItemRecyclerview.adapter = shoppingListAdapter
+            backIcon.setOnClickListener { hideSelectOption() }
+            cartItemRecyclerview.adapter = cartListAdapter
 
             if (selectOptionVisible) {
                 deleteIcon.visibility = View.GONE
@@ -80,16 +82,12 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
             }
 
             deleteIcon.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.clearShoppingSelection()
-                    withContext(Dispatchers.Main) {
-                        selectOptionVisible = true
-                        shoppingListAdapter.updateSelectOptionVisible(true)
-                        deleteIcon.visibility = View.GONE
-                        orderSummaryLayout.visibility = View.GONE
-                        deleteButton.visibility = View.VISIBLE
-                    }
-                }
+                viewModel.clearCartSelection()
+                selectOptionVisible = true
+                cartListAdapter.updateSelectOptionVisible(true)
+                deleteIcon.visibility = View.GONE
+                orderSummaryLayout.visibility = View.GONE
+                deleteButton.visibility = View.VISIBLE
             }
 
             subtotalAmountTextview.text = "$${DecimalFormat("#.##").format(subTotalAmount)}"
@@ -98,17 +96,19 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
             totalPaymentAmountTextview.text = "$${DecimalFormat("#.##").format(totalPayment)}"
 
             deleteButton.setOnClickListener {
-                val selectedShoppingItemList = shoppingItemList.filter { it?.isSelected == true }
+                val selectedShoppingItemList = cartItemList.filter { it.isSelected!! }
                 if (selectedShoppingItemList.isNotEmpty()) {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.deleteShopping(selectedShoppingItemList)
-                        val shoppingItemCount = viewModel.shoppingItemCount(SharedPref.read("CURRENT_USER_ID", "0")?.toInt())
+                        viewModel.deleteCart(selectedShoppingItemList)
+                        val shoppingItemCount = viewModel.cartItemCount(SharedPref.read("CURRENT_USER_ID", "0")?.toInt())
                         withContext(Dispatchers.Main) {
                             if (shoppingItemCount == 0) {
                                 selectOptionVisible = false
                             }
                         }
                     }
+                } else {
+                    requireContext().showInfoToast("Select item first")
                 }
             }
         }
@@ -118,24 +118,25 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun observerList() {
-        viewModel.getShoppingData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
-            shoppingItemList.clear()
+        viewModel.getCartData(SharedPref.read("CURRENT_USER_ID", "0")?.toInt()).observe(viewLifecycleOwner) {
+            cartItemList.clear()
             binding.apply {
                 if (it.isNullOrEmpty()) {
+                    selectOptionVisible = false
                     cartItemRecyclerview.visibility = View.GONE
                     orderSummaryLayout.visibility = View.GONE
                     deleteIcon.visibility = View.GONE
                     deleteButton.visibility = View.GONE
                     noItemLayout.visibility = View.VISIBLE
                 } else {
-                    shoppingItemList.addAll(it.reversed())
+                    cartItemList.addAll(it.reversed())
 
                     noItemLayout.visibility = View.GONE
                     cartItemRecyclerview.visibility = View.VISIBLE
 
-                    viewModel.getSubTotalAmount(shoppingItemList)
+                    viewModel.getSubTotalAmount(cartItemList)
                 }
-                shoppingListAdapter.notifyDataSetChanged()
+                cartListAdapter.notifyDataSetChanged()
             }
         }
 
@@ -152,43 +153,41 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
     private fun hideSelectOption() {
         if (selectOptionVisible) {
             selectOptionVisible = false
-            shoppingListAdapter.updateSelectOptionVisible(false)
+            cartListAdapter.updateSelectOptionVisible(false)
             binding.apply {
                 deleteIcon.visibility = View.VISIBLE
                 deleteButton.visibility = View.GONE
                 orderSummaryLayout.visibility = View.VISIBLE
             }
-            lifecycleScope.launch(Dispatchers.IO) { viewModel.clearShoppingSelection() }
+            viewModel.clearCartSelection()
         } else {
             findNavController().popBackStack()
         }
     }
 
-    override fun onShoppingItemClick(currentItem: ShoppingTable?, clickOn: String?) {
-        when(clickOn) {
+    override fun onCartItemClick(currentItem: CartTable?, clickedOn: String?) {
+        when(clickedOn) {
             "SELECT_ICON" -> {
                 currentItem!!.isSelected = !(currentItem.isSelected)!!
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.updateShopping(currentItem)
-                }
+                viewModel.updateCart(currentItem)
             }
             "MAIN_ITEM" -> {
-                val bundle = bundleOf(
-                    "PRODUCT_ID" to currentItem?.productId
-                )
-                findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment, bundle)
+                if (NetworkManager.isInternetAvailable(requireContext())) {
+                    val bundle = bundleOf(
+                        "PRODUCT_ID" to currentItem?.productId
+                    )
+                    findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment, bundle)
+                } else {
+                    requireContext().showErrorToast("No internet available")
+                }
             }
             "QUANTITY_PLUS" -> {
                 currentItem!!.itemQuantity = currentItem.itemQuantity!! + 1
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.updateShopping(currentItem)
-                }
+                viewModel.updateCart(currentItem)
             }
             "QUANTITY_MINUS" -> {
                 currentItem!!.itemQuantity = currentItem.itemQuantity!! - 1
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.updateShopping(currentItem)
-                }
+                viewModel.updateCart(currentItem)
             }
         }
     }
@@ -196,6 +195,7 @@ class CartFragment : Fragment(), ShoppingItemClickListener {
 
 
 
-class ShoppingViewModelFactory(private val repository: ShoppingRepository): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = ShoppingViewModel(repository) as T
+
+class CartViewModelFactory(private val repository: CartRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = CartViewModel(repository) as T
 }

@@ -7,8 +7,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.shourov.furnitureshop.database.tables.AddressTable
+import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.database.tables.FavouriteTable
-import com.shourov.furnitureshop.database.tables.ShoppingTable
 import com.shourov.furnitureshop.database.tables.UserTable
 
 @Dao
@@ -43,29 +43,29 @@ interface AppDao {
     @Query("SELECT COUNT(*) FROM favourite_table WHERE userId = :userId AND productId = :productId")
     fun checkIfProductIsInFavourite(userId: Int?, productId: String?): LiveData<Int>
 
-    @Query("SELECT * FROM shopping_table WHERE userId = :userId")
-    fun getShoppingData(userId: Int?): LiveData<List<ShoppingTable>>
+    @Query("SELECT * FROM cart_table WHERE userId = :userId")
+    fun getCartData(userId: Int?): LiveData<List<CartTable>>
 
     @Insert
-    suspend fun insertShopping(shopping: ShoppingTable)
+    suspend fun insertCart(cart: CartTable)
 
-    @Query("SELECT COUNT(*) FROM shopping_table WHERE userId = :userId AND productId = :productId")
-    fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int>
+    @Query("SELECT COUNT(*) FROM cart_table WHERE userId = :userId AND productId = :productId")
+    fun checkIfProductIsInCart(userId: Int?, productId: String?): LiveData<Int>
 
-    @Query("DELETE FROM shopping_table WHERE userId = :userId AND productId = :productId")
-    suspend fun deleteShoppingById(userId: Int?, productId: String?)
+    @Query("DELETE FROM cart_table WHERE userId = :userId AND productId = :productId")
+    suspend fun deleteCartById(userId: Int?, productId: String?)
 
     @Update
-    suspend fun updateShopping(shopping: ShoppingTable)
+    suspend fun updateCart(cart: CartTable)
 
     @Delete
-    suspend fun deleteShopping(shoppingList: List<ShoppingTable>)
+    suspend fun deleteCart(cartList: List<CartTable>)
 
-    @Query("UPDATE shopping_table SET isSelected = :isSelected")
-    suspend fun clearShoppingSelection(isSelected: Boolean? = false)
+    @Query("UPDATE cart_table SET isSelected = :isSelected")
+    suspend fun clearCartSelection(isSelected: Boolean? = false)
 
-    @Query("SELECT COUNT(*) FROM shopping_table WHERE userId = :userId")
-    suspend fun shoppingItemCount(userId: Int?): Int
+    @Query("SELECT COUNT(*) FROM cart_table WHERE userId = :userId")
+    suspend fun cartItemCount(userId: Int?): Int
 
     @Insert
     suspend fun insertAddress(address: AddressTable): Long

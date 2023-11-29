@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shourov.furnitureshop.database.tables.FavouriteTable
-import com.shourov.furnitureshop.database.tables.ShoppingTable
+import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.model.ProductImageModel
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
@@ -30,7 +30,7 @@ class ProductDetailsViewModel(private val repository: ProductDetailsRepository) 
 
     fun deleteFavouriteById(userId: Int?, productId: String?) = viewModelScope.launch { repository.deleteFavouriteById(userId, productId) }
 
-    suspend fun insertShopping(shopping: ShoppingTable) = repository.insertShopping(shopping)
+    suspend fun insertShopping(shopping: CartTable) = repository.insertShopping(shopping)
 
     fun checkIfProductIsInShopping(userId: Int?, productId: String?): LiveData<Int> = repository.checkIfProductIsInShopping(userId, productId)
 
