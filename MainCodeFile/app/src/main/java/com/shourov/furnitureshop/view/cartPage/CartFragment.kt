@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.adapter.CartListAdapter
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
@@ -109,6 +110,19 @@ class CartFragment : Fragment(), CartItemClickListener {
                     }
                 } else {
                     requireContext().showInfoToast("Select item first")
+                }
+            }
+
+            checkoutButton.setOnClickListener {
+                if (NetworkManager.isInternetAvailable(requireContext())) {
+                    val bundle = bundleOf(
+                        "PRODUCT_LIST" to Gson().toJson(cartItemList),
+                        "TOTAL_AMOUNT" to DecimalFormat("#.##").format(subTotalAmount),
+                        "SHIPPING_FEE" to shippingFee
+                    )
+                    findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment, bundle)
+                } else {
+                    requireContext().showErrorToast("No internet available")
                 }
             }
         }

@@ -90,7 +90,7 @@
             android:layout_marginTop="@dimen/_9sdp"
             app:layout_constraintHorizontal_bias="0.0"
             android:text="$9.99"
-            android:textColor="#F2A666"
+            android:textColor="#D88743"
             android:textSize="@dimen/_12sdp"
             android:fontFamily="@font/switzer_medium"/>
 

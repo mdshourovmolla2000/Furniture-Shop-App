@@ -9,6 +9,7 @@ import androidx.room.Update
 import com.shourov.furnitureshop.database.tables.AddressTable
 import com.shourov.furnitureshop.database.tables.CartTable
 import com.shourov.furnitureshop.database.tables.FavouriteTable
+import com.shourov.furnitureshop.database.tables.OrderTable
 import com.shourov.furnitureshop.database.tables.UserTable
 
 @Dao
@@ -61,6 +62,9 @@ interface AppDao {
     @Delete
     suspend fun deleteCart(cartList: List<CartTable>)
 
+    @Query("DELETE FROM cart_table")
+    suspend fun clearCart(): Int
+
     @Query("UPDATE cart_table SET isSelected = :isSelected")
     suspend fun clearCartSelection(isSelected: Boolean? = false)
 
@@ -78,4 +82,10 @@ interface AppDao {
 
     @Query("SELECT * FROM address_table WHERE userId = :userId")
     fun getAddressData(userId: Int?): LiveData<List<AddressTable>>
+
+    @Insert
+    suspend fun insertOrder(order: OrderTable): Long
+
+    @Query("SELECT * FROM order_table WHERE userId = :userId AND orderStatus = :orderStatus")
+    fun getOrderData(userId: Int?, orderStatus: String?): LiveData<List<OrderTable>>
 }

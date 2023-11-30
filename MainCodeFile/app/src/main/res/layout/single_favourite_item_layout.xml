@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@id/itemNameTextview"
         app:layout_constraintStart_toStartOf="parent"
         android:text="$39.00"
-        android:textColor="#F2A666"
+        android:textColor="#D88743"
         android:textSize="@dimen/_12sdp"
         android:fontFamily="@font/switzer_medium"
         android:layout_marginTop="@dimen/_5sdp"/>

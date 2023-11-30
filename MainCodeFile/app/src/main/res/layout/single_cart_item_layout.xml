@@ -97,7 +97,7 @@
                     app:layout_constraintTop_toBottomOf="@id/itemCompanyTextview"
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="$279.95"
-                    android:textColor="#F2A666"
+                    android:textColor="#D88743"
                     android:textSize="@dimen/_12sdp"
                     android:fontFamily="@font/switzer_medium"
                     android:layout_marginTop="@dimen/_9sdp"/>

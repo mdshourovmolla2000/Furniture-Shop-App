@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.profilePage.orderHistoryPage.OrderProcessingFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/orderProcessingItemRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/single_order_item_layout"
+        android:layout_marginHorizontal="@dimen/_6sdp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/noItemLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No item available"
+        android:textColor="@color/blackTextColor"
+        android:textSize="@dimen/_13sdp"
+        android:fontFamily="@font/switzer_medium"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/themeColor"/>
+
+</RelativeLayout>
