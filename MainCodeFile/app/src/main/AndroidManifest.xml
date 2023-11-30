@@ -32,7 +32,8 @@
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".view.welcomePage.WelcomeActivity"
             android:exported="true">

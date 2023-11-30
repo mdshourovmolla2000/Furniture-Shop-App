@@ -130,15 +130,6 @@
                         android:textSize="@dimen/_11sdp"
                         android:fontFamily="@font/switzer_regular"/>
 
-                    <ImageView
-                        android:id="@+id/filterIcon"
-                        android:layout_width="@dimen/_18sdp"
-                        android:layout_height="@dimen/_18sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:src="@drawable/filter_icon"/>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
