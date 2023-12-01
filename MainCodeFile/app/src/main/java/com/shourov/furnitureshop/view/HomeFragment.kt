@@ -203,7 +203,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
     }
 
     override fun onLoadProductItem(currentItem: ProductModel, cartIconCardView: CardView, cartIconImageview: ImageView) {
-        viewModel.checkIfProductIsInShopping(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId).observe(viewLifecycleOwner) {
+        viewModel.checkIfProductIsInShopping(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.id).observe(viewLifecycleOwner) {
             if (it > 0) {
                 cartIconCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.themeColor))
                 cartIconImageview.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
@@ -219,7 +219,7 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
             "MAIN_ITEM" -> {
                 if (NetworkManager.isInternetAvailable(requireContext())) {
                     val bundle = bundleOf(
-                        "PRODUCT_ID" to currentItem.itemId
+                        "PRODUCT_ID" to currentItem.id
                     )
                     findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle)
                 } else {
@@ -230,9 +230,9 @@ class HomeFragment : Fragment(), HomeCategoryItemClickListener, PopularProductIt
                 val cartIconCardViewBgColor = cartIconCardView.cardBackgroundColor.defaultColor
                 val hexColor = String.format("#%06X", 0xFFFFFF and cartIconCardViewBgColor)
                 if (hexColor == String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(requireContext(), R.color.themeColor))) {
-                    viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.itemId)
+                    viewModel.deleteShoppingById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), currentItem.id)
                 } else {
-                    viewModel.insertShopping(CartTable(0, currentItem.itemId, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
+                    viewModel.insertShopping(CartTable(0, currentItem.id, currentItem.itemImage, currentItem.itemName, currentItem.itemCompanyName, currentItem.itemPrice, SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), 1, false))
                 }
             }
         }

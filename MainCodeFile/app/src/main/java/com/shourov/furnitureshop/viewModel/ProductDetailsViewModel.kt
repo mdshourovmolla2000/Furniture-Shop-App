@@ -4,21 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.CartTable
+import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.model.ProductImageModel
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
 import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(private val repository: ProductDetailsRepository) : ViewModel() {
-    private val _productImagesLiveData = MutableLiveData<List<ProductImageModel?>>()
-    val productImageLiveData: LiveData<List<ProductImageModel?>> get() = _productImagesLiveData
-    fun getProductImages(productId: String?) = _productImagesLiveData.postValue(repository.getProductImages(productId))
+    fun getProductImages(productId: String?, callback: (data: List<ProductImageModel>?, message: String?) -> Unit) = viewModelScope.launch { repository.getProductImages(productId, callback) }
 
-    private val _productDetailsLiveData = MutableLiveData<ProductModel?>()
-    val productDetailsLiveData: LiveData<ProductModel?> get() = _productDetailsLiveData
-    fun getProductDetails(productId: String?) = _productDetailsLiveData.postValue(repository.getProductDetails(productId))
+    fun productReviewCount(productId: String?): Int = repository.productReviewCount(productId)
+
+    fun getProductDetails(productId: String?, callback: (data: ProductModel?, message: String?) -> Unit) = viewModelScope.launch { repository.getProductDetails(productId, callback) }
 
     private val _totalAmountLiveData = MutableLiveData<Double?>()
     val totalAmountLiveData: LiveData<Double?> get() = _totalAmountLiveData

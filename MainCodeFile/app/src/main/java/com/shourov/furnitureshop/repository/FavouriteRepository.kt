@@ -9,7 +9,7 @@ import com.shourov.furnitureshop.utils.DemoData
 class FavouriteRepository(private val dao: AppDao) {
     fun getFavouriteData(userId: Int?): LiveData<List<FavouriteTable>> = dao.getFavouriteData(userId)
 
-    fun getProductDetails(productId: String?): ProductModel? = DemoData().productData().find { it.itemId == productId }
+    fun getProductDetails(productId: String?): ProductModel? = DemoData().productData().find { it.id == productId }
 
     suspend fun deleteFavourite(favourite: FavouriteTable) = dao.deleteFavourite(favourite)
 }

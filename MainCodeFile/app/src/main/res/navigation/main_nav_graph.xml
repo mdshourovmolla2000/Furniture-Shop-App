@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="com.shourov.furnitureshop.view.ProductDetailsFragment"
+        android:name="com.shourov.furnitureshop.view.productDetailsPage.ProductDetailsFragment"
         android:label="Product Details"
         tools:layout="@layout/fragment_product_details" >
         <action
@@ -82,6 +82,13 @@
             app:destination="@id/cartFragment"
             app:popUpTo="@id/productDetailsFragment"
             app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+        <action
+            android:id="@+id/action_productDetailsFragment_to_productReviewFragment"
+            app:destination="@id/productReviewFragment"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit"
             app:enterAnim="@anim/enter"
@@ -273,4 +280,22 @@
             app:enterAnim="@anim/enter"
             app:exitAnim="@anim/exit" />
     </fragment>
+    <fragment
+        android:id="@+id/productReviewFragment"
+        android:name="com.shourov.furnitureshop.view.productDetailsPage.ProductReviewFragment"
+        android:label="fragment_product_review"
+        tools:layout="@layout/fragment_product_review" >
+        <action
+            android:id="@+id/action_productReviewFragment_to_fullImageFragment"
+            app:destination="@id/fullImageFragment"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullImageFragment"
+        android:name="com.shourov.furnitureshop.view.otherPage.FullImageFragment"
+        android:label="fragment_full_image"
+        tools:layout="@layout/fragment_full_image" />
 </navigation>

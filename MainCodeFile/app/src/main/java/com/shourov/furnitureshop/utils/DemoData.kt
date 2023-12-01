@@ -6,6 +6,7 @@ import com.shourov.furnitureshop.model.HomeCategoryModel
 import com.shourov.furnitureshop.model.OnBoardingModel
 import com.shourov.furnitureshop.model.ProductImageModel
 import com.shourov.furnitureshop.model.ProductModel
+import com.shourov.furnitureshop.model.ProductReviewModel
 import com.shourov.furnitureshop.model.SpecialOfferModel
 
 class DemoData {
@@ -49,6 +50,14 @@ class DemoData {
         itemList.add(ProductModel("3", R.drawable.product_3_image, "Hatil Sofa", "Hatil", "Hatil is a well-known furniture brand that offers a wide range of high-quality and stylish sofas. The Hatil sofa is a perfect blend of comfort and elegance, designed to enhance the overall look of your living room. The sofa is made of premium quality materials, including high-density foam, solid wood frame, and soft fabric upholstery, ensuring durability and comfort. The Hatil sofa comes in various sizes, colors, and designs, allowing you to choose the one that best suits your taste and home decor. With its sleek and modern design, the Hatil sofa is perfect for both traditional and contemporary living spaces. Whether you want to relax with your family or entertain guests, the Hatil sofa is an excellent choice for any home.", "Sofa", 350.00))
         itemList.add(ProductModel("4", R.drawable.product_4_image, "Regal Sofa", "Regal", "The Regal sofa is a luxurious and elegant piece of furniture that exudes sophistication style. It is designed with a classic and timeless silhouette that features clean lines and a sleek profile. The sofa is upholstered in high-quality, plush fabric that is soft to the touch and provides a comfortable seating experience. The backrest and armrests are generously padded, providing ample support and cushioning for the user. The sofa is supported by sturdy, tapered legs that add to its overall aesthetic appeal. The Regal sofa is perfect for any living room or lounge area, and is sure to impress guests with its refined and sophisticated design.", "Sofa", 400.00))
         itemList.add(ProductModel("5", R.drawable.product_5_image, "HATIL Bed Obsession-151", "Hatil", "A storage bed is a type of bed that is designed to provide additional storage space in the bedroom. It typically features built-in drawers or compartments that are located underneath the mattress, allowing you to store clothing, bedding, or other items out of sight. This type of bed is ideal for smaller bedrooms or for those who need extra storage space but don't want to sacrifice floor space for additional furniture. Storage beds come in a variety of styles and materials, from traditional wooden frames to modern upholstered designs, and can be found in sizes ranging from twin to king. They are a practical and stylish solution for anyone looking to maximize their bedroom storage.", "Bed", 380.00))
+        return itemList
+    }
+
+    fun productReviewData(): List<ProductReviewModel> {
+        val itemList: ArrayList<ProductReviewModel> = ArrayList()
+        itemList.add(ProductReviewModel("1", "1", "Angelina Anderson", "01/11/2023 - 11:45:23 AM", 4, listOf(R.drawable.product_1_image, R.drawable.product_1_image_3, R.drawable.product_1_image_4), "nice studio, the app where You can buy Your furniture with just a top without any hassle_ products are realy awesome."))
+        itemList.add(ProductReviewModel("2", "1", "Anila Erin Maha", "01/12/2023 - 08:31:18 PM", 2, listOf(), "Exellent place to discuss your  furniture ideas and get good suggetions and details."))
+        itemList.add(ProductReviewModel("3", "3", "John Doe", "15/18/2023 - 02:05:49 PM", 5, listOf(R.drawable.product_3_image_1), ""))
         return itemList
     }
 

@@ -1,10 +1,11 @@
-package com.shourov.furnitureshop.view
+package com.shourov.furnitureshop.view.productDetailsPage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,12 +15,14 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.shourov.furnitureshop.R
 import com.shourov.furnitureshop.application.BaseApplication.Companion.database
-import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.database.tables.CartTable
+import com.shourov.furnitureshop.database.tables.FavouriteTable
 import com.shourov.furnitureshop.databinding.FragmentProductDetailsBinding
 import com.shourov.furnitureshop.model.ProductModel
 import com.shourov.furnitureshop.repository.ProductDetailsRepository
+import com.shourov.furnitureshop.utils.NetworkManager
 import com.shourov.furnitureshop.utils.SharedPref
+import com.shourov.furnitureshop.utils.showErrorToast
 import com.shourov.furnitureshop.viewModel.ProductDetailsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,12 +43,15 @@ class ProductDetailsFragment : Fragment() {
     private var productInFavourite = false
     private var productInShopping = false
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
+
+        binding.progressBar.visibility = View.VISIBLE
 
         productId = arguments?.getString("PRODUCT_ID").toString()
 
@@ -54,8 +60,7 @@ class ProductDetailsFragment : Fragment() {
         repository = ProductDetailsRepository(database.appDao())
         viewModel = ViewModelProvider(this, ProductDetailsViewModelFactory(repository))[ProductDetailsViewModel::class.java]
 
-        viewModel.getProductImages(productId)
-        viewModel.getProductDetails(productId)
+        getProductImages(productId)
 
         observerList()
 
@@ -65,6 +70,19 @@ class ProductDetailsFragment : Fragment() {
                     viewModel.deleteFavouriteById(SharedPref.read("CURRENT_USER_ID", "0")?.toInt(), productId)
                 } else {
                     viewModel.insertFavourite(FavouriteTable(0, productId, SharedPref.read("CURRENT_USER_ID", "0")?.toInt()))
+                }
+            }
+
+            reviewCounterTextview.text = "${viewModel.productReviewCount(productId)} Review"
+
+            reviewSectionLayout.setOnClickListener {
+                if (NetworkManager.isInternetAvailable(requireContext())) {
+                    val bundle = bundleOf(
+                        "DATA" to productId
+                    )
+                    findNavController().navigate(R.id.action_productDetailsFragment_to_productReviewFragment, bundle)
+                } else {
+                    requireContext().showErrorToast("No internet available")
                 }
             }
 
@@ -92,35 +110,68 @@ class ProductDetailsFragment : Fragment() {
                 }
             }
 
-            goToCartButton.setOnClickListener {
-                findNavController().navigate(R.id.action_productDetailsFragment_to_cartFragment)
-            }
+            goToCartButton.setOnClickListener { findNavController().navigate(R.id.action_productDetailsFragment_to_cartFragment) }
         }
 
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun observerList() {
-        viewModel.productImageLiveData.observe(viewLifecycleOwner) {
-            for (item in it) { productImageList.add(SlideModel(item?.productImage)) }
-            binding.productImageSlider.setImageList(productImageList, ScaleTypes.FIT)
-        }
+    private fun getProductImages(productId: String) {
+        viewModel.getProductImages(productId) { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Network error" -> {
+                        requireContext().showErrorToast(message)
+                        progressBar.visibility = View.GONE
+                    }
+                    "Successful" -> {
+                        productImageList.clear()
+                        data?.let {
+                            for (item in it) { productImageList.add(SlideModel(item.productImage)) }
+                            productImageSlider.setImageList(productImageList, ScaleTypes.FIT)
+                        }
+                    }
+                }
+            }
 
-        viewModel.productDetailsLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                currentProduct = it
-                binding.apply {
-                    productNameTextview.text = it.itemName
-                    productPriceTextview.text = "$${it.itemPrice}"
-                    productDescriptionTextview.text = it.itemDescription
-                    itemCountTextview.text = productQuantity.toString()
+            getProductDetails(productId)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun getProductDetails(productId: String) {
+        viewModel.getProductDetails(productId) { data, message ->
+            binding.apply {
+                when(message) {
+                    "Something wrong" -> requireContext().showErrorToast(message)
+                    "Network error" -> requireContext().showErrorToast(message)
+                    "Successful" -> {
+                        data?.let {
+                            currentProduct = it
+                            binding.apply {
+                                productNameTextview.text = it.itemName
+                                productPriceTextview.text = "$${it.itemPrice}"
+                                productDescriptionTextview.text = it.itemDescription
+                                itemCountTextview.text = productQuantity.toString()
+                            }
+
+                            viewModel.getTotalAmount(it.itemPrice, productQuantity)
+                        }
+                    }
                 }
 
-                viewModel.getTotalAmount(it.itemPrice, productQuantity)
+                progressBar.visibility = View.GONE
+                mainSectionLayout.visibility = View.VISIBLE
             }
         }
+    }
 
+    @SuppressLint("SetTextI18n")
+    private fun observerList() {
         viewModel.totalAmountLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 binding.apply {
