@@ -3,10 +3,25 @@
 
 &nbsp;
 ## 📜 **Features**
-    ▪ Latest News on Homepage
-    ▪ News Category
-    ▪ Search News
-    ▪ Share News
+    ▪ On boarding screen
+    ▪ Sign in & Sign up using email
+    ▪ Product organized in homepage
+    ▪ Product category
+    ▪ Product Details
+    ▪ Product Reviews
+    ▪ Checkout
+    ▪ Notifications
+    ▪ Search product
+    ▪ Add to favourite
+    ▪ Add to cart
+    ▪ Profile section
+    ▪ Edit profile
+    ▪ Change password
+    ▪ Add delivery address
+    ▪ Order history
+    ▪ Support center
+    ▪ Legal policy
+    
 
 &nbsp;
 ## 🖼️ **Screenshots**
