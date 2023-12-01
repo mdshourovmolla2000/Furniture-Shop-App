@@ -38,8 +38,6 @@ class OrderSuccessFragment : Fragment() {
         val bottomSheetBinding = BottomSheetOrderSuccessBinding.inflate(LayoutInflater.from(requireContext()))
 
         bottomSheet.setContentView(bottomSheetBinding.root)
-        
-        bottomSheetBinding.successIconImageview.setImageResource(R.drawable.order_success_icon)
 
         bottomSheetBinding.backHomeButton.setOnClickListener {
             findNavController().navigate(R.id.action_orderSuccessFragment_to_homeFragment)
