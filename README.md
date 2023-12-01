@@ -19,6 +19,6 @@
 | Topic                                        | Credit                                           |
 | ------------------------------------------- | ----------------------------------------------------- |
 | **Idea From** | [Figma Community](https://www.figma.com) |
-| **Ui Design** | [guna_desk](https://www.figma.com/community/file/1141085800117858374) |
+| **Ui Design** | [Abdul Hafizh Kustiawan]([https://www.figma.com/community/file/1141085800117858374](https://www.figma.com/community/file/1232654626122398633)) |
 | **Icons** | Collected from the figma file as well as from the internet. |
-| **Fonts** | Georgia, Inter, SF Pro Text |
+| **Fonts** | Switzer |
