@@ -1,5 +1,5 @@
-<h3 align="center">WireNews-App</h3>
-<p align="center">News app with kotlin (MVVM)</p>
+<h3 align="center">Furniture Shop-App</h3>
+<p align="center">E-commerce app with kotlin (MVVM)</p>
 
 &nbsp;
 ## 📜 **Features**
