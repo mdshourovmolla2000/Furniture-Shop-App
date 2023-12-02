@@ -38,7 +38,7 @@
 
 | ` Support center ` | ` Legal policy ` | ` Search ` | ` Product details ` | ` Reviews ` |
 | --- | --- | --- | --- | --- |
-| <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/3d89962b-722e-4b04-a61c-18b414f2085c"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/eed1a115-74e6-41d1-a264-21b181e4ecaa"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/4fff8232-02d7-4ac3-80cc-4f792ef7c354"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/f2ab0861-5fdd-4ad9-8af7-004a37faea85"> |
+| <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/3d89962b-722e-4b04-a61c-18b414f2085c"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/eed1a115-74e6-41d1-a264-21b181e4ecaa"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/4fff8232-02d7-4ac3-80cc-4f792ef7c354"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/4fff8232-02d7-4ac3-80cc-4f792ef7c354"> | <img src="https://github.com/mdshourovmolla2000/Furniture-Shop-App/assets/68102562/f2ab0861-5fdd-4ad9-8af7-004a37faea85"> |
 
 | ` Checkout ` | ` Order history ` | `  Order details ` |
 | --- | --- | --- |
